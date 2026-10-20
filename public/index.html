@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>快感！配管クラフト｜松下工業 - 水が来る前に管をつなげ</title>
-<meta name="description" content="水が流れてくる前に管をつなげ！漏らさず家まで届けるスマホ配管パズル。全5ステージ、松下工業の「現場メモ」つき。">
+<title>快感！配管クラフト｜松下工業 - 安く・うまく・漏らさずつなげ</title>
+<meta name="description" content="便利な管ほど高い。予算内で、安く・うまく・漏らさず家まで水を届ける配管パズル。全5ステージ、松下工業の「現場メモ」つき。">
 <meta name="theme-color" content="#0b1220">
 <meta name="color-scheme" content="dark">
 <meta name="format-detection" content="telephone=no">
@@ -19,21 +19,21 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="松下工業｜快感！配管クラフト">
-<meta property="og:title" content="快感！配管クラフト｜水が来る前に、管をつなげ！">
-<meta property="og:description" content="漏らさず家まで届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
+<meta property="og:title" content="快感！配管クラフト｜安く・うまく・漏らさずつなげ！">
+<meta property="og:description" content="便利な管ほど高い。予算内で家まで水を届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
 <meta property="og:url" content="https://matsushita-pipe-craft.pages.dev/">
 <meta property="og:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="快感！配管クラフト - 水が来る前に、管をつなげ！">
+<meta property="og:image:alt" content="快感！配管クラフト - 安く、うまく、漏らさずつなげ！">
 
 <!-- X（旧Twitter） -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="快感！配管クラフト｜水が来る前に、管をつなげ！">
-<meta name="twitter:description" content="漏らさず家まで届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
+<meta name="twitter:title" content="快感！配管クラフト｜安く・うまく・漏らさずつなげ！">
+<meta name="twitter:description" content="便利な管ほど高い。予算内で家まで水を届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
 <meta name="twitter:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
-<meta name="twitter:image:alt" content="快感！配管クラフト - 水が来る前に、管をつなげ！">
+<meta name="twitter:image:alt" content="快感！配管クラフト - 安く、うまく、漏らさずつなげ！">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -94,11 +94,8 @@
     letter-spacing: .04em;
   }
   #stageName { font-size: 14px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .hud-right { display: flex; align-items: center; gap: 6px; }
-  .score { text-align: right; line-height: 1; }
-  .score small { display: block; font-size: 9px; color: var(--muted); letter-spacing: .1em; }
-  .score b { font-size: 20px; font-weight: 900; color: var(--amber); font-variant-numeric: tabular-nums; }
   .icon-btn {
+    flex-shrink: 0;
     width: 34px; height: 34px;
     border-radius: 10px;
     border: 1px solid var(--line);
@@ -108,59 +105,43 @@
     cursor: pointer;
   }
 
-  .timer {
+  .costbar {
     position: relative;
-    height: 22px;
+    height: 24px;
     border-radius: 999px;
     background: #0a1324;
     border: 1px solid var(--line);
     overflow: hidden;
   }
-  #timerFill {
+  #costFill {
     position: absolute; inset: 0 auto 0 0;
-    width: 100%;
-    background: linear-gradient(90deg, #f59e0b, #fbbf24);
-    transition: background .3s;
+    width: 0;
+    background: linear-gradient(90deg, #16a34a, #4ade80);
+    transition: width .2s, background .3s;
   }
-  .timer.flow #timerFill {
-    background: repeating-linear-gradient(45deg, #0891b2 0 10px, #22d3ee 10px 20px);
-    background-size: 28px 28px;
-    animation: stripe .5s linear infinite;
+  .costbar.over-est #costFill { background: linear-gradient(90deg, #d97706, #fbbf24); }
+  .costbar.over-budget #costFill { background: linear-gradient(90deg, #e11d48, #fb7185); }
+  #estMark {
+    position: absolute; top: 0; bottom: 0;
+    width: 2px;
+    background: #fff;
+    opacity: .7;
   }
-  .timer.warn #timerFill { background: linear-gradient(90deg, #e11d48, #fb7185); }
-  @keyframes stripe { to { background-position: 28px 0; } }
-  #timerText {
+  #costText {
     position: relative;
     display: block;
     text-align: center;
     font-size: 12px;
-    line-height: 20px;
+    line-height: 22px;
     font-weight: 900;
     color: #fff;
-    text-shadow: 0 1px 2px rgba(0,0,0,.8);
+    text-shadow: 0 1px 2px rgba(0,0,0,.85);
   }
-
-  .queue {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    padding: 6px 10px;
-  }
-  .queue-label { font-size: 11px; color: var(--muted); writing-mode: vertical-rl; letter-spacing: .15em; }
-  #q0 {
-    width: 58px; height: 58px;
-    border-radius: 12px;
-    box-shadow: 0 0 0 2px var(--amber), 0 0 16px rgba(251,191,36,.35);
-  }
-  .q-rest { display: flex; gap: 5px; align-items: center; }
-  .q-rest canvas { width: 36px; height: 36px; border-radius: 8px; opacity: .8; }
-  .goal { margin-left: auto; text-align: right; line-height: 1.2; }
-  .goal small { display: block; font-size: 9px; color: var(--muted); }
-  #goalText { font-size: 14px; font-weight: 900; font-variant-numeric: tabular-nums; }
-  #goalText.done { color: var(--green); }
+  .chips { display: flex; gap: 6px; justify-content: center; font-size: 11px; color: var(--muted); }
+  .chips span { background: var(--panel); border: 1px solid var(--line); border-radius: 999px; padding: 1px 9px; }
+  .chips b { color: var(--text); }
+  .chips .good b { color: var(--green); }
+  .chips .bad b { color: var(--rose); }
 
   #boardWrap {
     flex: 1 1 0;
@@ -177,6 +158,29 @@
     touch-action: none;
     cursor: pointer;
   }
+
+  /* ---------- 部材パレット ---------- */
+  .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
+  .part {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1px;
+    padding: 5px 2px 4px;
+    border-radius: 12px;
+    border: 2px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    cursor: pointer;
+    transition: transform .08s;
+  }
+  .part:active { transform: scale(.95); }
+  .part canvas { width: 34px; height: 34px; border-radius: 7px; }
+  .part span { font-size: 10.5px; font-weight: 900; line-height: 1.2; }
+  .part b { font-size: 11px; color: var(--amber); line-height: 1.1; }
+  .part.on { border-color: var(--amber); background: #2a1f0d; box-shadow: 0 0 14px rgba(251,191,36,.35); }
+  .part:disabled { opacity: .45; }
 
   .controls { display: flex; gap: 8px; }
 
@@ -253,6 +257,9 @@
     color: #cbd5e1;
   }
   .howto b { color: #fff; }
+  .prices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-top: 10px; }
+  .prices div { background: #0b1324; border: 1px solid var(--line); border-radius: 10px; padding: 6px 2px; font-size: 11px; }
+  .prices b { display: block; color: var(--amber); font-size: 14px; }
   .best { margin-top: 10px; font-size: 12px; color: var(--muted); }
 
   .missions { list-style: none; margin: 12px 0 0; padding: 0; text-align: left; display: grid; gap: 6px; }
@@ -268,14 +275,24 @@
   .missions li .st { color: #475569; font-size: 16px; }
   .missions li.ok .st { color: var(--amber); }
   .missions li.ng { color: #7c8aa3; }
+  .money { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 10px; }
+  .money div { background: #0b1324; border: 1px solid var(--line); border-radius: 12px; padding: 8px; font-size: 11px; color: var(--muted); }
+  .money b { display: block; font-size: 20px; color: var(--text); }
 
   .stars { font-size: 44px; letter-spacing: .08em; line-height: 1; margin: 6px 0; }
   .stars .on { color: var(--amber); text-shadow: 0 0 18px rgba(251,191,36,.6); }
   .stars .off { color: #334155; }
-  .bd { margin: 10px 0 0; padding: 8px 12px; background: #0b1324; border: 1px solid var(--line); border-radius: 14px; font-size: 13px; }
-  .bd div { display: flex; justify-content: space-between; padding: 3px 0; }
+  .bd { margin: 10px 0 0; padding: 8px 12px; background: #0b1324; border: 1px solid var(--line); border-radius: 14px; font-size: 13px; text-align: left; }
+  .bd > div { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; }
   .bd .minus { color: var(--rose); }
   .bd .total { border-top: 1px dashed #334155; margin-top: 4px; padding-top: 6px; font-size: 16px; color: var(--amber); }
+  .bonus { margin-top: 10px; text-align: left; display: grid; gap: 6px; }
+  .bonus > div { background: #0b1324; border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; }
+  .bonus > div.got { border-color: #a16207; background: linear-gradient(90deg, #2a1f0d, #0b1324); }
+  .bonus .head { display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; }
+  .bonus .got .head { color: var(--amber); }
+  .bonus .miss .head { color: #64748b; }
+  .bonus small { display: block; font-size: 11px; line-height: 1.5; color: #94a3b8; font-weight: 700; margin-top: 2px; }
   .memo {
     margin-top: 12px;
     text-align: left;
@@ -320,26 +337,29 @@
       <span id="stageTag" class="tag">STAGE 1/5</span>
       <span id="stageName">はじめての引き込み</span>
     </div>
-    <div class="hud-right">
-      <div class="score"><small>SCORE</small><b id="scoreText">0</b></div>
-      <button id="soundBtn" class="icon-btn" aria-label="効果音の切り替え">🔊</button>
-    </div>
+    <button id="soundBtn" class="icon-btn" aria-label="効果音の切り替え">🔊</button>
   </header>
 
-  <div id="timer" class="timer"><div id="timerFill"></div><span id="timerText">準備中</span></div>
-
-  <div class="queue">
-    <span class="queue-label">次の管</span>
-    <canvas id="q0"></canvas>
-    <div class="q-rest"><canvas id="q1"></canvas><canvas id="q2"></canvas><canvas id="q3"></canvas></div>
-    <div class="goal"><small>つないだ管</small><span id="goalText">0/12</span></div>
+  <div id="costbar" class="costbar"><div id="costFill"></div><div id="estMark"></div><span id="costText">施工費 0万 / 予算 20万</span></div>
+  <div class="chips">
+    <span>見積り <b id="estText">13万</b></span>
+    <span id="bendChip">曲がり <b id="bendText">0/2</b></span>
+    <span id="failChip">手戻り <b id="failText">0回</b></span>
   </div>
 
   <div id="boardWrap"><canvas id="board"></canvas></div>
 
+  <div class="palette" id="palette">
+    <button class="part on" data-tool="straight"><canvas></canvas><span>直管</span><b>1万</b></button>
+    <button class="part" data-tool="elbow"><canvas></canvas><span>エルボ</span><b>2万</b></button>
+    <button class="part" data-tool="tee"><canvas></canvas><span>T字管</span><b>3万</b></button>
+    <button class="part" data-tool="cross"><canvas></canvas><span>立体交差</span><b>5万</b></button>
+    <button class="part" data-tool="erase"><canvas></canvas><span>撤去</span><b>0</b></button>
+  </div>
+
   <div class="controls">
-    <button id="retryBtn" class="btn btn-ghost small" aria-label="このステージをやり直す">↺</button>
-    <button id="actionBtn" class="btn btn-primary grow" disabled>💧 今すぐ通水</button>
+    <button id="clearBtn" class="btn btn-ghost small" aria-label="置いた管を全部撤去">🗑</button>
+    <button id="actionBtn" class="btn btn-primary grow" disabled>💧 通水テスト</button>
   </div>
 </div>
 
@@ -366,12 +386,22 @@ const ROT = { [N]: -Math.PI / 2, [E]: 0, [S]: Math.PI / 2, [W]: Math.PI };
 const ARROW = { [N]: '↑', [E]: '→', [S]: '↓', [W]: '←' };
 const CROSS = 15;
 
+// 部材（便利なものほど高い）。orients はタップで回転する順番
+const PARTS = {
+  straight: { name: '直管', price: 1, orients: [E | W, N | S] },
+  elbow: { name: 'エルボ', price: 2, orients: [N | E, E | S, S | W, W | N] },
+  tee: { name: 'T字管', price: 3, orients: [W | N | E, N | E | S, E | S | W, S | W | N] },
+  cross: { name: '立体交差', price: 5, orients: [CROSS] }
+};
+const REWORK_COST = 2; // 漏水して再テストするたびにかかる手戻り費（万円）
+
 // house.dir = 家のどの面に給水口があるか / source.dir = 本管から水が出る向き
+// estimate = プロの見積り（万円）、bends = 曲がりの目安、share = 分岐までに通す管の本数の目安
 const STAGES = [
   {
     name: 'はじめての引き込み',
     sub: '道路の本管から、新築の家まで水を引き込もう。',
-    countdown: 22, flowMs: 1800, goal: 12, tees: false,
+    budget: 20, estimate: 13, bends: 2, share: null,
     source: { x: 0, y: 1, dir: E },
     houses: [{ x: 6, y: 7, dir: W }],
     rocks: [], channel: []
@@ -379,15 +409,15 @@ const STAGES = [
   {
     name: '用水路を越えろ',
     sub: 'まっすぐ下は用水路。端のすき間から回り込め！',
-    countdown: 25, flowMs: 1600, goal: 15, tees: false,
+    budget: 26, estimate: 17, bends: 4, share: null,
     source: { x: 3, y: 0, dir: S },
     houses: [{ x: 3, y: 8, dir: N }],
     rocks: [], channel: [[1, 4], [2, 4], [3, 4], [4, 4], [5, 4]]
   },
   {
     name: '2軒同時に給水',
-    sub: 'T字管で水を分けて、左右の家に届けよう。',
-    countdown: 26, flowMs: 1600, goal: 16, tees: true,
+    sub: 'T字管で水を分けて、左右の家に届けよう。どこで分けると安い？',
+    budget: 30, estimate: 20, bends: 2, share: 4,
     source: { x: 3, y: 0, dir: S },
     houses: [{ x: 0, y: 8, dir: N }, { x: 6, y: 8, dir: N }],
     rocks: [[3, 5]], channel: []
@@ -395,7 +425,7 @@ const STAGES = [
   {
     name: '岩盤だらけの現場',
     sub: '掘れない岩盤をよけて、上と下の2軒へ。',
-    countdown: 24, flowMs: 1450, goal: 18, tees: true,
+    budget: 32, estimate: 21, bends: 4, share: 3,
     source: { x: 0, y: 4, dir: E },
     houses: [{ x: 6, y: 0, dir: S }, { x: 6, y: 8, dir: N }],
     rocks: [[2, 2], [2, 6], [4, 1], [4, 4], [4, 7], [5, 3], [1, 7]], channel: []
@@ -403,12 +433,21 @@ const STAGES = [
   {
     name: '100m 長距離バトル',
     sub: '用水路と岩盤を越えて、3軒すべてに給水せよ！',
-    countdown: 28, flowMs: 1350, goal: 22, tees: true,
+    budget: 42, estimate: 30, bends: 4, share: null,
     source: { x: 0, y: 0, dir: S },
     houses: [{ x: 6, y: 2, dir: W }, { x: 6, y: 8, dir: W }, { x: 0, y: 8, dir: N }],
     rocks: [[2, 1], [5, 5], [1, 5]], channel: [[3, 2], [3, 3], [3, 5], [3, 6]]
   }
 ];
+
+// 職人ボーナス（現場でよいとされる組み方）
+const BONUSES = {
+  bends: { name: '曲がり少なめ', pts: 500, why: '曲がりが少ないほど、水の勢い（水圧）が落ちにくい。' },
+  waste: { name: 'ムダ管ゼロ', pts: 300, why: '水の通らない管は、ただの材料のムダ。使う分だけ発注するのがプロ。' },
+  oneshot: { name: '一発通水', pts: 500, why: '手戻りゼロ。掘り直しは時間もお金もかかる。' },
+  straight: { name: 'まっすぐ4本', pts: 300, why: 'まっすぐな区間は施工が早く、あとで点検もしやすい。' },
+  share: { name: '幹線を共用', pts: 500, why: '家ごとに別々に引くより、途中まで1本で引いてから分ける方が材料が少なくて済む。' }
+};
 
 const MEMOS = [
   '公道の下の水道管は、深さ1.2m前後に埋めるのが基本。浅く埋めれば安く済むけど、道路管理者の許可が下りない。決まりを守るのもプロの技術。',
@@ -442,7 +481,7 @@ function arcPts(a, b) {
   return pts;
 }
 
-// 入口から見た出口（十字管はまっすぐ抜けるだけ、T字管は2方向に分かれる）
+// 入口から見た出口（立体交差はまっすぐ抜けるだけ、T字管は2方向に分かれる）
 function exitsFor(mask, entry) {
   if (mask === CROSS) return [OPP[entry]];
   return dirsOf(mask).filter(d => d !== entry);
@@ -453,21 +492,6 @@ function waterPaths(mask, entry, exits) {
   if (entry === null) return exits.map(d => [[0.5, 0.5], EDGE[d]]);
   if (isElbow(mask)) return [arcPts(entry, exits[0])];
   return exits.map(d => [EDGE[entry], [0.5, 0.5], EDGE[d]]);
-}
-
-function randomPiece(stage) {
-  const table = [
-    [E | W, 3], [N | S, 3],
-    [N | E, 2.6], [E | S, 2.6], [S | W, 2.6], [W | N, 2.6],
-    [CROSS, 1.1]
-  ];
-  if (stage.tees) table.push([N | E | S, 1.3], [E | S | W, 1.3], [S | W | N, 1.3], [W | N | E, 1.3]);
-  const total = table.reduce((a, [, w]) => a + w, 0);
-  let r = Math.random() * total;
-  for (const [m, w] of table) {
-    if ((r -= w) < 0) return m;
-  }
-  return E | W;
 }
 
 /* ============================================================================
@@ -528,8 +552,10 @@ function noise(dur, { freq = 800, type = 'lowpass', vol = 0.3, delay = 0 } = {})
 const PENTA = [0, 2, 4, 7, 9];
 const SFX = {
   place() { tone(520, 0.08, { to: 840, vol: 0.16 }); },
+  rotate() { tone(700, 0.05, { to: 900, type: 'triangle', vol: 0.1 }); },
+  select() { tone(980, 0.04, { type: 'triangle', vol: 0.08 }); },
   deny() { tone(150, 0.12, { type: 'square', vol: 0.05 }); },
-  replace() { noise(0.18, { freq: 700, vol: 0.22 }); tone(300, 0.12, { to: 120, type: 'triangle', vol: 0.12 }); },
+  remove() { noise(0.16, { freq: 700, vol: 0.2 }); tone(300, 0.1, { to: 120, type: 'triangle', vol: 0.1 }); },
   // 管が1本満たされるたびに音階が上がっていく
   tick(n) {
     const step = n % 15;
@@ -537,12 +563,11 @@ const SFX = {
     tone(330 * Math.pow(2, semi / 12), 0.1, { type: 'triangle', vol: 0.12 });
   },
   split() { tone(660, 0.12, { to: 990, type: 'sine', vol: 0.12 }); },
-  cross() { [880, 1320].forEach((f, i) => tone(f, 0.14, { type: 'square', vol: 0.05, delay: i * 0.06 })); },
   house() { [784, 988, 1175, 1568].forEach((f, i) => tone(f, 0.28, { vol: 0.15, delay: i * 0.07 })); },
   leak() { noise(0.8, { freq: 500, vol: 0.5 }); tone(150, 0.5, { to: 45, type: 'sawtooth', vol: 0.1 }); },
   clear() { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, 0.32, { type: 'triangle', vol: 0.16, delay: i * 0.09 })); },
-  start() { noise(0.7, { freq: 1100, type: 'bandpass', vol: 0.3 }); tone(220, 0.35, { to: 440, vol: 0.08 }); },
-  beep() { tone(880, 0.08, { type: 'square', vol: 0.05 }); }
+  coin(i) { tone(1319 + i * 120, 0.12, { type: 'square', vol: 0.05, delay: i * 0.12 }); },
+  start() { noise(0.7, { freq: 1100, type: 'bandpass', vol: 0.3 }); tone(220, 0.35, { to: 440, vol: 0.08 }); }
 };
 
 function buzz(pattern) {
@@ -560,30 +585,34 @@ const bgctx = bg.getContext('2d');
 let DPR = 1, CELL = 48, BW = CELL * COLS, BH = CELL * ROWS;
 
 const G = {
-  state: 'title',   // title / intro / build / flow / leaking / clearing / result
+  state: 'title',   // title / intro / design / flow / leaking / clearing / result
   stageIdx: 0,
   grid: null,
-  queue: [],
+  tool: 'straight',
   heads: [],
-  countdown: 0,
-  fast: false,
-  score: 0,
+  fails: 0,
   stats: null,
+  firstSplit: null,
   leak: null,
+  leakMark: null,
   doneAt: 0,
   shake: 0,
-  lastBeep: 0,
   results: [],
   particles: [],
   floaters: [],
   now: 0
 };
 
+const pipeCells = () => G.grid.flat().filter(c => c.type === 'pipe');
+const partsCost = () => pipeCells().reduce((a, c) => a + PARTS[c.part].price, 0);
+const totalCost = () => partsCost() + G.fails * REWORK_COST;
+const bendCount = () => pipeCells().filter(c => c.part === 'elbow').length;
+
 function buildStage(i) {
   const st = STAGES[i];
   G.stageIdx = i;
   G.grid = Array.from({ length: ROWS }, (_, y) =>
-    Array.from({ length: COLS }, (_, x) => ({ x, y, type: 'empty', mask: 0, segs: {}, placedAt: 0, cool: 0 })));
+    Array.from({ length: COLS }, (_, x) => ({ x, y, type: 'empty', part: null, mask: 0, segs: {}, placedAt: -1e9, rotAt: -1e9 })));
   st.rocks.forEach(([x, y]) => { G.grid[y][x].type = 'rock'; });
   st.channel.forEach(([x, y]) => { G.grid[y][x].type = 'channel'; });
   const src = G.grid[st.source.y][st.source.x];
@@ -595,19 +624,15 @@ function buildStage(i) {
     c.dir = h.dir;
     c.supplied = false;
   });
-  G.queue = Array.from({ length: 5 }, () => randomPiece(st));
   G.heads = [];
-  G.countdown = st.countdown;
-  G.fast = false;
-  G.score = 0;
-  G.stats = { pipes: 0, cross: 0, houses: 0, early: 0, replaced: 0 };
+  G.fails = 0;
   G.leak = null;
-  G.lastBeep = 0;
+  G.leakMark = null;
   G.particles = [];
   G.floaters = [];
+  resetWater();
   $('stageTag').textContent = `STAGE ${i + 1}/${STAGES.length}`;
   $('stageName').textContent = st.name;
-  renderQueue();
   updateHud();
 }
 
@@ -615,7 +640,7 @@ function startStage(i, skipIntro) {
   buildStage(i);
   if (skipIntro) {
     hideOverlay();
-    G.state = 'build';
+    G.state = 'design';
   } else {
     G.state = 'intro';
     showIntro();
@@ -623,11 +648,85 @@ function startStage(i, skipIntro) {
   syncButtons();
 }
 
+// 通水テストのやり直し用に、水だけを抜く（置いた管はそのまま）
+function resetWater() {
+  for (const c of G.grid.flat()) {
+    c.segs = {};
+    if (c.type === 'house') c.supplied = false;
+  }
+  G.heads = [];
+  G.stats = { pipes: 0, houses: 0 };
+  G.firstSplit = null;
+}
+
 /* ============================================================================
    操作
    ============================================================================ */
+// 隣のマスから、このマスに向かって口が開いているか
+function portInto(x, y, d) {
+  const nx = x + DX[d], ny = y + DY[d];
+  if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) return false;
+  const n = G.grid[ny][nx];
+  if (n.type === 'pipe') return !!(n.mask & OPP[d]);
+  if (n.type === 'source' || n.type === 'house') return n.dir === OPP[d];
+  return false;
+}
+
+function portBlocked(x, y, d) {
+  const nx = x + DX[d], ny = y + DY[d];
+  if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) return true;
+  const n = G.grid[ny][nx];
+  if (n.type === 'rock' || n.type === 'channel') return true;
+  if (n.type === 'source' || n.type === 'house') return n.dir !== OPP[d];
+  if (n.type === 'pipe') return !(n.mask & OPP[d]);
+  return false;
+}
+
+// 隣の管が、今つながっている口を保ったまま dir 側にも口を向けられるなら、その向きを返す
+function adaptOrient(q, dir) {
+  if (!q || q.type !== 'pipe' || (q.mask & dir)) return null;
+  const keep = dirsOf(q.mask).filter(d => portInto(q.x, q.y, d));
+  return PARTS[q.part].orients.find(m => (m & dir) && keep.every(d => m & d)) ?? null;
+}
+
+const neighbor = (x, y, d) => {
+  const nx = x + DX[d], ny = y + DY[d];
+  return nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS ? null : G.grid[ny][nx];
+};
+
+// 置いた瞬間に、まわりとつながる向きを自動で選ぶ（違えばタップで回転）。
+// まだどこにもつながっていない隣の口は、こちらに向け直せるものとして数える
+function bestOrient(x, y, orients) {
+  let best = orients[0], bestScore = -Infinity;
+  for (const m of orients) {
+    let score = 0;
+    for (const d of dirsOf(m)) {
+      if (portInto(x, y, d)) score += 3;
+      else if (adaptOrient(neighbor(x, y, d), OPP[d]) !== null) score += 2;
+      else if (portBlocked(x, y, d)) score -= 2;
+    }
+    if (score > bestScore) {
+      best = m;
+      bestScore = score;
+    }
+  }
+  return best;
+}
+
+// 置いた管に向けて、隣の「宙ぶらりんの口」を回してつなぐ
+function adaptNeighbors(c) {
+  for (const d of dirsOf(c.mask)) {
+    const q = neighbor(c.x, c.y, d);
+    const m = adaptOrient(q, OPP[d]);
+    if (m !== null) {
+      q.mask = m;
+      q.rotAt = G.now;
+    }
+  }
+}
+
 function placeAt(x, y) {
-  if (G.state !== 'build' && G.state !== 'flow') return;
+  if (G.state !== 'design') return;
   const c = G.grid[y][x];
   const cx = (x + 0.5) * CELL, cy = (y + 0.5) * CELL;
   if (c.type === 'rock' || c.type === 'channel' || c.type === 'source' || c.type === 'house') {
@@ -635,43 +734,67 @@ function placeAt(x, y) {
     floater(cx, cy, c.type === 'rock' ? '岩盤は掘れない！' : c.type === 'channel' ? '用水路には置けない！' : 'ここには置けない', '#fda4af', 13);
     return;
   }
-  if (c.type === 'pipe') {
-    if (Object.keys(c.segs).length) {
-      SFX.deny();
-      floater(cx, cy, '水が入った管は外せない！', '#fda4af', 13);
-      return;
-    }
-    if (G.now < c.cool) return;
-    G.stats.replaced++;
-    G.score = Math.max(0, G.score - 50);
-    floater(cx, cy, '置き直し -50', '#fb7185', 14);
-    burst(cx, cy, 14, ['#a16207', '#78350f', '#d6d3d1'], 3.5);
-    SFX.replace();
+  G.leakMark = null;
+  if (G.tool === 'erase') {
+    if (c.type !== 'pipe') return;
+    const price = PARTS[c.part].price;
+    c.type = 'empty';
+    c.part = null;
+    c.mask = 0;
+    SFX.remove();
+    floater(cx, cy, `撤去 -${price}万`, '#cbd5e1', 13);
+    burst(cx, cy, 12, ['#a16207', '#78350f', '#d6d3d1'], 3);
+  } else if (c.type === 'pipe' && c.part === G.tool) {
+    const o = PARTS[c.part].orients;
+    c.mask = o[(o.indexOf(c.mask) + 1) % o.length];
+    c.rotAt = G.now;
+    SFX.rotate();
   } else {
+    const part = PARTS[G.tool];
+    c.type = 'empty'; // 置き換えのときは、古い管の口を数えないようにいったん空にして向きを決める
+    c.mask = bestOrient(x, y, part.orients);
+    c.type = 'pipe';
+    c.part = G.tool;
+    c.placedAt = G.now;
+    adaptNeighbors(c);
+    floater(cx, cy, `${part.price}万`, '#fde68a', 13);
     SFX.place();
   }
-  c.type = 'pipe';
-  c.mask = G.queue.shift();
-  c.segs = {};
-  c.placedAt = G.now;
-  c.cool = G.now + 260;
-  G.queue.push(randomPiece(STAGES[G.stageIdx]));
   buzz(8);
-  renderQueue();
   updateHud();
 }
 
-function startFlow(early) {
-  if (G.state !== 'build') return;
-  if (early && G.countdown > 0.5) {
-    const bonus = Math.ceil(G.countdown) * 20;
-    G.stats.early = bonus;
-    G.score += bonus;
-    floater(BW / 2, BH * 0.15, `早出しボーナス +${bonus}`, '#fde047', 18);
+function selectTool(tool) {
+  G.tool = tool;
+  document.querySelectorAll('.part').forEach(b => b.classList.toggle('on', b.dataset.tool === tool));
+  SFX.select();
+}
+
+function clearAll() {
+  if (G.state !== 'design') return;
+  let n = 0;
+  for (const c of pipeCells()) {
+    c.type = 'empty';
+    c.part = null;
+    c.mask = 0;
+    n++;
   }
-  G.countdown = 0;
-  G.state = 'flow';
+  G.leakMark = null;
+  if (n) SFX.remove();
+  updateHud();
+}
+
+function startTest() {
+  if (G.state !== 'design') return;
   const st = STAGES[G.stageIdx];
+  if (totalCost() > st.budget) {
+    SFX.deny();
+    floater(BW / 2, BH * 0.4, '予算オーバー！ 部材を見直そう', '#fb7185', 17);
+    return;
+  }
+  resetWater();
+  G.leakMark = null;
+  G.state = 'flow';
   const src = G.grid[st.source.y][st.source.x];
   src.segs.a = { entry: null, exits: [src.dir], t: 0, done: false, paths: waterPaths(0, null, [src.dir]) };
   G.heads = [{ x: src.x, y: src.y, ch: 'a' }];
@@ -685,9 +808,8 @@ function startFlow(early) {
    水の流れ
    ============================================================================ */
 function stepFlow(dt) {
-  const st = STAGES[G.stageIdx];
-  // 管がつながるほど、少しずつ流れが速くなる
-  const ms = G.fast ? 110 : st.flowMs * Math.max(0.62, 1 - G.stats.pipes * 0.012);
+  // 流れ始めはゆっくり、つながるほど速く
+  const ms = 260 * Math.max(0.5, 1 - G.stats.pipes * 0.025);
   const next = [];
   for (const h of G.heads) {
     const seg = G.grid[h.y][h.x].segs[h.ch];
@@ -713,27 +835,18 @@ function onSegDone(h, seg, next) {
 
   if (cell.type === 'pipe') {
     G.stats.pipes++;
-    G.score += 100;
     SFX.tick(G.stats.pipes);
-    floater(cx, cy, '+100', '#a5f3fc', 13);
-    if (cell.mask === CROSS && cell.segs.h && cell.segs.v && cell.segs.h.done && cell.segs.v.done) {
-      G.stats.cross++;
-      G.score += 400;
-      SFX.cross();
-      floater(cx, cy - CELL * 0.4, 'クロス通水！ +400', '#f0abfc', 16);
-      burst(cx, cy, 18, ['#f0abfc', '#a5f3fc', '#fff'], 4);
-    }
     if (seg.exits.length === 2) {
+      if (G.firstSplit === null) G.firstSplit = G.stats.pipes;
       SFX.split();
-      floater(cx, cy - CELL * 0.4, '分岐！', '#fde047', 15);
+      floater(cx, cy - CELL * 0.3, '分岐！', '#fde047', 15);
     }
-    updateHud();
   }
 
   for (const d of seg.exits) {
     const nx = h.x + DX[d], ny = h.y + DY[d];
     if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) {
-      return fail({ x: h.x, y: h.y, d }, '現場の外に水が噴き出した！', '水の行き先を、先回りしてふさごう。');
+      return fail({ x: h.x, y: h.y, d }, '現場の外に水が噴き出した！', '管の口が、現場の外を向いていた。');
     }
     const n = G.grid[ny][nx];
     const entry = OPP[d];
@@ -743,11 +856,11 @@ function onSegDone(h, seg, next) {
       if (G.state !== 'flow') return;
       continue;
     }
-    if (n.type === 'empty') return fail({ x: h.x, y: h.y, d }, 'その先に管がない！', '赤く光るマスが、水が次に向かう場所。');
+    if (n.type === 'empty') return fail({ x: h.x, y: h.y, d }, 'その先に管がない！', 'T字管の口がひとつ余っていないかもチェック。');
     if (n.type === 'rock') return fail({ x: h.x, y: h.y, d }, '岩盤にぶつかって水があふれた！', '岩盤の手前で曲げよう。');
     if (n.type === 'channel') return fail({ x: h.x, y: h.y, d }, '用水路に水が流れ込んだ！', '用水路はすき間から回り込もう。');
     if (n.type === 'source') return fail({ x: h.x, y: h.y, d }, '本管に逆流した！', '水は本管に戻せない。');
-    if (!(n.mask & entry)) return fail({ x: h.x, y: h.y, d }, '管の向きが合わずに水漏れ！', '次の管の口が、水の来る向きと合っているか確認。');
+    if (!(n.mask & entry)) return fail({ x: h.x, y: h.y, d }, '管の向きが合わずに水漏れ！', '置いた管をもう一度タップすると回転できる。');
     const ch = n.mask === CROSS ? ((d === E || d === W) ? 'h' : 'v') : 'a';
     if (n.segs[ch]) continue; // すでに水が来ている管に合流
     const exits = exitsFor(n.mask, entry);
@@ -759,13 +872,11 @@ function onSegDone(h, seg, next) {
 function supply(house) {
   house.supplied = true;
   G.stats.houses++;
-  G.score += 1000;
   const cx = (house.x + 0.5) * CELL, cy = (house.y + 0.5) * CELL;
-  floater(cx, cy - CELL * 0.5, '給水OK！ +1000', '#86efac', 18);
+  floater(cx, cy - CELL * 0.5, '給水OK！', '#86efac', 18);
   burst(cx, cy, 34, ['#22d3ee', '#a5f3fc', '#ffffff', '#86efac'], 5);
   SFX.house();
   buzz([20, 40, 20]);
-  updateHud();
   const st = STAGES[G.stageIdx];
   if (G.stats.houses >= st.houses.length) {
     G.state = 'clearing';
@@ -773,6 +884,7 @@ function supply(house) {
     confetti();
     SFX.clear();
     syncButtons();
+    updateHud();
   }
 }
 
@@ -784,6 +896,50 @@ function fail(at, title, tip) {
   SFX.leak();
   buzz([60, 40, 140]);
   syncButtons();
+}
+
+/* ============================================================================
+   採点
+   ============================================================================ */
+// 水が通ったまっすぐな直管が、何本続いているか（最長）
+function longestStraight() {
+  let best = 0;
+  const wet = c => c && c.type === 'pipe' && c.part === 'straight' && Object.keys(c.segs).length > 0;
+  for (const c of pipeCells()) {
+    if (!wet(c)) continue;
+    const [dx, dy] = c.mask === (E | W) ? [1, 0] : [0, 1];
+    const prev = G.grid[c.y - dy] && G.grid[c.y - dy][c.x - dx];
+    if (wet(prev) && prev.mask === c.mask) continue; // 区間の先頭からだけ数える
+    let len = 0, x = c.x, y = c.y;
+    while (y < ROWS && x < COLS && wet(G.grid[y][x]) && G.grid[y][x].mask === c.mask) {
+      len++;
+      x += dx;
+      y += dy;
+    }
+    best = Math.max(best, len);
+  }
+  return best;
+}
+
+function scoreStage() {
+  const st = STAGES[G.stageIdx];
+  const cost = totalCost();
+  const unused = pipeCells().filter(c => !Object.keys(c.segs).length).length;
+  const bends = bendCount();
+  const run = longestStraight();
+  const list = [
+    { key: 'bends', got: bends <= st.bends, note: `曲がり ${bends}回（目安 ${st.bends}回以内）` },
+    { key: 'waste', got: unused === 0, note: `水の通らない管 ${unused}本` },
+    { key: 'oneshot', got: G.fails === 0, note: `手戻り ${G.fails}回` },
+    { key: 'straight', got: run >= 4, note: `直管の最長 ${run}本連続` }
+  ];
+  if (st.share) list.push({ key: 'share', got: G.firstSplit !== null && G.firstSplit >= st.share, note: `分岐の手前まで ${G.firstSplit ?? 0}本（目安 ${st.share}本以上）` });
+  const bonusPts = list.filter(b => b.got).reduce((a, b) => a + BONUSES[b.key].pts, 0);
+  const remain = st.budget - cost;
+  const score = remain * 100 + st.houses.length * 1000 + bonusPts;
+  const got = list.filter(b => b.got).length;
+  const stars = 1 + (cost <= st.estimate ? 1 : 0) + (got >= 3 ? 1 : 0);
+  return { cost, partsCost: partsCost(), remain, score, stars, list, got, bonusPts };
 }
 
 /* ============================================================================
@@ -820,9 +976,9 @@ function sprayLeak() {
   const L = G.leak;
   if (!L || L.d === undefined) return;
   const px = (L.x + EDGE[L.d][0]) * CELL, py = (L.y + EDGE[L.d][1]) * CELL;
+  const base = { [N]: [0, -1], [E]: [1, 0], [S]: [0, 1], [W]: [-1, 0] }[L.d];
   for (let i = 0; i < 4; i++) {
     const spread = (Math.random() - 0.5) * 1.6;
-    const base = { [N]: [0, -1], [E]: [1, 0], [S]: [0, 1], [W]: [-1, 0] }[L.d];
     const v = 3 + Math.random() * 3;
     G.particles.push({
       x: px, y: py,
@@ -859,13 +1015,7 @@ function layout() {
   bg.width = BW * DPR;
   bg.height = BH * DPR;
   renderBg();
-  ['q0', 'q1', 'q2', 'q3'].forEach(id => {
-    const cv = $(id);
-    const size = id === 'q0' ? 58 : 36;
-    cv.width = size * DPR;
-    cv.height = size * DPR;
-  });
-  renderQueue();
+  renderPalette();
 }
 
 // 土の断面（背景は1回だけ描いておく）
@@ -1036,7 +1186,7 @@ function drawSource(ctx, c, x, y, s, ts) {
   drawPipeBody(ctx, x, y, s, c.dir);
   if (c.segs.a) drawWater(ctx, x, y, s, c.segs.a.paths, c.segs.a.t, ts);
   const cx = x + s / 2, cy = y + s / 2;
-  if (G.state === 'build' || G.state === 'intro') {
+  if (G.state === 'design' || G.state === 'intro') {
     const p = (ts % 1200) / 1200;
     ctx.strokeStyle = `rgba(56,189,248,${1 - p})`;
     ctx.lineWidth = 3;
@@ -1094,38 +1244,30 @@ function drawHouse(ctx, c, x, y, s, ts) {
   }
 }
 
-// 水の行き先がふさがっていないマスを光らせる（ビルド中は黄色、通水中は赤）
+// 設計中：本管の出口と、前回漏れた場所を示す
 function drawHints(ctx, ts) {
-  const targets = [];
-  if (G.state === 'build' || G.state === 'intro') {
-    const s = STAGES[G.stageIdx].source;
-    targets.push({ x: s.x + DX[s.dir], y: s.y + DY[s.dir], from: s.dir, warn: false });
-  } else if (G.state === 'flow') {
-    for (const h of G.heads) {
-      const seg = G.grid[h.y][h.x].segs[h.ch];
-      for (const d of seg.exits) targets.push({ x: h.x + DX[d], y: h.y + DY[d], from: d, warn: true, t: seg.t });
-    }
-  } else {
-    return;
-  }
-  const pulse = 0.5 + 0.5 * Math.sin(ts * (G.state === 'flow' ? 0.016 : 0.008));
-  for (const t of targets) {
-    if (t.x < 0 || t.y < 0 || t.x >= COLS || t.y >= ROWS) continue;
-    const n = G.grid[t.y][t.x];
-    const ok = (n.type === 'pipe' && (n.mask & OPP[t.from])) || (n.type === 'house' && n.dir === OPP[t.from]);
-    if (ok) continue;
-    const rgb = t.warn ? '244,63,94' : '250,204,21';
-    rr(ctx, t.x * CELL + 3, t.y * CELL + 3, CELL - 6, CELL - 6, 8);
-    ctx.fillStyle = `rgba(${rgb},${0.08 + 0.17 * pulse})`;
+  if (G.state !== 'design' && G.state !== 'intro') return;
+  const pulse = 0.5 + 0.5 * Math.sin(ts * 0.008);
+  const marks = [];
+  const s0 = STAGES[G.stageIdx].source;
+  const sx = s0.x + DX[s0.dir], sy = s0.y + DY[s0.dir];
+  if (!portInto(sx, sy, OPP[s0.dir]) || G.grid[sy][sx].type !== 'pipe') marks.push({ x: sx, y: sy, rgb: '250,204,21', label: ARROW[s0.dir] });
+  if (G.leakMark) marks.push({ x: G.leakMark.x, y: G.leakMark.y, rgb: '244,63,94', label: '✕' });
+  for (const m of marks) {
+    if (m.x < 0 || m.y < 0 || m.x >= COLS || m.y >= ROWS) continue;
+    rr(ctx, m.x * CELL + 3, m.y * CELL + 3, CELL - 6, CELL - 6, 8);
+    ctx.fillStyle = `rgba(${m.rgb},${0.08 + 0.17 * pulse})`;
     ctx.fill();
     ctx.lineWidth = 3;
-    ctx.strokeStyle = `rgba(${rgb},${0.45 + 0.55 * pulse})`;
+    ctx.strokeStyle = `rgba(${m.rgb},${0.45 + 0.55 * pulse})`;
     ctx.stroke();
-    ctx.fillStyle = `rgba(${rgb},${0.7 + 0.3 * pulse})`;
-    ctx.font = `900 ${Math.round(CELL * 0.42)}px 'M PLUS Rounded 1c', sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(t.warn ? '!' : ARROW[t.from], (t.x + 0.5) * CELL, (t.y + 0.5) * CELL);
+    if (G.grid[m.y][m.x].type === 'empty') {
+      ctx.fillStyle = `rgba(${m.rgb},${0.7 + 0.3 * pulse})`;
+      ctx.font = `900 ${Math.round(CELL * 0.42)}px 'M PLUS Rounded 1c', sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(m.label, (m.x + 0.5) * CELL, (m.y + 0.5) * CELL);
+    }
   }
 }
 
@@ -1153,11 +1295,14 @@ function draw(ts) {
         if (c.type === 'source') drawSource(ctx, c, x, y, s, ts);
         else if (c.type === 'house') drawHouse(ctx, c, x, y, s, ts);
         else if (c.type === 'pipe') {
-          const k = Math.min(1, (ts - c.placedAt) / 170);
-          const sc = k < 1 ? 0.55 + 0.45 * easeOutBack(k) : 1;
+          const kp = Math.min(1, (ts - c.placedAt) / 170);
+          const kr = Math.min(1, (ts - c.rotAt) / 140);
+          const sc = kp < 1 ? 0.55 + 0.45 * easeOutBack(kp) : 1;
+          const rot = kr < 1 ? -(1 - kr) * Math.PI / 2 : 0;
           ctx.save();
-          if (sc !== 1) {
+          if (sc !== 1 || rot) {
             ctx.translate(x + s / 2, y + s / 2);
+            ctx.rotate(rot);
             ctx.scale(sc, sc);
             ctx.translate(-(x + s / 2), -(y + s / 2));
           }
@@ -1202,18 +1347,28 @@ function draw(ts) {
   ctx.restore();
 }
 
-function renderQueue() {
-  ['q0', 'q1', 'q2', 'q3'].forEach((id, i) => {
-    const cv = $(id);
+function renderPalette() {
+  const icons = { straight: E | W, elbow: E | S, tee: E | S | W, cross: CROSS };
+  document.querySelectorAll('.part').forEach(btn => {
+    const cv = btn.querySelector('canvas');
+    const size = 34;
+    cv.width = size * DPR;
+    cv.height = size * DPR;
     const ctx = cv.getContext('2d');
-    const size = i === 0 ? 58 : 36;
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.clearRect(0, 0, size, size);
-    ctx.fillStyle = i === 0 ? '#2a1c12' : '#1e293b';
-    rr(ctx, 0, 0, size, size, i === 0 ? 12 : 8);
+    ctx.fillStyle = '#2a1c12';
+    rr(ctx, 0, 0, size, size, 7);
     ctx.fill();
-    const m = G.queue[i];
-    if (m) drawPipeBody(ctx, 0, 0, size, m);
+    const m = icons[btn.dataset.tool];
+    if (m) {
+      drawPipeBody(ctx, 0, 0, size, m);
+    } else {
+      ctx.fillStyle = '#e2e8f0';
+      ctx.font = `900 20px 'M PLUS Rounded 1c', sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⛏', size / 2, size / 2 + 1);
+    }
   });
 }
 
@@ -1221,42 +1376,32 @@ function renderQueue() {
    HUD・ボタン
    ============================================================================ */
 function updateHud() {
+  if (!G.grid) return;
   const st = STAGES[G.stageIdx];
-  $('scoreText').textContent = G.score.toLocaleString();
-  const goal = $('goalText');
-  goal.textContent = `${G.stats.pipes}/${st.goal}`;
-  goal.classList.toggle('done', G.stats.pipes >= st.goal);
-  const timer = $('timer');
-  timer.classList.toggle('flow', G.state === 'flow' || G.state === 'clearing');
-  timer.classList.toggle('warn', G.state === 'build' && G.countdown <= 5);
-  if (G.state === 'build' || G.state === 'intro') {
-    $('timerFill').style.width = `${(G.countdown / st.countdown) * 100}%`;
-    $('timerText').textContent = G.state === 'intro' ? '準備中' : `通水まで ${Math.ceil(G.countdown)}秒`;
-  } else if (G.state === 'flow') {
-    $('timerFill').style.width = '100%';
-    $('timerText').textContent = G.fast ? '⏩ 早送り中！' : '💧 通水中！ 水の先回りで管を置け';
-  } else if (G.state === 'clearing') {
-    $('timerText').textContent = '✨ 全戸給水完了！';
-  } else if (G.state === 'leaking') {
-    $('timerFill').style.width = '0%';
-    $('timerText').textContent = '💥 水漏れ発生！';
-  }
+  const cost = totalCost();
+  const bar = $('costbar');
+  $('costFill').style.width = `${Math.min(100, (cost / st.budget) * 100)}%`;
+  $('estMark').style.left = `${(st.estimate / st.budget) * 100}%`;
+  bar.classList.toggle('over-est', cost > st.estimate && cost <= st.budget);
+  bar.classList.toggle('over-budget', cost > st.budget);
+  $('costText').textContent = cost > st.budget
+    ? `施工費 ${cost}万 / 予算 ${st.budget}万　予算オーバー！`
+    : `施工費 ${cost}万 / 予算 ${st.budget}万`;
+  $('estText').textContent = `${st.estimate}万`;
+  const bends = bendCount();
+  $('bendText').textContent = `${bends}/${st.bends}`;
+  $('bendChip').className = bends <= st.bends ? 'good' : 'bad';
+  $('failText').textContent = `${G.fails}回`;
+  $('failChip').className = G.fails ? 'bad' : '';
 }
 
 function syncButtons() {
   const b = $('actionBtn');
-  if (G.state === 'build') {
-    b.disabled = false;
-    b.className = 'btn btn-primary grow';
-    b.textContent = '💧 今すぐ通水（早いほどボーナス）';
-  } else if (G.state === 'flow') {
-    b.disabled = G.fast;
-    b.className = 'btn btn-amber grow';
-    b.textContent = G.fast ? '⏩ 早送り中…' : '⏩ 早送り';
-  } else {
-    b.disabled = true;
-  }
-  $('retryBtn').disabled = !(G.state === 'build' || G.state === 'flow');
+  const design = G.state === 'design';
+  b.disabled = !design;
+  b.textContent = G.state === 'flow' ? '💧 通水中…' : '💧 通水テスト';
+  $('clearBtn').disabled = !design;
+  document.querySelectorAll('.part').forEach(p => { p.disabled = !design; });
 }
 
 /* ============================================================================
@@ -1291,64 +1436,72 @@ function showTitle() {
     <div class="card">
       <div class="brand">松下工業 presents</div>
       <h1 class="logo"><span>快感！</span><em>配管クラフト</em></h1>
-      <p class="lead">水が流れてくる前に、管をつなげ。<br>漏らさず家まで届けたら、プロの仕事。</p>
+      <p class="lead">便利な管ほど、値段も高い。<br>安く・うまく・漏らさずつないだら、プロの仕事。</p>
+      <div class="prices">
+        <div>直管<b>1万</b></div><div>エルボ<b>2万</b></div><div>T字管<b>3万</b></div><div>立体交差<b>5万</b></div>
+      </div>
       <ol class="howto">
-        <li><b>マスをタップ</b>すると「次の管」が置ける</li>
-        <li>水が来る前なら<b>上から置き直し</b>OK（−50点）</li>
-        <li>時間になると<b>本管から水が出る</b>。水の先回りで管をつなげ！</li>
-        <li>1滴でも漏れたら失敗。全部の家に届けばクリア</li>
+        <li>下の部材を選んで<b>マスをタップ</b>。もう一度タップで<b>回転</b></li>
+        <li>できたら<b>通水テスト</b>。漏れたら直して再テスト（手戻り +${REWORK_COST}万）</li>
+        <li>残った予算が得点に。現場で<b>よい組み方</b>をすると職人ボーナス！</li>
       </ol>
       <button class="btn btn-amber" data-act="start">▶ スタート（全5ステージ）</button>
       ${best ? `<div class="best">あなたのベスト：${best.toLocaleString()}点</div>` : ''}
     </div>`);
 }
 
+function bonusListHtml(keys) {
+  return keys.map(k => `<div><div class="head"><span>${BONUSES[k].name}</span><span>+${BONUSES[k].pts}</span></div><small>${BONUSES[k].why}</small></div>`).join('');
+}
+
 function showIntro() {
   const st = STAGES[G.stageIdx];
+  const keys = ['bends', 'waste', 'oneshot', 'straight'].concat(st.share ? ['share'] : []);
   showOverlay(`
     <div class="card">
       <span class="tag">STAGE ${G.stageIdx + 1} / ${STAGES.length}</span>
       <h2>${st.name}</h2>
       <p>${st.sub}</p>
+      <div class="money">
+        <div>予算<b>${st.budget}万円</b></div>
+        <div>プロの見積り<b>${st.estimate}万円</b></div>
+      </div>
       <ul class="missions">
         <li><span class="st">★</span>全部の家（${st.houses.length}軒）に水を届ける</li>
-        <li><span class="st">★</span>水が通らない「ムダな管」を1本以下に</li>
-        <li><span class="st">★</span>管を${st.goal}本以上つないで届ける</li>
+        <li><span class="st">★</span>施工費を見積り（${st.estimate}万）以内に</li>
+        <li><span class="st">★</span>職人ボーナスを3つ以上</li>
       </ul>
-      <p style="font-size:12px;color:#8ea0bd">通水まで ${st.countdown}秒。早く流すほどボーナス！</p>
-      <button class="btn btn-primary" data-act="go">準備OK！</button>
+      <p style="font-size:12px;color:#8ea0bd;margin-top:12px">職人ボーナス（現場でよいとされる組み方）</p>
+      <div class="bonus">${bonusListHtml(keys)}</div>
+      <button class="btn btn-primary" data-act="go">設計スタート！</button>
     </div>`);
 }
 
 function finishStage() {
   const st = STAGES[G.stageIdx];
-  let waste = 0;
-  for (const row of G.grid) for (const c of row) if (c.type === 'pipe' && !Object.keys(c.segs).length) waste++;
-  const wastePenalty = waste * 100;
-  G.score = Math.max(0, G.score - wastePenalty);
-  const okWaste = waste <= 1, okGoal = G.stats.pipes >= st.goal;
-  const stars = 1 + (okWaste ? 1 : 0) + (okGoal ? 1 : 0);
-  G.results[G.stageIdx] = { score: G.score, stars };
-  updateHud();
-  const s = G.stats;
+  const r = scoreStage();
+  G.results[G.stageIdx] = { score: r.score, stars: r.stars };
   const last = G.stageIdx === STAGES.length - 1;
+  r.list.filter(b => b.got).forEach((b, i) => SFX.coin(i));
   showOverlay(`
     <div class="card">
       <span class="tag">STAGE ${G.stageIdx + 1} CLEAR!</span>
-      <div class="stars">${'<span class="on">★</span>'.repeat(stars)}${'<span class="off">★</span>'.repeat(3 - stars)}</div>
+      <div class="stars">${'<span class="on">★</span>'.repeat(r.stars)}${'<span class="off">★</span>'.repeat(3 - r.stars)}</div>
       <ul class="missions">
         <li class="ok"><span class="st">★</span>全部の家に給水</li>
-        <li class="${okWaste ? 'ok' : 'ng'}"><span class="st">★</span>ムダな管 ${waste}本（1本以下）</li>
-        <li class="${okGoal ? 'ok' : 'ng'}"><span class="st">★</span>つないだ管 ${s.pipes}本（${st.goal}本以上）</li>
+        <li class="${r.cost <= st.estimate ? 'ok' : 'ng'}"><span class="st">★</span>施工費 ${r.cost}万（見積り ${st.estimate}万以内）</li>
+        <li class="${r.got >= 3 ? 'ok' : 'ng'}"><span class="st">★</span>職人ボーナス ${r.got}個（3つ以上）</li>
       </ul>
       <div class="bd">
-        <div><span>つないだ管 ×${s.pipes}</span><span>+${(s.pipes * 100).toLocaleString()}</span></div>
-        <div><span>給水 ×${s.houses}</span><span>+${(s.houses * 1000).toLocaleString()}</span></div>
-        ${s.cross ? `<div><span>クロス通水 ×${s.cross}</span><span>+${(s.cross * 400).toLocaleString()}</span></div>` : ''}
-        ${s.early ? `<div><span>早出しボーナス</span><span>+${s.early}</span></div>` : ''}
-        ${s.replaced ? `<div class="minus"><span>置き直し ×${s.replaced}</span><span>−${s.replaced * 50}</span></div>` : ''}
-        ${waste ? `<div class="minus"><span>ムダな管 ×${waste}</span><span>−${wastePenalty}</span></div>` : ''}
-        <div class="total"><span>ステージ得点</span><span>${G.score.toLocaleString()}</span></div>
+        <div><span>部材費</span><span>${r.partsCost}万</span></div>
+        ${G.fails ? `<div class="minus"><span>手戻り ×${G.fails}</span><span>${G.fails * REWORK_COST}万</span></div>` : ''}
+        <div><span>残った予算 ${st.budget}−${r.cost}＝${r.remain}万</span><span>+${(r.remain * 100).toLocaleString()}</span></div>
+        <div><span>給水 ×${st.houses.length}</span><span>+${(st.houses.length * 1000).toLocaleString()}</span></div>
+        <div><span>職人ボーナス ×${r.got}</span><span>+${r.bonusPts.toLocaleString()}</span></div>
+        <div class="total"><span>ステージ得点</span><span>${r.score.toLocaleString()}</span></div>
+      </div>
+      <div class="bonus">
+        ${r.list.map(b => `<div class="${b.got ? 'got' : 'miss'}"><div class="head"><span>${b.got ? '✓' : '✕'} ${BONUSES[b.key].name}</span><span>${b.got ? '+' + BONUSES[b.key].pts : '—'}</span></div><small>${b.note}。${BONUSES[b.key].why}</small></div>`).join('')}
       </div>
       <div class="memo"><b>🔧 松下社長の現場メモ</b><p>${MEMOS[G.stageIdx]}</p></div>
       <div class="row2">
@@ -1365,10 +1518,10 @@ function showFail() {
       <div class="big-emoji">💦</div>
       <h2>${L.title}</h2>
       <p>${L.tip}</p>
-      <p style="font-size:12px;color:#8ea0bd">ヒント：通水中は、水が次に向かうマスが<b style="color:#fb7185">赤く光る</b>。そこに向きの合う管を置けばセーフ！</p>
+      <p style="font-size:12px;color:#8ea0bd">漏れた場所に<b style="color:#fb7185">✕</b>が付きます。管はそのまま残るので、直して再テストしよう。<br>再テストには手戻り費 <b style="color:#fbbf24">+${REWORK_COST}万</b> がかかります。</p>
       <div class="row2">
-        <button class="btn btn-ghost" data-act="title">タイトルへ</button>
-        <button class="btn btn-primary" data-act="retry">↺ もう一回</button>
+        <button class="btn btn-ghost" data-act="retry">最初から</button>
+        <button class="btn btn-primary" data-act="fix">🔧 直す</button>
       </div>
     </div>`);
 }
@@ -1426,7 +1579,17 @@ overlay.addEventListener('click', e => {
     startStage(0, false);
   } else if (act === 'go') {
     hideOverlay();
-    G.state = 'build';
+    G.state = 'design';
+    syncButtons();
+    updateHud();
+  } else if (act === 'fix') {
+    // 管は残したまま水だけ抜いて設計に戻る。手戻りは1回分加算
+    G.fails++;
+    G.leakMark = G.leak && G.leak.d !== undefined ? { x: G.leak.x + DX[G.leak.d], y: G.leak.y + DY[G.leak.d] } : null;
+    resetWater();
+    G.particles = [];
+    hideOverlay();
+    G.state = 'design';
     syncButtons();
     updateHud();
   } else if (act === 'retry') {
@@ -1451,19 +1614,17 @@ board.addEventListener('pointerdown', e => {
   if (x >= 0 && y >= 0 && x < COLS && y < ROWS) placeAt(x, y);
 });
 
-$('actionBtn').addEventListener('click', () => {
-  ac();
-  if (G.state === 'build') startFlow(true);
-  else if (G.state === 'flow' && !G.fast) {
-    G.fast = true;
-    syncButtons();
-    updateHud();
-  }
+$('palette').addEventListener('click', e => {
+  const btn = e.target.closest('.part');
+  if (btn && !btn.disabled) selectTool(btn.dataset.tool);
 });
 
-$('retryBtn').addEventListener('click', () => {
-  if (G.state === 'build' || G.state === 'flow') startStage(G.stageIdx, true);
+$('actionBtn').addEventListener('click', () => {
+  ac();
+  startTest();
 });
+
+$('clearBtn').addEventListener('click', clearAll);
 
 $('soundBtn').addEventListener('click', () => {
   soundOn = !soundOn;
@@ -1477,24 +1638,11 @@ $('soundBtn').addEventListener('click', () => {
 let lastTs = performance.now();
 
 function update(dt) {
-  if (G.state === 'build') {
-    G.countdown -= dt / 1000;
-    const sec = Math.ceil(G.countdown);
-    if (sec <= 3 && sec >= 1 && sec !== G.lastBeep) {
-      G.lastBeep = sec;
-      SFX.beep();
-    }
-    if (G.countdown <= 0) startFlow(false);
-    updateHud();
-  } else if (G.state === 'flow') {
+  if (G.state === 'flow') {
     stepFlow(dt);
-    if (G.state !== 'flow') updateHud();
   } else if (G.state === 'leaking') {
     if (G.now - G.doneAt < 1200) sprayLeak();
-    else if (!overlay.classList.contains('show')) {
-      updateHud();
-      showFail();
-    }
+    else if (!overlay.classList.contains('show')) showFail();
   } else if (G.state === 'clearing') {
     if (G.now - G.doneAt > 1300 && !overlay.classList.contains('show')) finishStage();
   }
@@ -1524,7 +1672,7 @@ function frame(ts) {
 window.addEventListener('resize', layout);
 layout();
 showTitle();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderQueue);
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderPalette);
 requestAnimationFrame(frame);
 </script>
 </body>
