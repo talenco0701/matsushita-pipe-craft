@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>快感！配管クラフト｜松下工業 - 詰まりゼロ＆限界水圧サバイバル</title>
-<meta name="description" content="トイレ・キッチン・お風呂の排水順と勾配、100m先まで水を届ける口径とコスト。松下工業の現場ノウハウをスマホで30秒体験できる配管パズルゲーム。">
-<meta name="theme-color" content="#090d16">
+<title>快感！配管クラフト｜松下工業 - 水が来る前に管をつなげ</title>
+<meta name="description" content="水が流れてくる前に管をつなげ！漏らさず家まで届けるスマホ配管パズル。全5ステージ、松下工業の「現場メモ」つき。">
+<meta name="theme-color" content="#0b1220">
 <meta name="color-scheme" content="dark">
 <meta name="format-detection" content="telephone=no">
 <link rel="canonical" href="https://matsushita-pipe-craft.pages.dev/">
@@ -19,1257 +19,1513 @@
 <meta property="og:type" content="website">
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="松下工業｜快感！配管クラフト">
-<meta property="og:title" content="快感！配管クラフト｜あなたは詰まらない家をつくれるか？">
-<meta property="og:description" content="排水の順番と勾配、100m先まで水を届ける口径とコスト。プロの現場ノウハウをスマホで30秒体験！">
+<meta property="og:title" content="快感！配管クラフト｜水が来る前に、管をつなげ！">
+<meta property="og:description" content="漏らさず家まで届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
 <meta property="og:url" content="https://matsushita-pipe-craft.pages.dev/">
 <meta property="og:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="快感！配管クラフト - 詰まりゼロ＆限界水圧サバイバル">
+<meta property="og:image:alt" content="快感！配管クラフト - 水が来る前に、管をつなげ！">
 
 <!-- X（旧Twitter） -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="快感！配管クラフト｜あなたは詰まらない家をつくれるか？">
-<meta name="twitter:description" content="排水の順番と勾配、100m先まで水を届ける口径とコスト。プロの現場ノウハウをスマホで30秒体験！">
+<meta name="twitter:title" content="快感！配管クラフト｜水が来る前に、管をつなげ！">
+<meta name="twitter:description" content="漏らさず家まで届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
 <meta name="twitter:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
-<meta name="twitter:image:alt" content="快感！配管クラフト - 詰まりゼロ＆限界水圧サバイバル">
+<meta name="twitter:image:alt" content="快感！配管クラフト - 水が来る前に、管をつなげ！">
 
-<script src="https://cdn.tailwindcss.com"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
-  * {
-    box-sizing: border-box;
-    user-select: none;
-    -webkit-user-select: none;
-    -webkit-touch-callout: none;
-    font-family: 'M PLUS Rounded 1c', sans-serif;
+  :root {
+    --bg: #0b1220;
+    --panel: #121b2e;
+    --line: #23324f;
+    --sky: #38bdf8;
+    --cyan: #22d3ee;
+    --amber: #fbbf24;
+    --rose: #fb7185;
+    --green: #4ade80;
+    --text: #e8eef8;
+    --muted: #8ea0bd;
   }
-  body {
+  * { box-sizing: border-box; }
+  html, body {
     margin: 0;
-    background: #090d16;
-    color: #fff;
-    overflow-x: hidden;
+    height: 100%;
+    background: radial-gradient(120% 80% at 50% 0%, #15233d 0%, var(--bg) 60%);
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: 'M PLUS Rounded 1c', system-ui, sans-serif;
+    font-weight: 800;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior: none;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+  }
+  button { font: inherit; }
+
+  #app {
+    max-width: 460px;
+    height: 100vh;
+    height: 100dvh;
+    margin: 0 auto;
+    padding: calc(8px + env(safe-area-inset-top)) 8px calc(8px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
   }
 
-  /* 画面シェイク＆バウンス演出 */
-  @keyframes shakeHard {
-    0%, 100% { transform: translate(0, 0) rotate(0deg); }
-    15% { transform: translate(-10px, -8px) rotate(-2deg); }
-    30% { transform: translate(10px, 6px) rotate(2deg); }
-    45% { transform: translate(-8px, 8px) rotate(-1.5deg); }
-    60% { transform: translate(8px, -6px) rotate(1.5deg); }
-    75% { transform: translate(-5px, 4px) rotate(-1deg); }
-  }
-  .shake-hard {
-    animation: shakeHard 0.45s cubic-bezier(.36,.07,.19,.97) both;
-  }
-
-  @keyframes popIn {
-    0% { transform: scale(0.4); opacity: 0; }
-    65% { transform: scale(1.14); opacity: 1; }
-    85% { transform: scale(0.95); }
-    100% { transform: scale(1); opacity: 1; }
-  }
-  .pop-in {
-    animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  }
-
-  @keyframes pulseGlow {
-    0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3); }
-    50% { box-shadow: 0 0 28px rgba(56, 189, 248, 0.95), inset 0 0 18px rgba(56, 189, 248, 0.6); }
-  }
-  .pulse-glow {
-    animation: pulseGlow 1.6s infinite;
-  }
-
-  @keyframes floatUp {
-    0% { transform: translateY(0) scale(0.8); opacity: 1; }
-    100% { transform: translateY(-48px) scale(1.15); opacity: 0; }
-  }
-  .floating-pop {
-    position: fixed;
-    pointer-events: none;
-    z-index: 9999;
+  /* ---------- HUD ---------- */
+  .hud { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .hud-stage { display: flex; align-items: center; gap: 6px; min-width: 0; }
+  .tag {
+    flex-shrink: 0;
+    background: var(--sky);
+    color: #04121f;
     font-weight: 900;
-    text-shadow: 0 3px 8px rgba(0,0,0,0.85);
-    animation: floatUp 0.75s ease-out forwards;
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: .04em;
+  }
+  #stageName { font-size: 14px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .hud-right { display: flex; align-items: center; gap: 6px; }
+  .score { text-align: right; line-height: 1; }
+  .score small { display: block; font-size: 9px; color: var(--muted); letter-spacing: .1em; }
+  .score b { font-size: 20px; font-weight: 900; color: var(--amber); font-variant-numeric: tabular-nums; }
+  .icon-btn {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    color: var(--text);
+    font-size: 16px;
+    cursor: pointer;
   }
 
-  /* 3D風の押し心地ボタン */
-  .juicy-btn {
-    transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.08s ease;
-    box-shadow: 0 5px 0 rgba(0,0,0,0.45);
+  .timer {
+    position: relative;
+    height: 22px;
+    border-radius: 999px;
+    background: #0a1324;
+    border: 1px solid var(--line);
+    overflow: hidden;
   }
-  .juicy-btn:active {
-    transform: translateY(4px) scale(0.96);
-    box-shadow: 0 1px 0 rgba(0,0,0,0.45);
+  #timerFill {
+    position: absolute; inset: 0 auto 0 0;
+    width: 100%;
+    background: linear-gradient(90deg, #f59e0b, #fbbf24);
+    transition: background .3s;
   }
-
-  /* 水流アニメーション背景 */
-  @keyframes flowStripe {
-    0% { background-position: 0 0; }
-    100% { background-position: 40px 0; }
-  }
-  .water-stream {
-    background-image: linear-gradient(
-      45deg,
-      rgba(255, 255, 255, 0.35) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.35) 50%,
-      rgba(255, 255, 255, 0.35) 75%,
-      transparent 75%,
-      transparent
-    );
+  .timer.flow #timerFill {
+    background: repeating-linear-gradient(45deg, #0891b2 0 10px, #22d3ee 10px 20px);
     background-size: 28px 28px;
-    animation: flowStripe 0.35s linear infinite;
+    animation: stripe .5s linear infinite;
   }
+  .timer.warn #timerFill { background: linear-gradient(90deg, #e11d48, #fb7185); }
+  @keyframes stripe { to { background-position: 28px 0; } }
+  #timerText {
+    position: relative;
+    display: block;
+    text-align: center;
+    font-size: 12px;
+    line-height: 20px;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.8);
+  }
+
+  .queue {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 6px 10px;
+  }
+  .queue-label { font-size: 11px; color: var(--muted); writing-mode: vertical-rl; letter-spacing: .15em; }
+  #q0 {
+    width: 58px; height: 58px;
+    border-radius: 12px;
+    box-shadow: 0 0 0 2px var(--amber), 0 0 16px rgba(251,191,36,.35);
+  }
+  .q-rest { display: flex; gap: 5px; align-items: center; }
+  .q-rest canvas { width: 36px; height: 36px; border-radius: 8px; opacity: .8; }
+  .goal { margin-left: auto; text-align: right; line-height: 1.2; }
+  .goal small { display: block; font-size: 9px; color: var(--muted); }
+  #goalText { font-size: 14px; font-weight: 900; font-variant-numeric: tabular-nums; }
+  #goalText.done { color: var(--green); }
+
+  #boardWrap {
+    flex: 1 1 0;
+    min-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  #board {
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 0 0 2px #3b2a1e, 0 12px 30px rgba(0,0,0,.5);
+    touch-action: none;
+    cursor: pointer;
+  }
+
+  .controls { display: flex; gap: 8px; }
+
+  /* ---------- ボタン ---------- */
+  .btn {
+    border: 0;
+    border-radius: 16px;
+    padding: 13px 16px;
+    font-weight: 900;
+    font-size: 15px;
+    cursor: pointer;
+    box-shadow: 0 5px 0 rgba(0,0,0,.45);
+    transition: transform .08s cubic-bezier(.34,1.56,.64,1), box-shadow .08s;
+  }
+  .btn:active:not(:disabled) { transform: translateY(4px) scale(.97); box-shadow: 0 1px 0 rgba(0,0,0,.45); }
+  .btn:disabled { opacity: .45; cursor: default; }
+  .btn-primary { background: linear-gradient(90deg, #38bdf8, #22d3ee); color: #04121f; }
+  .btn-amber { background: linear-gradient(90deg, #fbbf24, #f97316); color: #1c0d00; }
+  .btn-ghost { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; }
+  .btn-x { background: #000; color: #fff; border: 1px solid #333; }
+  .btn-line { background: #06c755; color: #fff; }
+  .grow { flex: 1; }
+  .btn.small { padding: 13px 14px; }
+
+  /* ---------- オーバーレイ ---------- */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(4, 8, 18, .78);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  .overlay.show { display: flex; }
+  .card {
+    width: 100%;
+    max-width: 400px;
+    max-height: 100%;
+    overflow-y: auto;
+    background: linear-gradient(180deg, #16223a, #0f182b);
+    border: 2px solid #2b4067;
+    border-radius: 24px;
+    padding: 20px 18px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0,0,0,.6);
+    animation: pop .32s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .card h2 { margin: 6px 0 4px; font-size: 22px; font-weight: 900; }
+  .card p { margin: 6px 0; font-size: 13px; line-height: 1.6; color: #cdd8ea; font-weight: 700; }
+  .card .btn { width: 100%; margin-top: 10px; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .row2 .btn { margin-top: 10px; }
+
+  .brand { font-size: 12px; color: var(--sky); letter-spacing: .2em; }
+  .logo { margin: 6px 0 2px; font-size: 40px; line-height: 1.05; font-weight: 900; letter-spacing: -.01em; }
+  .logo span { display: block; font-size: 26px; color: var(--amber); }
+  .logo em { font-style: normal; background: linear-gradient(180deg, #fff 30%, #7dd3fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .lead { font-size: 14px !important; color: #e2e8f0 !important; }
+  .howto {
+    text-align: left;
+    margin: 12px 0 4px;
+    padding: 10px 12px 10px 30px;
+    background: #0b1324;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    font-weight: 700;
+    color: #cbd5e1;
+  }
+  .howto b { color: #fff; }
+  .best { margin-top: 10px; font-size: 12px; color: var(--muted); }
+
+  .missions { list-style: none; margin: 12px 0 0; padding: 0; text-align: left; display: grid; gap: 6px; }
+  .missions li {
+    background: #0b1324;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-weight: 800;
+    display: flex; gap: 8px; align-items: center;
+  }
+  .missions li .st { color: #475569; font-size: 16px; }
+  .missions li.ok .st { color: var(--amber); }
+  .missions li.ng { color: #7c8aa3; }
+
+  .stars { font-size: 44px; letter-spacing: .08em; line-height: 1; margin: 6px 0; }
+  .stars .on { color: var(--amber); text-shadow: 0 0 18px rgba(251,191,36,.6); }
+  .stars .off { color: #334155; }
+  .bd { margin: 10px 0 0; padding: 8px 12px; background: #0b1324; border: 1px solid var(--line); border-radius: 14px; font-size: 13px; }
+  .bd div { display: flex; justify-content: space-between; padding: 3px 0; }
+  .bd .minus { color: var(--rose); }
+  .bd .total { border-top: 1px dashed #334155; margin-top: 4px; padding-top: 6px; font-size: 16px; color: var(--amber); }
+  .memo {
+    margin-top: 12px;
+    text-align: left;
+    background: linear-gradient(135deg, #0c2a4a, #172554);
+    border: 1px solid #1d4ed8;
+    border-radius: 14px;
+    padding: 10px 12px;
+  }
+  .memo b { display: block; font-size: 12px; color: var(--sky); margin-bottom: 2px; }
+  .memo p { margin: 0; font-size: 12.5px; }
+  .big-emoji { font-size: 52px; line-height: 1; }
+  .fail h2 { color: var(--rose); }
+  .total-score { font-size: 46px; font-weight: 900; color: var(--amber); line-height: 1.1; font-variant-numeric: tabular-nums; }
+  .rank-title {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #f59e0b, #f97316);
+    color: #1c0d00;
+    font-weight: 900;
+    font-size: 15px;
+  }
+  .recruit {
+    margin-top: 14px;
+    text-align: left;
+    background: linear-gradient(135deg, #082f49, #1e1b4b);
+    border: 1px solid #0ea5e9;
+    border-radius: 16px;
+    padding: 12px;
+  }
+  .recruit b { font-size: 14px; color: #fff; }
+  .recruit p { font-size: 12.5px; }
+  .share-label { margin-top: 14px; font-size: 11px; color: var(--muted); }
 </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-start py-2 px-2 sm:px-4">
+<body>
 
-<!-- パーティクル＆紙吹雪キャンバス -->
-<canvas id="fxCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
-
-<!-- メインゲームコンテナ（スマホ縦画面最適化） -->
-<div id="gameContainer" class="w-full max-w-md bg-slate-900 border-2 border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden relative flex flex-col">
-
-  <!-- トップヘッダー：ステージ＆サウンド切替 -->
-  <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 px-3.5 py-2.5 border-b border-slate-800 flex items-center justify-between">
-    <div class="flex items-center gap-2">
-      <span class="bg-sky-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded-full tracking-wider shadow">配管CRAFT</span>
-      <h1 class="text-sm sm:text-base font-black tracking-tight text-white">水圧＆排水サバイバル</h1>
+<div id="app">
+  <header class="hud">
+    <div class="hud-stage">
+      <span id="stageTag" class="tag">STAGE 1/5</span>
+      <span id="stageName">はじめての引き込み</span>
     </div>
-    <div class="flex items-center gap-1.5">
-      <button id="soundToggleBtn" onclick="toggleSound()" class="juicy-btn bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs font-extrabold px-2.5 py-1 rounded-xl border border-slate-700 flex items-center gap-1">
-        <span id="soundIcon">🔊</span><span>効果音ON</span>
-      </button>
+    <div class="hud-right">
+      <div class="score"><small>SCORE</small><b id="scoreText">0</b></div>
+      <button id="soundBtn" class="icon-btn" aria-label="効果音の切り替え">🔊</button>
     </div>
+  </header>
+
+  <div id="timer" class="timer"><div id="timerFill"></div><span id="timerText">準備中</span></div>
+
+  <div class="queue">
+    <span class="queue-label">次の管</span>
+    <canvas id="q0"></canvas>
+    <div class="q-rest"><canvas id="q1"></canvas><canvas id="q2"></canvas><canvas id="q3"></canvas></div>
+    <div class="goal"><small>つないだ管</small><span id="goalText">0/12</span></div>
   </div>
 
-  <!-- ステージ切替ピルタブ -->
-  <div class="grid grid-cols-2 gap-1.5 p-2 bg-slate-950/80 border-b border-slate-800">
-    <button id="tabStage1" onclick="switchStage(1)" class="juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-lg">
-      <span>🏠</span><span>STAGE 1：排水コンボ</span>
-    </button>
-    <button id="tabStage2" onclick="switchStage(2)" class="juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-slate-800 text-slate-400 border border-slate-700">
-      <span>💥</span><span>STAGE 2：100m水圧＆コスト</span>
-    </button>
-  </div>
+  <div id="boardWrap"><canvas id="board"></canvas></div>
 
-  <!-- ==========================================
-       STAGE 1: 排水レイアウト＆油汚れ一掃パズル
-       ========================================== -->
-  <div id="stage1View" class="p-3 flex flex-col gap-3">
-    <!-- ミッションバナー -->
-    <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/40 rounded-2xl p-3 flex items-center justify-between shadow-inner">
-      <div>
-        <div class="flex items-center gap-1.5">
-          <span class="text-xs font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md">30秒パズル</span>
-          <span class="text-xs font-bold text-amber-300">油汚れと汚物を一掃せよ！</span>
-        </div>
-        <p class="text-xs text-slate-300 mt-1 leading-snug">
-          下水本管（左）へ向かって<span class="text-sky-400 font-black">詰まらない順番</span>に水回りを配置し、<span class="text-amber-300 font-black">勾配（傾き）</span>を決めろ！
-        </p>
-      </div>
-      <div class="text-3xl">🚽🍳🛁</div>
-    </div>
-
-    <!-- 住宅断面＆排水パイプキャンバス -->
-    <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-3 relative overflow-hidden">
-      <!-- 地面と道路下水ラベル -->
-      <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
-        <span class="bg-emerald-950 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded-lg flex items-center gap-1">
-          🕳️ 道路の下水本管（ゴール）
-        </span>
-        <span class="text-slate-400">⬅️ 水が流れる方向 ⬅️</span>
-        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded-lg">家の奥</span>
-      </div>
-
-      <!-- 3つの配置スロット（手前・中央・奥） -->
-      <div class="grid grid-cols-3 gap-2 relative z-10 my-1">
-        <!-- スロット0：道路側（手前） -->
-        <div id="drainSlot0" onclick="removeDrainSlot(0)" class="cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative">
-          <span class="absolute top-1 left-1.5 text-[10px] font-black text-sky-400 bg-sky-950/90 px-1.5 py-0.5 rounded">① 手前(道路側)</span>
-          <div id="drainSlot0Content" class="flex flex-col items-center justify-center mt-3">
-            <span class="text-2xl opacity-40">➕</span>
-            <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
-          </div>
-        </div>
-
-        <!-- スロット1：中央 -->
-        <div id="drainSlot1" onclick="removeDrainSlot(1)" class="cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative">
-          <span class="absolute top-1 left-1.5 text-[10px] font-black text-sky-400 bg-sky-950/90 px-1.5 py-0.5 rounded">② 真ん中</span>
-          <div id="drainSlot1Content" class="flex flex-col items-center justify-center mt-3">
-            <span class="text-2xl opacity-40">➕</span>
-            <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
-          </div>
-        </div>
-
-        <!-- スロット2：一番奥 -->
-        <div id="drainSlot2" onclick="removeDrainSlot(2)" class="cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative">
-          <span class="absolute top-1 left-1.5 text-[10px] font-black text-sky-400 bg-sky-950/90 px-1.5 py-0.5 rounded">③ 一番奥</span>
-          <div id="drainSlot2Content" class="flex flex-col items-center justify-center mt-3">
-            <span class="text-2xl opacity-40">➕</span>
-            <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 床下の排水管ビジュアル（勾配連動アニメーション） -->
-      <div class="mt-3 pt-2 pb-1 bg-amber-950/30 border-t border-amber-800/40 rounded-xl px-2 relative">
-        <div class="text-[10px] font-bold text-amber-400/90 mb-1 flex justify-between">
-          <span>👇 床下の排水管（勾配シミュレーション）</span>
-          <span id="slopeStatusLabel" class="text-sky-300 font-black">勾配：1/50（黄金比✨）</span>
-        </div>
-
-        <!-- 傾くパイプ本体 -->
-        <div class="h-12 flex items-center justify-between px-1 relative">
-          <!-- 下水桝アイコン -->
-          <div class="w-9 h-10 bg-slate-700 border-2 border-slate-500 rounded-lg flex flex-col items-center justify-center z-20 shrink-0 shadow">
-            <span class="text-xs">🕳️</span>
-            <span class="text-[8px] font-black text-emerald-300">下水</span>
-          </div>
-
-          <!-- 排水パイプ（角度が変わる） -->
-          <div id="drainPipeTrack" class="flex-1 mx-1 h-5 bg-slate-800 border-2 border-slate-600 rounded-full relative overflow-hidden transition-transform duration-300 origin-left" style="transform: rotate(-4deg);">
-            <!-- 水流バー -->
-            <div id="drainWaterBar" class="h-full w-0 bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-500 water-stream transition-all duration-500"></div>
-            <!-- 油汚れ塊アイコン -->
-            <div id="oilBlobIcon" class="hidden absolute top-0 left-1/2 -translate-x-1/2 text-xs leading-none">🟡💨</div>
-            <!-- 詰まりアイコン -->
-            <div id="clogBlobIcon" class="hidden absolute top-0 left-1/3 text-xs leading-none">💩🛑</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ワンタップ選択パレット：水回りアイテム -->
-    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-2.5">
-      <div class="flex items-center justify-between mb-2">
-        <span class="text-xs font-black text-sky-300">STEP 1：タップして配置！（再タップで外す）</span>
-        <button onclick="resetStage1()" class="text-[11px] font-extrabold text-slate-300 bg-slate-700 hover:bg-slate-600 px-2 py-0.5 rounded-lg">🔄 リセット</button>
-      </div>
-      <div class="grid grid-cols-3 gap-2">
-        <button id="itemBtn_toilet" onclick="placeDrainItem('toilet')" class="juicy-btn bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-rose-500/60 hover:border-rose-400 rounded-xl p-2 flex flex-col items-center">
-          <span class="text-2xl">🚽</span>
-          <span class="text-xs font-black text-white mt-0.5">トイレ</span>
-          <span class="text-[10px] font-bold text-rose-300 bg-rose-950/80 px-1.5 py-0.5 rounded mt-1">汚物・詰まり大</span>
-        </button>
-        <button id="itemBtn_kitchen" onclick="placeDrainItem('kitchen')" class="juicy-btn bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-amber-500/60 hover:border-amber-400 rounded-xl p-2 flex flex-col items-center">
-          <span class="text-2xl">🍳</span>
-          <span class="text-xs font-black text-white mt-0.5">キッチン</span>
-          <span class="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-1.5 py-0.5 rounded mt-1">ギトギト油汚れ</span>
-        </button>
-        <button id="itemBtn_bath" onclick="placeDrainItem('bath')" class="juicy-btn bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-sky-500/60 hover:border-sky-400 rounded-xl p-2 flex flex-col items-center">
-          <span class="text-2xl">🛁</span>
-          <span class="text-xs font-black text-white mt-0.5">お風呂</span>
-          <span class="text-[10px] font-bold text-sky-300 bg-sky-950/80 px-1.5 py-0.5 rounded mt-1">大量のお湯🌊</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- STEP 2: 排水管の勾配（傾き）セレクト -->
-    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-2.5">
-      <div class="text-xs font-black text-amber-300 mb-2">STEP 2：排水管の「勾配（傾き）」を選べ！</div>
-      <div class="grid grid-cols-3 gap-2">
-        <button id="slopeBtn_flat" onclick="selectSlope('flat')" class="juicy-btn bg-slate-900 border-2 border-slate-700 rounded-xl p-2 text-center">
-          <div class="text-xs font-black text-slate-200">水平 (0°)</div>
-          <div class="text-[10px] text-slate-400 mt-0.5">傾きなし</div>
-        </button>
-        <button id="slopeBtn_good" onclick="selectSlope('good')" class="juicy-btn bg-sky-950 border-2 border-sky-400 rounded-xl p-2 text-center shadow-md">
-          <div class="text-xs font-black text-sky-300">適正 (1/50)</div>
-          <div class="text-[10px] text-sky-200 mt-0.5">プロ基準✨</div>
-        </button>
-        <button id="slopeBtn_steep" onclick="selectSlope('steep')" class="juicy-btn bg-slate-900 border-2 border-slate-700 rounded-xl p-2 text-center">
-          <div class="text-xs font-black text-slate-200">急すぎ！</div>
-          <div class="text-[10px] text-slate-400 mt-0.5">水だけ先走る</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- 排水テスト発射ボタン -->
-    <button onclick="runStage1Flush()" class="juicy-btn pulse-glow w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 text-slate-950 font-black text-base tracking-wide shadow-xl flex items-center justify-center gap-2">
-      <span class="text-xl">🌊</span>
-      <span>一斉に水を流す！（排水テスト）</span>
-    </button>
-  </div>
-
-  <!-- ==========================================
-       STAGE 2: 100m給水サバイバル（口径×損失抵抗×コスト）
-       ========================================== -->
-  <div id="stage2View" class="hidden p-3 flex flex-col gap-2.5">
-
-    <!-- リアルタイムメーター（水圧・水量・施工費） -->
-    <div class="grid grid-cols-3 gap-1.5 bg-slate-950 p-2 rounded-2xl border border-slate-800">
-      <div class="bg-slate-900 rounded-xl p-2 text-center border border-slate-800">
-        <div class="text-[10px] font-bold text-slate-400">末端の蛇口水量</div>
-        <div id="hudFlowText" class="text-base sm:text-lg font-black text-sky-400">0.0 <span class="text-xs">L/分</span></div>
-        <div class="text-[9px] font-bold text-emerald-400">目標: 12〜25 L/分</div>
-      </div>
-      <div class="bg-slate-900 rounded-xl p-2 text-center border border-slate-800">
-        <div class="text-[10px] font-bold text-slate-400">総施工コスト</div>
-        <div id="hudCostText" class="text-base sm:text-lg font-black text-amber-400">0 <span class="text-xs">万円</span></div>
-        <div class="text-[9px] font-bold text-amber-300">予算上限: 180万円</div>
-      </div>
-      <div class="bg-slate-900 rounded-xl p-2 text-center border border-slate-800">
-        <div class="text-[10px] font-bold text-slate-400">安全率ランク</div>
-        <div id="hudSafetyText" class="text-sm sm:text-base font-black text-slate-300 mt-0.5">未判定</div>
-        <div class="text-[9px] font-bold text-slate-400">本管水圧 0.3MPa</div>
-      </div>
-    </div>
-
-    <!-- 100m断面ルートビュー（本管 → 区間1 → 用水路 → 区間2 → 引き込み → 蛇口） -->
-    <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-2.5 relative overflow-hidden">
-      <div class="flex items-center justify-between text-[11px] font-bold mb-1.5">
-        <span class="text-sky-400 flex items-center gap-1">🚰 道路本管 (0.3MPa)</span>
-        <span class="text-amber-300 text-[10px]">距離100m！太すぎると高額・細すぎると摩擦で水が出ない！</span>
-        <span class="text-emerald-400">🏠 新築2軒</span>
-      </div>
-
-      <!-- パイプライン視覚化バー -->
-      <div class="bg-slate-900 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-1 relative min-h-[82px]">
-        <!-- 本管 -->
-        <div class="flex flex-col items-center shrink-0">
-          <div class="w-7 h-12 bg-sky-700 border-2 border-sky-400 rounded-lg flex items-center justify-center font-black text-[10px] text-white shadow">本管</div>
-        </div>
-
-        <!-- 区間1パイプ (0〜40m) -->
-        <div onclick="cyclePipeSize(0)" class="cursor-pointer flex-1 flex flex-col items-center group">
-          <span class="text-[9px] font-bold text-slate-400">①上流40m</span>
-          <div id="pipeVis0" class="w-full bg-sky-900/90 border-2 border-sky-400 rounded-lg flex items-center justify-center transition-all duration-200 relative overflow-hidden" style="height: 28px;">
-            <div class="pipe-water-fill h-full w-0 bg-gradient-to-r from-sky-400 to-cyan-300 water-stream absolute left-0 top-0 transition-all duration-300"></div>
-            <span id="pipeLabel0" class="relative z-10 text-xs font-black text-white drop-shadow">φ40</span>
-          </div>
-          <span id="pipeCost0" class="text-[9px] font-bold text-amber-300 mt-0.5">45万円</span>
-        </div>
-
-        <!-- 用水路かわし（90度 or 45度） -->
-        <div onclick="toggleBendType()" class="cursor-pointer flex flex-col items-center shrink-0 px-1">
-          <span class="text-[9px] font-bold text-purple-300">用水路越え</span>
-          <div id="bendVis" class="w-11 h-11 bg-purple-950 border-2 border-purple-400 rounded-xl flex flex-col items-center justify-center shadow transition-transform">
-            <span id="bendIcon" class="text-xs font-black text-purple-200">📐45°</span>
-            <span id="bendSub" class="text-[8px] font-bold text-emerald-300">抵抗小</span>
-          </div>
-          <span id="bendCost" class="text-[9px] font-bold text-amber-300 mt-0.5">+15万</span>
-        </div>
-
-        <!-- 区間2パイプ (40〜80m) -->
-        <div onclick="cyclePipeSize(1)" class="cursor-pointer flex-1 flex flex-col items-center">
-          <span class="text-[9px] font-bold text-slate-400">②中流40m</span>
-          <div id="pipeVis1" class="w-full bg-sky-900/90 border-2 border-sky-400 rounded-lg flex items-center justify-center transition-all duration-200 relative overflow-hidden" style="height: 22px;">
-            <div class="pipe-water-fill h-full w-0 bg-gradient-to-r from-cyan-400 to-sky-300 water-stream absolute left-0 top-0 transition-all duration-300"></div>
-            <span id="pipeLabel1" class="relative z-10 text-xs font-black text-white drop-shadow">φ25</span>
-          </div>
-          <span id="pipeCost1" class="text-[9px] font-bold text-amber-300 mt-0.5">25万円</span>
-        </div>
-
-        <!-- 区間3パイプ (末端20m) -->
-        <div onclick="cyclePipeSize(2)" class="cursor-pointer flex-1 flex flex-col items-center">
-          <span class="text-[9px] font-bold text-slate-400">③宅内20m</span>
-          <div id="pipeVis2" class="w-full bg-sky-900/90 border-2 border-sky-400 rounded-lg flex items-center justify-center transition-all duration-200 relative overflow-hidden" style="height: 16px;">
-            <div class="pipe-water-fill h-full w-0 bg-gradient-to-r from-sky-300 to-emerald-300 water-stream absolute left-0 top-0 transition-all duration-300"></div>
-            <span id="pipeLabel2" class="relative z-10 text-[11px] font-black text-white drop-shadow">φ20</span>
-          </div>
-          <span id="pipeCost2" class="text-[9px] font-bold text-amber-300 mt-0.5">12万円</span>
-        </div>
-
-        <!-- 家の蛇口＆破裂エフェクト -->
-        <div class="flex flex-col items-center shrink-0 relative">
-          <div id="houseBox" class="w-10 h-12 bg-slate-800 border-2 border-emerald-500/70 rounded-xl flex flex-col items-center justify-center">
-            <span id="houseIcon" class="text-lg leading-none">🏠</span>
-            <span id="faucetStatus" class="text-[9px] font-black text-sky-300 mt-0.5">待機中</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 断面図のすぐ下で口径をポンポン変えられるクイックボタン -->
-      <div class="mt-2 grid grid-cols-3 gap-1.5">
-        <button onclick="cyclePipeSize(0)" class="juicy-btn bg-slate-800 hover:bg-slate-700 border border-sky-500/50 rounded-xl py-1.5 px-2 flex flex-col items-center">
-          <span class="text-[10px] text-slate-300 font-bold">①上流40mをタップ変更</span>
-          <span id="btnPipeText0" class="text-xs font-black text-sky-300 mt-0.5">現在: φ40 (中口径)</span>
-        </button>
-        <button onclick="cyclePipeSize(1)" class="juicy-btn bg-slate-800 hover:bg-slate-700 border border-sky-500/50 rounded-xl py-1.5 px-2 flex flex-col items-center">
-          <span class="text-[10px] text-slate-300 font-bold">②中流40mをタップ変更</span>
-          <span id="btnPipeText1" class="text-xs font-black text-sky-300 mt-0.5">現在: φ25 (標準)</span>
-        </button>
-        <button onclick="cyclePipeSize(2)" class="juicy-btn bg-slate-800 hover:bg-slate-700 border border-sky-500/50 rounded-xl py-1.5 px-2 flex flex-col items-center">
-          <span class="text-[10px] text-slate-300 font-bold">③宅内20mをタップ変更</span>
-          <span id="btnPipeText2" class="text-xs font-black text-sky-300 mt-0.5">現在: φ20 (細め)</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- 現場の3大オプション（曲がり角・埋設深さ・増圧ポンプ） -->
-    <div class="grid grid-cols-3 gap-1.5">
-      <!-- 1. 用水路の曲げ角度 -->
-      <button id="optBendBtn" onclick="toggleBendType()" class="juicy-btn bg-purple-950/80 border-2 border-purple-400 rounded-2xl p-2 flex flex-col items-center text-center">
-        <span class="text-[10px] font-bold text-purple-300">用水路の曲げ方</span>
-        <span id="optBendTitle" class="text-xs font-black text-white mt-0.5">📐 45度曲げ</span>
-        <span id="optBendDesc" class="text-[9px] font-bold text-emerald-300 mt-0.5">抵抗小 / +15万円</span>
-      </button>
-
-      <!-- 2. 道路の埋設深さ -->
-      <button id="optDepthBtn" onclick="toggleDepthType()" class="juicy-btn bg-emerald-950/80 border-2 border-emerald-400 rounded-2xl p-2 flex flex-col items-center text-center">
-        <span class="text-[10px] font-bold text-emerald-300">道路の埋設深さ</span>
-        <span id="optDepthTitle" class="text-xs font-black text-white mt-0.5">⛏️ 深さ 1.2m</span>
-        <span id="optDepthDesc" class="text-[9px] font-bold text-emerald-300 mt-0.5">道路許可OK / +25万</span>
-      </button>
-
-      <!-- 3. 禁断の増圧ポンプ -->
-      <button id="optPumpBtn" onclick="togglePump()" class="juicy-btn bg-slate-800 border-2 border-slate-600 rounded-2xl p-2 flex flex-col items-center text-center">
-        <span class="text-[10px] font-bold text-rose-300">途中に増圧ポンプ</span>
-        <span id="optPumpTitle" class="text-xs font-black text-slate-300 mt-0.5">⚡ ポンプ OFF</span>
-        <span id="optPumpDesc" class="text-[9px] font-bold text-slate-400 mt-0.5">水圧2倍(破裂注意)</span>
-      </button>
-    </div>
-
-    <!-- 一発プリセット（いろんな失敗・成功を1秒で試せるドパガキボタン） -->
-    <div class="bg-slate-900 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-1">
-      <span class="text-[10px] font-black text-slate-400 shrink-0">ワンタップ実験👉</span>
-      <button onclick="applyPreset('burst')" class="juicy-btn bg-rose-950 hover:bg-rose-900 border border-rose-500/60 text-rose-200 text-[10px] font-black px-2 py-1 rounded-lg">💥 細管＋ポンプ破裂</button>
-      <button onclick="applyPreset('stingy')" class="juicy-btn bg-amber-950 hover:bg-amber-900 border border-amber-500/60 text-amber-200 text-[10px] font-black px-2 py-1 rounded-lg">💧 ケチりすぎ</button>
-      <button onclick="applyPreset('pro')" class="juicy-btn bg-sky-950 hover:bg-sky-900 border border-sky-400 text-sky-200 text-[10px] font-black px-2 py-1 rounded-lg">👑 社長の黄金設計</button>
-    </div>
-
-    <!-- 通水テスト発射ボタン -->
-    <button onclick="runStage2Test()" class="juicy-btn pulse-glow w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-500 text-slate-950 font-black text-base tracking-wide shadow-xl flex items-center justify-center gap-2">
-      <span class="text-xl">🚀</span>
-      <span>バルブ全開！通水＆コスト判定！</span>
-    </button>
-  </div>
-
-</div>
-
-<!-- ==========================================
-     ド派手な結果ポップアップモーダル（診断＆ランキング＆採用導線）
-     ========================================== -->
-<div id="resultModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
-  <div id="resultCard" class="w-full max-w-md bg-slate-900 border-2 border-sky-400 rounded-3xl p-4 shadow-2xl flex flex-col gap-3 pop-in">
-    <div class="flex items-center justify-between">
-      <span id="modalBadge" class="bg-sky-400 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full">STAGE CLEAR!</span>
-      <button onclick="closeModal()" class="text-slate-400 hover:text-white font-black text-sm px-2">✕ 閉じる</button>
-    </div>
-
-    <div class="text-center py-1">
-      <div id="modalEmoji" class="text-5xl mb-1">👑</div>
-      <h2 id="modalTitle" class="text-xl font-black text-white leading-tight">完璧な配管設計！</h2>
-      <p id="modalSubtitle" class="text-xs font-bold text-sky-300 mt-1"></p>
-    </div>
-
-    <!-- スコア・コスト内訳ボックス -->
-    <div id="modalStatsBox" class="bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs leading-relaxed text-slate-200 space-y-1.5">
-    </div>
-
-    <!-- 週間コストランキング（Stage2クリア時） -->
-    <div id="modalRankingBox" class="hidden bg-gradient-to-b from-amber-950/50 to-slate-950 border border-amber-500/40 rounded-2xl p-2.5">
-      <div class="text-[11px] font-black text-amber-300 mb-1.5 flex items-center justify-between">
-        <span>🏆 100m配管 最安クリア番付（安全率OK部門）</span>
-        <span class="text-[10px] bg-amber-400 text-slate-950 px-1.5 rounded font-black">LIVE</span>
-      </div>
-      <div id="rankingList" class="space-y-1 text-[11px]"></div>
-    </div>
-
-    <!-- 求人・松下工業PRボックス -->
-    <div class="bg-gradient-to-r from-sky-950 to-indigo-950 border border-sky-500/50 rounded-2xl p-3 flex flex-col gap-1.5">
-      <div class="flex items-center gap-1.5">
-        <span class="text-base">🔧</span>
-        <span class="text-xs font-black text-sky-300">松下工業の「現場の知恵」を体験！</span>
-      </div>
-      <p id="modalTrivia" class="text-[11px] text-slate-200 leading-normal">
-        地面の下や壁の向こう側で、水圧や油汚れを計算して街のライフラインを守るのが配管工のシゴト。未経験から一生モノの技術を身につけませんか？
-      </p>
-    </div>
-
-    <!-- アクションボタン -->
-    <div class="grid grid-cols-2 gap-2 mt-1">
-      <button id="modalNextBtn" onclick="closeModal()" class="juicy-btn py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-black text-xs border border-slate-600">
-        🔄 別の設計を試す
-      </button>
-      <button id="modalPrimaryBtn" onclick="goToNextAction()" class="juicy-btn py-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs shadow-lg">
-        💥 STAGE 2 へ進む！
-      </button>
-    </div>
+  <div class="controls">
+    <button id="retryBtn" class="btn btn-ghost small" aria-label="このステージをやり直す">↺</button>
+    <button id="actionBtn" class="btn btn-primary grow" disabled>💧 今すぐ通水</button>
   </div>
 </div>
+
+<div id="overlay" class="overlay"></div>
 
 <script>
-/* ============================================================================
-   1. Web Audio API シンセ効果音（外部音声ファイル不要でドパガキ効果音を鳴らす）
-   ============================================================================ */
-let soundEnabled = true;
-let audioCtx = null;
-
-function initAudio() {
-  if (!audioCtx) {
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    if (AudioContext) audioCtx = new AudioContext();
-  }
-  if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
-}
-
-function toggleSound() {
-  soundEnabled = !soundEnabled;
-  document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
-  document.querySelector('#soundToggleBtn span:last-child').textContent = soundEnabled ? '効果音ON' : '消音中';
-  if (soundEnabled) playSFX('pop');
-}
-
-function playSFX(type) {
-  if (!soundEnabled) return;
-  initAudio();
-  if (!audioCtx) return;
-
-  const now = audioCtx.currentTime;
-
-  if (type === 'pop') {
-    // 気持ちいい装着音「ポンッ！」
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(320, now);
-    osc.frequency.exponentialRampToValueAtTime(680, now + 0.09);
-    gain.gain.setValueAtTime(0.25, now);
-    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start(now);
-    osc.stop(now + 0.1);
-  } else if (type === 'clank') {
-    // パイプ口径切り替え金属音「ガシャン！」
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type = 'triangle';
-    osc.frequency.setValueAtTime(520, now);
-    osc.frequency.exponentialRampToValueAtTime(180, now + 0.11);
-    gain.gain.setValueAtTime(0.3, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
-    osc.connect(gain);
-    gain.connect(audioCtx.destination);
-    osc.start(now);
-    osc.stop(now + 0.12);
-  } else if (type === 'water') {
-    // 水流ゴゴゴ音
-    const bufferSize = audioCtx.sampleRate * 0.45;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
-
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.setValueAtTime(400, now);
-    filter.frequency.linearRampToValueAtTime(1200, now + 0.4);
-
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.25, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    noise.start(now);
-  } else if (type === 'fanfare') {
-    // 大成功ファンファーレ「タラララン♪」
-    const notes = [523.25, 659.25, 783.99, 1046.5];
-    notes.forEach((freq, idx) => {
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
-      gain.gain.setValueAtTime(0.25, now + idx * 0.08);
-      gain.gain.exponentialRampToValueAtTime(0.008, now + idx * 0.08 + 0.28);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start(now + idx * 0.08);
-      osc.stop(now + idx * 0.08 + 0.29);
-    });
-  } else if (type === 'boom') {
-    // 破裂・失敗ドカーン音
-    const bufferSize = audioCtx.sampleRate * 0.55;
-    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.18));
-
-    const noise = audioCtx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = audioCtx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(260, now);
-
-    const gain = audioCtx.createGain();
-    gain.gain.setValueAtTime(0.5, now);
-    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
-
-    noise.connect(filter);
-    filter.connect(gain);
-    gain.connect(audioCtx.destination);
-    noise.start(now);
-  }
-}
+'use strict';
 
 /* ============================================================================
-   2. 視覚エフェクト（フローティング文字・画面揺れ・紙吹雪パーティクル）
+   設定
    ============================================================================ */
-function spawnFloatingText(text, colorClass = 'text-sky-300', x = null, y = null) {
-  const el = document.createElement('div');
-  el.className = `floating-pop text-base sm:text-lg ${colorClass}`;
-  el.textContent = text;
-  const posX = x !== null ? x : window.innerWidth / 2 - 50 + (Math.random() * 60 - 30);
-  const posY = y !== null ? y : window.innerHeight / 2 - 40;
-  el.style.left = `${posX}px`;
-  el.style.top = `${posY}px`;
-  document.body.appendChild(el);
-  setTimeout(() => el.remove(), 750);
-}
+// 求人ページ（怪人など）のURLを入れると、最終結果画面に「求人を見る」ボタンが出る
+const RECRUIT_URL = '';
+const SITE_URL = 'https://matsushita-pipe-craft.pages.dev/';
 
-function triggerShake() {
-  const container = document.getElementById('gameContainer');
-  container.classList.remove('shake-hard');
-  void container.offsetWidth;
-  container.classList.add('shake-hard');
-}
+const COLS = 7, ROWS = 9;
+const N = 1, E = 2, S = 4, W = 8;
+const DIRS = [N, E, S, W];
+const DX = { [N]: 0, [E]: 1, [S]: 0, [W]: -1 };
+const DY = { [N]: -1, [E]: 0, [S]: 1, [W]: 0 };
+const OPP = { [N]: S, [E]: W, [S]: N, [W]: E };
+const EDGE = { [N]: [0.5, 0], [E]: [1, 0.5], [S]: [0.5, 1], [W]: [0, 0.5] };
+const ROT = { [N]: -Math.PI / 2, [E]: 0, [S]: Math.PI / 2, [W]: Math.PI };
+const ARROW = { [N]: '↑', [E]: '→', [S]: '↓', [W]: '←' };
+const CROSS = 15;
 
-// 紙吹雪＆水しぶきキャンバス
-const fxCanvas = document.getElementById('fxCanvas');
-const fxCtx = fxCanvas.getContext('2d');
-let particles = [];
-
-function resizeFxCanvas() {
-  fxCanvas.width = window.innerWidth;
-  fxCanvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resizeFxCanvas);
-resizeFxCanvas();
-
-function launchConfetti(mode = 'success') {
-  const colors = mode === 'success'
-    ? ['#38bdf8', '#fbbf24', '#34d399', '#f472b6', '#a78bfa']
-    : ['#ef4444', '#f97316', '#dc2626', '#64748b'];
-
-  for (let i = 0; i < 65; i++) {
-    particles.push({
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      vx: (Math.random() - 0.5) * 16,
-      vy: (Math.random() - 0.8) * 16,
-      size: Math.random() * 8 + 4,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      rot: Math.random() * 360,
-      vRot: (Math.random() - 0.5) * 12,
-      life: 1.0
-    });
+// house.dir = 家のどの面に給水口があるか / source.dir = 本管から水が出る向き
+const STAGES = [
+  {
+    name: 'はじめての引き込み',
+    sub: '道路の本管から、新築の家まで水を引き込もう。',
+    countdown: 22, flowMs: 1800, goal: 12, tees: false,
+    source: { x: 0, y: 1, dir: E },
+    houses: [{ x: 6, y: 7, dir: W }],
+    rocks: [], channel: []
+  },
+  {
+    name: '用水路を越えろ',
+    sub: 'まっすぐ下は用水路。端のすき間から回り込め！',
+    countdown: 25, flowMs: 1600, goal: 15, tees: false,
+    source: { x: 3, y: 0, dir: S },
+    houses: [{ x: 3, y: 8, dir: N }],
+    rocks: [], channel: [[1, 4], [2, 4], [3, 4], [4, 4], [5, 4]]
+  },
+  {
+    name: '2軒同時に給水',
+    sub: 'T字管で水を分けて、左右の家に届けよう。',
+    countdown: 26, flowMs: 1600, goal: 16, tees: true,
+    source: { x: 3, y: 0, dir: S },
+    houses: [{ x: 0, y: 8, dir: N }, { x: 6, y: 8, dir: N }],
+    rocks: [[3, 5]], channel: []
+  },
+  {
+    name: '岩盤だらけの現場',
+    sub: '掘れない岩盤をよけて、上と下の2軒へ。',
+    countdown: 24, flowMs: 1450, goal: 18, tees: true,
+    source: { x: 0, y: 4, dir: E },
+    houses: [{ x: 6, y: 0, dir: S }, { x: 6, y: 8, dir: N }],
+    rocks: [[2, 2], [2, 6], [4, 1], [4, 4], [4, 7], [5, 3], [1, 7]], channel: []
+  },
+  {
+    name: '100m 長距離バトル',
+    sub: '用水路と岩盤を越えて、3軒すべてに給水せよ！',
+    countdown: 28, flowMs: 1350, goal: 22, tees: true,
+    source: { x: 0, y: 0, dir: S },
+    houses: [{ x: 6, y: 2, dir: W }, { x: 6, y: 8, dir: W }, { x: 0, y: 8, dir: N }],
+    rocks: [[2, 1], [5, 5], [1, 5]], channel: [[3, 2], [3, 3], [3, 5], [3, 6]]
   }
-}
-
-function updateParticles() {
-  fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
-  for (let i = particles.length - 1; i >= 0; i--) {
-    const p = particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += 0.38; // 重力
-    p.rot += p.vRot;
-    p.life -= 0.016;
-    if (p.life <= 0) {
-      particles.splice(i, 1);
-      continue;
-    }
-    fxCtx.save();
-    fxCtx.translate(p.x, p.y);
-    fxCtx.rotate((p.rot * Math.PI) / 180);
-    fxCtx.globalAlpha = Math.max(0, p.life);
-    fxCtx.fillStyle = p.color;
-    fxCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
-    fxCtx.restore();
-  }
-  requestAnimationFrame(updateParticles);
-}
-updateParticles();
-
-/* ============================================================================
-   3. ステージ切り替え管理
-   ============================================================================ */
-let currentStage = 1;
-
-function switchStage(stageNum) {
-  currentStage = stageNum;
-  playSFX('pop');
-  const s1 = document.getElementById('stage1View');
-  const s2 = document.getElementById('stage2View');
-  const t1 = document.getElementById('tabStage1');
-  const t2 = document.getElementById('tabStage2');
-
-  if (stageNum === 1) {
-    s1.classList.remove('hidden');
-    s2.classList.add('hidden');
-    t1.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-lg';
-    t2.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-slate-800 text-slate-400 border border-slate-700';
-  } else {
-    s1.classList.add('hidden');
-    s2.classList.remove('hidden');
-    t2.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-gradient-to-r from-sky-400 to-emerald-400 text-slate-950 shadow-lg';
-    t1.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-slate-800 text-slate-400 border border-slate-700';
-    updateStage2HUD();
-  }
-}
-
-/* ============================================================================
-   4. STAGE 1：排水レイアウト＆油汚れ一掃パズル（トイレ・キッチン・お風呂）
-   ============================================================================ */
-const DRAIN_ITEMS = {
-  toilet:  { icon: '🚽', name: 'トイレ',   badge: '汚物・最短で流す', color: 'border-rose-400 bg-rose-950/50' },
-  kitchen: { icon: '🍳', name: 'キッチン', badge: '油汚れが出る',     color: 'border-amber-400 bg-amber-950/50' },
-  bath:    { icon: '🛁', name: 'お風呂',   badge: '大量のお湯で流す', color: 'border-sky-400 bg-sky-950/50' }
-};
-
-let drainSlots = [null, null, null]; // [手前(道路側), 真ん中, 一番奥]
-let selectedSlope = 'good'; // 'flat' | 'good' | 'steep'
-
-function placeDrainItem(itemKey) {
-  // 既に配置済みなら外す
-  const existingIdx = drainSlots.indexOf(itemKey);
-  if (existingIdx !== -1) {
-    removeDrainSlot(existingIdx);
-    return;
-  }
-  // 空いている最初のスロットに入れる
-  const emptyIdx = drainSlots.indexOf(null);
-  if (emptyIdx === -1) {
-    spawnFloatingText('満杯！枠をタップして外せます', 'text-amber-300');
-    return;
-  }
-  drainSlots[emptyIdx] = itemKey;
-  playSFX('pop');
-  const posLabels = ['①手前(道路側)', '②真ん中', '③一番奥'];
-  spawnFloatingText(`${DRAIN_ITEMS[itemKey].icon} ${posLabels[emptyIdx]}にセット！`, 'text-sky-300');
-  renderDrainSlots();
-}
-
-function removeDrainSlot(idx) {
-  if (!drainSlots[idx]) return;
-  playSFX('clank');
-  drainSlots[idx] = null;
-  renderDrainSlots();
-}
-
-function resetStage1() {
-  playSFX('clank');
-  drainSlots = [null, null, null];
-  selectedSlope = 'good';
-  selectSlope('good');
-  renderDrainSlots();
-}
-
-function renderDrainSlots() {
-  for (let i = 0; i < 3; i++) {
-    const slotEl = document.getElementById(`drainSlot${i}`);
-    const contentEl = document.getElementById(`drainSlot${i}Content`);
-    const key = drainSlots[i];
-
-    if (key) {
-      const item = DRAIN_ITEMS[key];
-      slotEl.className = `cursor-pointer rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] border-2 ${item.color} pop-in relative`;
-      contentEl.innerHTML = `
-        <span class="text-3xl mt-2">${item.icon}</span>
-        <span class="text-xs font-black text-white mt-1">${item.name}</span>
-        <span class="text-[9px] font-bold text-slate-200 bg-slate-900/80 px-1.5 py-0.5 rounded mt-0.5">${item.badge}</span>
-      `;
-    } else {
-      slotEl.className = `cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative`;
-      contentEl.innerHTML = `
-        <span class="text-2xl opacity-40">➕</span>
-        <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
-      `;
-    }
-  }
-
-  // 下部ボタンの選択状態ハイライト
-  ['toilet', 'kitchen', 'bath'].forEach(k => {
-    const btn = document.getElementById(`itemBtn_${k}`);
-    if (drainSlots.includes(k)) {
-      btn.classList.add('opacity-45', 'scale-95');
-    } else {
-      btn.classList.remove('opacity-45', 'scale-95');
-    }
-  });
-}
-
-function selectSlope(slopeKey) {
-  selectedSlope = slopeKey;
-  playSFX('clank');
-  const track = document.getElementById('drainPipeTrack');
-  const label = document.getElementById('slopeStatusLabel');
-
-  ['flat', 'good', 'steep'].forEach(k => {
-    const btn = document.getElementById(`slopeBtn_${k}`);
-    btn.className = k === slopeKey
-      ? 'juicy-btn bg-sky-950 border-2 border-sky-400 rounded-xl p-2 text-center shadow-md'
-      : 'juicy-btn bg-slate-900 border-2 border-slate-700 rounded-xl p-2 text-center opacity-75';
-  });
-
-  if (slopeKey === 'flat') {
-    track.style.transform = 'rotate(0deg)';
-    label.textContent = '勾配：0°（水平…水が停滞⚠️）';
-    label.className = 'text-rose-400 font-black';
-  } else if (slopeKey === 'good') {
-    track.style.transform = 'rotate(-4deg)';
-    label.textContent = '勾配：1/50（黄金比✨）';
-    label.className = 'text-sky-300 font-black';
-  } else {
-    track.style.transform = 'rotate(-11deg)';
-    label.textContent = '勾配：急すぎ！（水だけ先走る⚠️）';
-    label.className = 'text-amber-400 font-black';
-  }
-}
-
-function runStage1Flush() {
-  if (drainSlots.includes(null)) {
-    triggerShake();
-    playSFX('boom');
-    spawnFloatingText('⚠️ 3つすべて配置してね！', 'text-rose-400');
-    return;
-  }
-
-  playSFX('water');
-  const waterBar = document.getElementById('drainWaterBar');
-  const oilIcon = document.getElementById('oilBlobIcon');
-  const clogIcon = document.getElementById('clogBlobIcon');
-
-  waterBar.style.width = '100%';
-  oilIcon.classList.add('hidden');
-  clogIcon.classList.add('hidden');
-
-  setTimeout(() => {
-    // 判定ロジック（松下社長のノウハウ：手前トイレ・中キッチン・奥お風呂 ＋ 適正勾配）
-    const isOrderPerfect = (drainSlots[0] === 'toilet' && drainSlots[1] === 'kitchen' && drainSlots[2] === 'bath');
-    const isSlopeGood = (selectedSlope === 'good');
-
-    if (isOrderPerfect && isSlopeGood) {
-      playSFX('fanfare');
-      launchConfetti('success');
-      showModal({
-        badge: 'STAGE 1 大成功！✨',
-        emoji: '🌊✨',
-        title: '油汚れ＆汚物を完全一掃！！',
-        subtitle: 'プロ直伝！「手前トイレ・中キッチン・奥お風呂」の黄金レイアウト！',
-        statsHtml: `
-          <div class="font-bold text-emerald-300">✅ ① 手前（トイレ）：汚物が最短ルートで下水へ直行！</div>
-          <div class="font-bold text-amber-300">✅ ② 真ん中（キッチン）：冷えると固まるギトギト油汚れを…</div>
-          <div class="font-bold text-sky-300">✅ ③ 一番奥（お風呂）：最上流からの大量のお湯がイッキに洗い流した！</div>
-          <div class="font-bold text-purple-300">✅ 適正勾配（1/50）：水と固形物が一緒に流れるベスト角度！</div>
-        `,
-        trivia: '松下社長の現場ノウハウ：「キッチンの奥にお風呂を配置すると、お風呂の大量の排水がキッチンの油汚れを毎日キレイに流してくれる」。こういう見えない工夫が、何十年も詰まらない家を作ります！',
-        primaryText: '💥 STAGE 2（100m水圧＆コスト）へ！',
-        primaryAction: () => { closeModal(); switchStage(2); }
-      });
-    } else {
-      playSFX('boom');
-      triggerShake();
-      launchConfetti('fail');
-
-      let failReason = '';
-      if (drainSlots[0] !== 'toilet') {
-        clogIcon.classList.remove('hidden');
-        failReason = '🚽 <b>トイレが奥にあるため</b>、汚物が長い距離を流れる途中で止まり、他の排水と合流して大詰まりを起こしました！（トイレは下水本管に一番近い「①手前」が鉄則！）';
-      } else if (drainSlots[2] !== 'bath') {
-        oilIcon.classList.remove('hidden');
-        failReason = '🍳 <b>キッチンが一番奥にあるため</b>、流れた油汚れが配管の途中で冷えて白く固まり、洗い流す水量が足りず配管が閉塞しました！（一番奥に「🛁お風呂」を置けば大量のお湯で油を流せます！）';
-      } else if (selectedSlope === 'flat') {
-        failReason = '📐 <b>配管が水平（0°）なため</b>、水が流れず汚物と油がその場に溜まって逆流しました！';
-      } else if (selectedSlope === 'steep') {
-        failReason = '📐 <b>勾配を急に傾けすぎたため</b>、なんと「水だけ」が先にシャーッと流れ去り、重い汚物がパイプの中に置き去りになって詰まりました！（緩やかすぎるのも急すぎるのもNG！）';
-      }
-
-      showModal({
-        badge: '排水トラブル発生…🚨',
-        emoji: '😱🛑',
-        title: '配管が詰まって逆流！！',
-        subtitle: '順番と傾きに「プロの理由」があります！',
-        statsHtml: `<div class="text-rose-200 leading-relaxed">${failReason}</div>`,
-        trivia: 'ヒント：①手前に「🚽トイレ（最短で流す）」、②真ん中に「🍳キッチン」、③一番奥に「🛁お風呂（大量のお湯で油を洗い流す）」を置き、勾配を「適正(1/50)」にしてみよう！',
-        primaryText: '🔄 もう一度チャレンジ！',
-        primaryAction: () => { closeModal(); }
-      });
-    }
-    setTimeout(() => { waterBar.style.width = '0%'; }, 400);
-  }, 450);
-}
-
-/* ============================================================================
-   5. STAGE 2：100m給水サバイバル（口径×損失抵抗×45度曲げ×増圧ポンプ×コスト番付）
-   ============================================================================ */
-// パイプ口径マスターデータ（松下社長トーク準拠：16mm〜300mm鋳鉄管）
-const PIPE_SPECS = [
-  { id: '16',  name: 'φ16 (極細)',   heightPx: 12, lossPer10m: 0.048, costPer10m: 3,  burstPump: true  },
-  { id: '20',  name: 'φ20 (細管)',   heightPx: 16, lossPer10m: 0.025, costPer10m: 6,  burstPump: true  },
-  { id: '25',  name: 'φ25 (標準)',   heightPx: 21, lossPer10m: 0.013, costPer10m: 9,  burstPump: false },
-  { id: '40',  name: 'φ40 (中口径)', heightPx: 27, lossPer10m: 0.005, costPer10m: 14, burstPump: false },
-  { id: '75',  name: 'φ75 (大口径)', heightPx: 33, lossPer10m: 0.002, costPer10m: 24, burstPump: false },
-  { id: '100', name: 'φ100(鋳鉄管)', heightPx: 38, lossPer10m: 0.001, costPer10m: 38, burstPump: false }
 ];
 
-// 3区間の選択インデックス [①上流40m, ②中流40m, ③宅内20m]
-let segIndices = [3, 2, 1]; // 初期値: φ40 -> φ25 -> φ20
-let bendIs45 = true;        // true: 45度曲げ(抵抗小・+15万), false: 90度エルボ(抵抗大・+5万)
-let depthIsDeep = true;     // true: 1.2m(許可OK・+25万), false: 0.5m(浅掘り違法・+8万)
-let pumpOn = false;         // true: 増圧ポンプON(+30万・水圧UP・細管破裂リスク)
+const MEMOS = [
+  '公道の下の水道管は、深さ1.2m前後に埋めるのが基本。浅く埋めれば安く済むけど、道路管理者の許可が下りない。決まりを守るのもプロの技術。',
+  '用水路を越えるときは、直角（90°）より45°曲げ。曲がりがゆるいほど水圧が落ちにくい。少し高くても、住んでから困らない方を選ぶ。',
+  '家が2軒になれば、必要な水の量も増える。「ギリギリ足りる」設計だと、隣に家が建った途端に水が出なくなる。だから口径はワンサイズ余裕を持たせる。',
+  '100m先まで送るなら、最初は太い管（φ40）で走って、25→20と段階的に絞る。細い管だけで引っ張ると、摩擦で水が出なくなる。',
+  '水が出ないからと増圧ポンプで無理に押すと、細い管が破裂して大損害。ポンプに頼らず、管の太さと道すじの設計で解決するのが職人。'
+];
 
-function cyclePipeSize(segNo) {
-  segIndices[segNo] = (segIndices[segNo] + 1) % PIPE_SPECS.length;
-  playSFX('clank');
-  const spec = PIPE_SPECS[segIndices[segNo]];
-  spawnFloatingText(`区間${segNo + 1}: ${spec.name}`, 'text-sky-300');
-  updateStage2HUD();
-}
+/* ============================================================================
+   管の形
+   ============================================================================ */
+const dirsOf = m => DIRS.filter(d => m & d);
+const isElbow = m => m === (N | E) || m === (E | S) || m === (S | W) || m === (W | N);
+const isStraight = m => m === (N | S) || m === (E | W);
 
-function toggleBendType() {
-  bendIs45 = !bendIs45;
-  playSFX('pop');
-  spawnFloatingText(bendIs45 ? '📐 45度ベンド（損失抵抗ダウン！）' : '直角 90度エルボ（安いが水圧激減！）', bendIs45 ? 'text-emerald-300' : 'text-amber-300');
-  updateStage2HUD();
-}
-
-function toggleDepthType() {
-  depthIsDeep = !depthIsDeep;
-  playSFX('pop');
-  spawnFloatingText(depthIsDeep ? '⛏️ 深さ1.2m（道路管理者OK！）' : '⚠️ 浅掘り0.5m（安いが道路許可NG！？）', depthIsDeep ? 'text-emerald-300' : 'text-rose-300');
-  updateStage2HUD();
-}
-
-function togglePump() {
-  pumpOn = !pumpOn;
-  playSFX('clank');
-  spawnFloatingText(pumpOn ? '⚡ 増圧ポンプ起動！（細管破裂に注意！）' : '増圧ポンプOFF', pumpOn ? 'text-rose-400' : 'text-slate-300');
-  updateStage2HUD();
-}
-
-function applyPreset(presetKey) {
-  playSFX('pop');
-  if (presetKey === 'burst') {
-    // 細管20mmばかり＋増圧ポンプON＝破裂コンボ
-    segIndices = [1, 0, 0]; // φ20, φ16, φ16
-    bendIs45 = false;
-    depthIsDeep = true;
-    pumpOn = true;
-    spawnFloatingText('💥 細管＋増圧ポンプの危険セット！', 'text-rose-400');
-  } else if (presetKey === 'stingy') {
-    // 全部細管でケチりすぎ＝摩擦損失で水が出ない
-    segIndices = [1, 1, 0];
-    bendIs45 = false;
-    depthIsDeep = true;
-    pumpOn = false;
-    spawnFloatingText('💧 材料費ケチりすぎセット！', 'text-amber-300');
-  } else if (presetKey === 'pro') {
-    // 松下社長の黄金設計（段階的に口径を落とす＋45度曲げ＋1.2m埋設）
-    segIndices = [3, 2, 1]; // φ40 -> φ25 -> φ20
-    bendIs45 = true;
-    depthIsDeep = true;
-    pumpOn = false;
-    spawnFloatingText('👑 段階的に口径を絞るプロ設計！', 'text-sky-300');
+// 角管の水路：2辺の中点を、共有する角を中心とした1/4円でつなぐ
+function arcPts(a, b) {
+  const m = a | b;
+  const cx = (m & E) ? 1 : 0, cy = (m & N) ? 0 : 1;
+  const pa = EDGE[a], pb = EDGE[b];
+  const a0 = Math.atan2(pa[1] - cy, pa[0] - cx);
+  let d = Math.atan2(pb[1] - cy, pb[0] - cx) - a0;
+  while (d > Math.PI) d -= Math.PI * 2;
+  while (d < -Math.PI) d += Math.PI * 2;
+  const pts = [];
+  for (let i = 0; i <= 12; i++) {
+    const t = a0 + d * i / 12;
+    pts.push([cx + 0.5 * Math.cos(t), cy + 0.5 * Math.sin(t)]);
   }
-  updateStage2HUD();
+  return pts;
 }
 
-function calculateStage2Metrics() {
-  const s0 = PIPE_SPECS[segIndices[0]]; // 40m
-  const s1 = PIPE_SPECS[segIndices[1]]; // 40m
-  const s2 = PIPE_SPECS[segIndices[2]]; // 20m
-
-  // 各区間コスト（40m, 40m, 20m）
-  const c0 = s0.costPer10m * 4;
-  const c1 = s1.costPer10m * 4;
-  const c2 = s2.costPer10m * 2;
-  const bendCost = bendIs45 ? 15 : 5;
-  const depthCost = depthIsDeep ? 25 : 8;
-  const pumpCost = pumpOn ? 30 : 0;
-  const totalCost = c0 + c1 + c2 + bendCost + depthCost + pumpCost;
-
-  // 圧力計算（元圧 0.30 MPa）
-  let pressure = 0.30 + (pumpOn ? 0.22 : 0);
-  const loss0 = s0.lossPer10m * 4;
-  const loss1 = s1.lossPer10m * 4;
-  const loss2 = s2.lossPer10m * 2;
-  const bendLoss = bendIs45 ? 0.015 : 0.065; // 90度曲げ4箇所だと損失抵抗が跳ね上がる
-
-  // 逆テーパーペナルティ（細い管のあとに太い管を繋ぐと乱流・無意味なコスト）
-  const hasReverseTaper = (segIndices[0] < segIndices[1]) || (segIndices[1] < segIndices[2]);
-
-  const endPressure = Math.max(0, pressure - (loss0 + loss1 + loss2 + bendLoss));
-  // 末端水量 (L/min) 換算
-  const flowLiters = +(endPressure * 95).toFixed(1);
-
-  // 破裂判定：増圧ポンプON かつ φ16またはφ20が含まれる場合、または末端圧が高すぎる場合
-  const isBurst = pumpOn && (s0.burstPump || s1.burstPump || s2.burstPump);
-
-  return {
-    s0, s1, s2, c0, c1, c2,
-    totalCost, endPressure, flowLiters,
-    hasReverseTaper, isBurst
-  };
+// 入口から見た出口（十字管はまっすぐ抜けるだけ、T字管は2方向に分かれる）
+function exitsFor(mask, entry) {
+  if (mask === CROSS) return [OPP[entry]];
+  return dirsOf(mask).filter(d => d !== entry);
 }
 
-function updateStage2HUD() {
-  const m = calculateStage2Metrics();
-  const lengths = [4, 4, 2];
+// 水の通り道（マス内 0〜1 座標の折れ線）
+function waterPaths(mask, entry, exits) {
+  if (entry === null) return exits.map(d => [[0.5, 0.5], EDGE[d]]);
+  if (isElbow(mask)) return [arcPts(entry, exits[0])];
+  return exits.map(d => [EDGE[entry], [0.5, 0.5], EDGE[d]]);
+}
 
-  [m.s0, m.s1, m.s2].forEach((spec, idx) => {
-    const vis = document.getElementById(`pipeVis${idx}`);
-    const lbl = document.getElementById(`pipeLabel${idx}`);
-    const cst = document.getElementById(`pipeCost${idx}`);
-    const btnTxt = document.getElementById(`btnPipeText${idx}`);
-
-    vis.style.height = `${spec.heightPx}px`;
-    lbl.textContent = `φ${spec.id}`;
-    cst.textContent = `${spec.costPer10m * lengths[idx]}万円`;
-    btnTxt.textContent = `現在: ${spec.name}`;
-  });
-
-  // 曲げ表示更新
-  document.getElementById('bendIcon').textContent = bendIs45 ? '📐45°' : '直角90°';
-  document.getElementById('bendSub').textContent = bendIs45 ? '抵抗小' : '抵抗大!';
-  document.getElementById('bendSub').className = bendIs45 ? 'text-[8px] font-bold text-emerald-300' : 'text-[8px] font-bold text-rose-300';
-  document.getElementById('bendCost').textContent = bendIs45 ? '+15万' : '+5万';
-
-  document.getElementById('optBendTitle').textContent = bendIs45 ? '📐 45度曲げ' : '⚡ 90度エルボ';
-  document.getElementById('optBendDesc').textContent = bendIs45 ? '抵抗小 / +15万円' : '水圧激減 / +5万円';
-  document.getElementById('optBendBtn').className = bendIs45
-    ? 'juicy-btn bg-purple-950/80 border-2 border-purple-400 rounded-2xl p-2 flex flex-col items-center text-center'
-    : 'juicy-btn bg-amber-950/80 border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center text-center';
-
-  // 深さ表示更新
-  document.getElementById('optDepthTitle').textContent = depthIsDeep ? '⛏️ 深さ 1.2m' : '⚠️ 浅掘り 0.5m';
-  document.getElementById('optDepthDesc').textContent = depthIsDeep ? '道路許可OK / +25万' : '許可NG危険 / +8万';
-  document.getElementById('optDepthBtn').className = depthIsDeep
-    ? 'juicy-btn bg-emerald-950/80 border-2 border-emerald-400 rounded-2xl p-2 flex flex-col items-center text-center'
-    : 'juicy-btn bg-rose-950/80 border-2 border-rose-500 rounded-2xl p-2 flex flex-col items-center text-center';
-
-  // ポンプ表示更新
-  document.getElementById('optPumpTitle').textContent = pumpOn ? '⚡ ポンプ ON!' : '⚡ ポンプ OFF';
-  document.getElementById('optPumpDesc').textContent = pumpOn ? '水圧UP / +30万円' : '水圧2倍(破裂注意)';
-  document.getElementById('optPumpBtn').className = pumpOn
-    ? 'juicy-btn bg-rose-950 border-2 border-rose-400 rounded-2xl p-2 flex flex-col items-center text-center shadow-lg'
-    : 'juicy-btn bg-slate-800 border-2 border-slate-600 rounded-2xl p-2 flex flex-col items-center text-center';
-
-  // 上部メーター更新
-  document.getElementById('hudFlowText').innerHTML = `${m.flowLiters} <span class="text-xs">L/分</span>`;
-  document.getElementById('hudCostText').innerHTML = `${m.totalCost} <span class="text-xs">万円</span>`;
-
-  const safetyEl = document.getElementById('hudSafetyText');
-  if (m.isBurst) {
-    safetyEl.textContent = '💥破裂危険!';
-    safetyEl.className = 'text-sm sm:text-base font-black text-rose-400 mt-0.5';
-  } else if (!depthIsDeep) {
-    safetyEl.textContent = '🚨道路許可NG';
-    safetyEl.className = 'text-sm sm:text-base font-black text-rose-400 mt-0.5';
-  } else if (m.flowLiters < 12) {
-    safetyEl.textContent = '💧水圧不足';
-    safetyEl.className = 'text-sm sm:text-base font-black text-amber-400 mt-0.5';
-  } else if (m.flowLiters < 15.5) {
-    safetyEl.textContent = '⚠️ギリギリ';
-    safetyEl.className = 'text-sm sm:text-base font-black text-amber-300 mt-0.5';
-  } else {
-    safetyEl.textContent = '👑安全率◎';
-    safetyEl.className = 'text-sm sm:text-base font-black text-emerald-400 mt-0.5';
+function randomPiece(stage) {
+  const table = [
+    [E | W, 3], [N | S, 3],
+    [N | E, 2.6], [E | S, 2.6], [S | W, 2.6], [W | N, 2.6],
+    [CROSS, 1.1]
+  ];
+  if (stage.tees) table.push([N | E | S, 1.3], [E | S | W, 1.3], [S | W | N, 1.3], [W | N | E, 1.3]);
+  const total = table.reduce((a, [, w]) => a + w, 0);
+  let r = Math.random() * total;
+  for (const [m, w] of table) {
+    if ((r -= w) < 0) return m;
   }
-}
-
-function runStage2Test() {
-  const m = calculateStage2Metrics();
-  playSFX('water');
-
-  // 水流バーアニメーション
-  const fills = document.querySelectorAll('.pipe-water-fill');
-  fills.forEach(el => { el.style.width = '100%'; });
-
-  setTimeout(() => {
-    // 1. 浅掘りによる道路管理者ストップ
-    if (!depthIsDeep) {
-      playSFX('boom');
-      triggerShake();
-      launchConfetti('fail');
-      showModal({
-        badge: '工事ストップ！🚨',
-        emoji: '🚧👮‍♂️',
-        title: '道路管理者から許可が下りません！',
-        subtitle: '埋設深さ0.5mは浅すぎ！大型車の重みで管が潰れます！',
-        statsHtml: `
-          <div class="text-rose-300 font-bold">❌ 掘削費をケチって浅掘り（0.5m）にしたため、道路使用許可が下りず一発ゲームオーバー！</div>
-          <div class="text-slate-300 mt-1">公道の下に水道管を入れる場合は、規定の深さ（1.0m〜1.2m以上）に埋設する必要があります。</div>
-        `,
-        trivia: '松下社長のリアル話：「浅く埋めれば施工費は安くなるけど、道路管理者に『この配管はダメです』と言われて許可が下りない」。法令と安全を守るのもプロの技術です！',
-        primaryText: '⛏️ 深さ1.2mに直して再挑戦！',
-        primaryAction: () => { depthIsDeep = true; updateStage2HUD(); closeModal(); }
-      });
-    }
-    // 2. 細管＋増圧ポンプによる大破裂
-    else if (m.isBurst) {
-      playSFX('boom');
-      triggerShake();
-      launchConfetti('fail');
-      document.getElementById('houseIcon').textContent = '💥';
-      document.getElementById('faucetStatus').textContent = '破裂!!';
-      showModal({
-        badge: '大惨事・ゲームオーバー💥',
-        emoji: '💥🌊',
-        title: 'ドカーン！水道管が大破裂！！',
-        subtitle: '細いパイプ（φ16/φ20）に増圧ポンプの圧力をかけすぎました！',
-        statsHtml: `
-          <div class="text-rose-300 font-bold">💥 流速・水圧オーバー！細い管が圧力に耐えきれず継手から吹き飛び、現場が水浸しで大損害発生！</div>
-          <div class="text-amber-300 mt-1">総施工コスト：${m.totalCost}万円 ＋ 賠償金…💸</div>
-        `,
-        trivia: '松下社長のリアル話：「水が出ないからって途中に増圧ポンプを入れて流速を上げすぎると、水道管が破裂して大損害になる」。ポンプに頼らず口径設計で解決するのが職人技！',
-        primaryText: '🔄 ポンプを切って設計し直す',
-        primaryAction: () => { pumpOn = false; updateStage2HUD(); closeModal(); }
-      });
-    }
-    // 3. 損失抵抗による水圧不足（チョロチョロ）
-    else if (m.flowLiters < 12.0) {
-      playSFX('boom');
-      triggerShake();
-      document.getElementById('houseIcon').textContent = '🏠';
-      document.getElementById('faucetStatus').textContent = '水が出ない';
-      showModal({
-        badge: '水圧不足でクレーム発生💧',
-        emoji: '🚰💦',
-        title: '蛇口から水がチョロチョロ…！',
-        subtitle: `末端水量：たったの ${m.flowLiters} L/分（必要量 12L/分以上）`,
-        statsHtml: `
-          <div class="text-amber-300 font-bold">💧 100mの長距離を細い管（または90度エルボ）で引っ張ったため、「損失抵抗（摩擦）」で水圧が消滅しました！</div>
-          <div class="text-slate-300 mt-1">・上流（①）をもっと太い管（φ40やφ75）にするか、用水路を「📐45度曲げ」にして損失抵抗を減らしましょう！</div>
-        `,
-        trivia: '松下社長のリアル話：「100m先に水を出すのに20mmの細い管で持っていったら、損失抵抗で水が出なくなる。最初は40mmで走って、段階的に25mm→20mmと絞るのが水頭計算の基本！」',
-        primaryText: '🔧 口径を太くして再挑戦！',
-        primaryAction: () => { closeModal(); }
-      });
-    }
-    // 4. 予算オーバー（太い鋳鉄管ばかり使った場合）
-    else if (m.totalCost > 180) {
-      playSFX('boom');
-      triggerShake();
-      showModal({
-        badge: '赤字・予算オーバー💸',
-        emoji: '💸😱',
-        title: '水は出たけど…大赤字です！！',
-        subtitle: `総施工コスト：${m.totalCost}万円（予算上限 180万円）`,
-        statsHtml: `
-          <div class="text-amber-300 font-bold">🌊 末端水量：${m.flowLiters} L/分（水圧はバッチリ！）</div>
-          <div class="text-rose-300 font-bold">💸 しかし φ75 や φ100（鋳鉄管）を使いすぎたため、材料費と水道加入金が跳ね上がって予算オーバー！</div>
-          <div class="text-slate-300">・下流（②中流・③宅内）に向かって段階的にパイプを細くしてコストを絞りましょう！</div>
-        `,
-        trivia: '松下社長のリアル話：「100mmや300mmの鋳鉄管で持っていけば水はいくらでも出るけど、お金が異常にかかりすぎる。必要な水量を出しつつ、いかに安く収めるかが腕の見せ所！」',
-        primaryText: '💰 口径を絞ってコスト削減！',
-        primaryAction: () => { closeModal(); }
-      });
-    }
-    // 5. ギリギリ攻めすぎ（12.0〜15.4 L/min：1級試験の罠＆隣に家が建つとアウト）
-    else if (m.flowLiters < 15.5) {
-      playSFX('fanfare');
-      launchConfetti('success');
-      showModal({
-        badge: 'クリア！（ただし要注意⚠️）',
-        emoji: '😅🏠',
-        title: '計算上はクリア！…でも隣に家が建ってピンチ！',
-        subtitle: `タイプ診断：【ギリギリ限界チャレンジャー型】（施工費 ${m.totalCost}万円 / 水量 ${m.flowLiters}L/分）`,
-        statsHtml: `
-          <div class="text-amber-300 font-bold">⚠️ 1軒だけならギリギリ水が出ましたが、半年後に「隣にもう1軒」家が建った途端、水圧が足りなくなって苦情が来ました！</div>
-          <div class="text-sky-300">💡 どこかの区間を「ワンサイズ太く」するか「45度曲げ」にして安全率（余裕）を持たせると、100点満点の『松下社長タイプ』になります！</div>
-        `,
-        rankingScore: m.totalCost,
-        rankingNote: '（安全率ギリギリ通過）',
-        trivia: '松下社長のリアル話：「俺はオーバークオリティが好きやからワンサイズ上げる。ギリギリにすると、お客さんが住んでから水が出ないって苦情になった時に一番目も当てられんからね！」',
-        primaryText: '👑 安全率を上げて神設計を狙う！',
-        primaryAction: () => { closeModal(); }
-      });
-    }
-    // 6. 大成功！安全率バッチリ＆予算内クリア（松下社長タイプ！）
-    else {
-      playSFX('fanfare');
-      launchConfetti('success');
-      document.getElementById('houseIcon').textContent = '🏠✨';
-      document.getElementById('faucetStatus').textContent = '快調!!';
-      showModal({
-        badge: 'Sランク神設計！！👑',
-        emoji: '👑🎉',
-        title: 'プロも唸る「黄金の段階口径設計」達成！',
-        subtitle: `タイプ診断：【松下社長タイプ（安全率バッチリの名職人）】`,
-        statsHtml: `
-          <div class="font-bold text-emerald-300">✅ 末端水量：${m.flowLiters} L/分（もう1軒増えても余裕の安全率！）</div>
-          <div class="font-bold text-amber-300">✅ 総施工コスト：${m.totalCost} 万円（予算180万円以内に見事収めた！）</div>
-          <div class="font-bold text-sky-300">✅ 構成：①φ${m.s0.id} ➔ ②φ${m.s1.id} ➔ ③φ${m.s2.id} （${bendIs45 ? '45度ベンドで抵抗軽減' : '90度エルボ'}）</div>
-        `,
-        rankingScore: m.totalCost,
-        rankingNote: '👑安全率OK',
-        trivia: '松下社長の太鼓判：「上流は太く、末端に向けて段階的に口径を落とし、安全率も見込んで予算内に収める…これが水頭計算の醍醐味！プロが見ても『そうそう、これくらい要るよな！』と納得の設計です！」',
-        primaryText: '🔄 さらに1万円でも安い構成を探す！',
-        primaryAction: () => { closeModal(); }
-      });
-    }
-
-    setTimeout(() => {
-      fills.forEach(el => { el.style.width = '0%'; });
-    }, 500);
-  }, 480);
+  return E | W;
 }
 
 /* ============================================================================
-   6. モーダル＆週間コストランキング表示
+   効果音（Web Audio のシンセ。音声ファイル不要）
    ============================================================================ */
-let modalPrimaryCallback = null;
+let audioCtx = null;
+let soundOn = true;
 
-function showModal({ badge, emoji, title, subtitle, statsHtml, trivia, primaryText, primaryAction, rankingScore = null, rankingNote = '' }) {
-  document.getElementById('modalBadge').textContent = badge;
-  document.getElementById('modalEmoji').textContent = emoji;
-  document.getElementById('modalTitle').textContent = title;
-  document.getElementById('modalSubtitle').textContent = subtitle;
-  document.getElementById('modalStatsBox').innerHTML = statsHtml;
-  document.getElementById('modalTrivia').textContent = trivia;
-  document.getElementById('modalPrimaryBtn').textContent = primaryText;
-  modalPrimaryCallback = primaryAction;
+function ac() {
+  if (!audioCtx) {
+    const C = window.AudioContext || window.webkitAudioContext;
+    if (C) audioCtx = new C();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
 
-  const rankBox = document.getElementById('modalRankingBox');
-  if (rankingScore !== null) {
-    rankBox.classList.remove('hidden');
-    const rivals = [
-      { name: '松下社長（お手本・安全率◎）', cost: 144 },
-      { name: '1級管工事ベテラン職人', cost: 136 },
-      { name: 'あなた（今回の記録 ' + rankingNote + '）', cost: rankingScore, isPlayer: true },
-      { name: '富山の新人見習いA', cost: 168 }
-    ].sort((a, b) => a.cost - b.cost);
+function tone(freq, dur, { type = 'sine', vol = 0.2, to = null, delay = 0 } = {}) {
+  if (!soundOn) return;
+  const a = ac();
+  if (!a) return;
+  const t = a.currentTime + delay;
+  const o = a.createOscillator(), g = a.createGain();
+  o.type = type;
+  o.frequency.setValueAtTime(freq, t);
+  if (to) o.frequency.exponentialRampToValueAtTime(to, t + dur);
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  o.connect(g);
+  g.connect(a.destination);
+  o.start(t);
+  o.stop(t + dur + 0.02);
+}
 
-    document.getElementById('rankingList').innerHTML = rivals.map((r, i) => `
-      <div class="flex items-center justify-between px-2 py-1 rounded-lg ${r.isPlayer ? 'bg-amber-400/20 border border-amber-400 font-black text-amber-200' : 'bg-slate-900 text-slate-300'}">
-        <span>${i + 1}位：${r.name}</span>
-        <span class="font-black">${r.cost}万円</span>
-      </div>
-    `).join('');
+function noise(dur, { freq = 800, type = 'lowpass', vol = 0.3, delay = 0 } = {}) {
+  if (!soundOn) return;
+  const a = ac();
+  if (!a) return;
+  const t = a.currentTime + delay;
+  const len = Math.floor(a.sampleRate * dur);
+  const buf = a.createBuffer(1, len, a.sampleRate);
+  const data = buf.getChannelData(0);
+  for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * (1 - i / len);
+  const src = a.createBufferSource();
+  src.buffer = buf;
+  const f = a.createBiquadFilter();
+  f.type = type;
+  f.frequency.setValueAtTime(freq, t);
+  const g = a.createGain();
+  g.gain.setValueAtTime(vol, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + dur);
+  src.connect(f);
+  f.connect(g);
+  g.connect(a.destination);
+  src.start(t);
+}
+
+const PENTA = [0, 2, 4, 7, 9];
+const SFX = {
+  place() { tone(520, 0.08, { to: 840, vol: 0.16 }); },
+  deny() { tone(150, 0.12, { type: 'square', vol: 0.05 }); },
+  replace() { noise(0.18, { freq: 700, vol: 0.22 }); tone(300, 0.12, { to: 120, type: 'triangle', vol: 0.12 }); },
+  // 管が1本満たされるたびに音階が上がっていく
+  tick(n) {
+    const step = n % 15;
+    const semi = Math.floor(step / 5) * 12 + PENTA[step % 5];
+    tone(330 * Math.pow(2, semi / 12), 0.1, { type: 'triangle', vol: 0.12 });
+  },
+  split() { tone(660, 0.12, { to: 990, type: 'sine', vol: 0.12 }); },
+  cross() { [880, 1320].forEach((f, i) => tone(f, 0.14, { type: 'square', vol: 0.05, delay: i * 0.06 })); },
+  house() { [784, 988, 1175, 1568].forEach((f, i) => tone(f, 0.28, { vol: 0.15, delay: i * 0.07 })); },
+  leak() { noise(0.8, { freq: 500, vol: 0.5 }); tone(150, 0.5, { to: 45, type: 'sawtooth', vol: 0.1 }); },
+  clear() { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, 0.32, { type: 'triangle', vol: 0.16, delay: i * 0.09 })); },
+  start() { noise(0.7, { freq: 1100, type: 'bandpass', vol: 0.3 }); tone(220, 0.35, { to: 440, vol: 0.08 }); },
+  beep() { tone(880, 0.08, { type: 'square', vol: 0.05 }); }
+};
+
+function buzz(pattern) {
+  try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (e) { /* 非対応端末 */ }
+}
+
+/* ============================================================================
+   ゲーム状態
+   ============================================================================ */
+const $ = id => document.getElementById(id);
+const board = $('board');
+const bctx = board.getContext('2d');
+const bg = document.createElement('canvas');
+const bgctx = bg.getContext('2d');
+let DPR = 1, CELL = 48, BW = CELL * COLS, BH = CELL * ROWS;
+
+const G = {
+  state: 'title',   // title / intro / build / flow / leaking / clearing / result
+  stageIdx: 0,
+  grid: null,
+  queue: [],
+  heads: [],
+  countdown: 0,
+  fast: false,
+  score: 0,
+  stats: null,
+  leak: null,
+  doneAt: 0,
+  shake: 0,
+  lastBeep: 0,
+  results: [],
+  particles: [],
+  floaters: [],
+  now: 0
+};
+
+function buildStage(i) {
+  const st = STAGES[i];
+  G.stageIdx = i;
+  G.grid = Array.from({ length: ROWS }, (_, y) =>
+    Array.from({ length: COLS }, (_, x) => ({ x, y, type: 'empty', mask: 0, segs: {}, placedAt: 0, cool: 0 })));
+  st.rocks.forEach(([x, y]) => { G.grid[y][x].type = 'rock'; });
+  st.channel.forEach(([x, y]) => { G.grid[y][x].type = 'channel'; });
+  const src = G.grid[st.source.y][st.source.x];
+  src.type = 'source';
+  src.dir = st.source.dir;
+  st.houses.forEach(h => {
+    const c = G.grid[h.y][h.x];
+    c.type = 'house';
+    c.dir = h.dir;
+    c.supplied = false;
+  });
+  G.queue = Array.from({ length: 5 }, () => randomPiece(st));
+  G.heads = [];
+  G.countdown = st.countdown;
+  G.fast = false;
+  G.score = 0;
+  G.stats = { pipes: 0, cross: 0, houses: 0, early: 0, replaced: 0 };
+  G.leak = null;
+  G.lastBeep = 0;
+  G.particles = [];
+  G.floaters = [];
+  $('stageTag').textContent = `STAGE ${i + 1}/${STAGES.length}`;
+  $('stageName').textContent = st.name;
+  renderQueue();
+  updateHud();
+}
+
+function startStage(i, skipIntro) {
+  buildStage(i);
+  if (skipIntro) {
+    hideOverlay();
+    G.state = 'build';
   } else {
-    rankBox.classList.add('hidden');
+    G.state = 'intro';
+    showIntro();
+  }
+  syncButtons();
+}
+
+/* ============================================================================
+   操作
+   ============================================================================ */
+function placeAt(x, y) {
+  if (G.state !== 'build' && G.state !== 'flow') return;
+  const c = G.grid[y][x];
+  const cx = (x + 0.5) * CELL, cy = (y + 0.5) * CELL;
+  if (c.type === 'rock' || c.type === 'channel' || c.type === 'source' || c.type === 'house') {
+    SFX.deny();
+    floater(cx, cy, c.type === 'rock' ? '岩盤は掘れない！' : c.type === 'channel' ? '用水路には置けない！' : 'ここには置けない', '#fda4af', 13);
+    return;
+  }
+  if (c.type === 'pipe') {
+    if (Object.keys(c.segs).length) {
+      SFX.deny();
+      floater(cx, cy, '水が入った管は外せない！', '#fda4af', 13);
+      return;
+    }
+    if (G.now < c.cool) return;
+    G.stats.replaced++;
+    G.score = Math.max(0, G.score - 50);
+    floater(cx, cy, '置き直し -50', '#fb7185', 14);
+    burst(cx, cy, 14, ['#a16207', '#78350f', '#d6d3d1'], 3.5);
+    SFX.replace();
+  } else {
+    SFX.place();
+  }
+  c.type = 'pipe';
+  c.mask = G.queue.shift();
+  c.segs = {};
+  c.placedAt = G.now;
+  c.cool = G.now + 260;
+  G.queue.push(randomPiece(STAGES[G.stageIdx]));
+  buzz(8);
+  renderQueue();
+  updateHud();
+}
+
+function startFlow(early) {
+  if (G.state !== 'build') return;
+  if (early && G.countdown > 0.5) {
+    const bonus = Math.ceil(G.countdown) * 20;
+    G.stats.early = bonus;
+    G.score += bonus;
+    floater(BW / 2, BH * 0.15, `早出しボーナス +${bonus}`, '#fde047', 18);
+  }
+  G.countdown = 0;
+  G.state = 'flow';
+  const st = STAGES[G.stageIdx];
+  const src = G.grid[st.source.y][st.source.x];
+  src.segs.a = { entry: null, exits: [src.dir], t: 0, done: false, paths: waterPaths(0, null, [src.dir]) };
+  G.heads = [{ x: src.x, y: src.y, ch: 'a' }];
+  SFX.start();
+  buzz(30);
+  syncButtons();
+  updateHud();
+}
+
+/* ============================================================================
+   水の流れ
+   ============================================================================ */
+function stepFlow(dt) {
+  const st = STAGES[G.stageIdx];
+  // 管がつながるほど、少しずつ流れが速くなる
+  const ms = G.fast ? 110 : st.flowMs * Math.max(0.62, 1 - G.stats.pipes * 0.012);
+  const next = [];
+  for (const h of G.heads) {
+    const seg = G.grid[h.y][h.x].segs[h.ch];
+    seg.t += dt / ms;
+    if (seg.t < 1) {
+      next.push(h);
+      continue;
+    }
+    seg.t = 1;
+    seg.done = true;
+    onSegDone(h, seg, next);
+    if (G.state !== 'flow') return;
+  }
+  G.heads = next;
+  if (G.heads.length === 0) {
+    fail(null, '水が家まで届かなかった…', '管どうしが合流して行き止まりに。');
+  }
+}
+
+function onSegDone(h, seg, next) {
+  const cell = G.grid[h.y][h.x];
+  const cx = (h.x + 0.5) * CELL, cy = (h.y + 0.5) * CELL;
+
+  if (cell.type === 'pipe') {
+    G.stats.pipes++;
+    G.score += 100;
+    SFX.tick(G.stats.pipes);
+    floater(cx, cy, '+100', '#a5f3fc', 13);
+    if (cell.mask === CROSS && cell.segs.h && cell.segs.v && cell.segs.h.done && cell.segs.v.done) {
+      G.stats.cross++;
+      G.score += 400;
+      SFX.cross();
+      floater(cx, cy - CELL * 0.4, 'クロス通水！ +400', '#f0abfc', 16);
+      burst(cx, cy, 18, ['#f0abfc', '#a5f3fc', '#fff'], 4);
+    }
+    if (seg.exits.length === 2) {
+      SFX.split();
+      floater(cx, cy - CELL * 0.4, '分岐！', '#fde047', 15);
+    }
+    updateHud();
   }
 
-  document.getElementById('resultModal').classList.remove('hidden');
+  for (const d of seg.exits) {
+    const nx = h.x + DX[d], ny = h.y + DY[d];
+    if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) {
+      return fail({ x: h.x, y: h.y, d }, '現場の外に水が噴き出した！', '水の行き先を、先回りしてふさごう。');
+    }
+    const n = G.grid[ny][nx];
+    const entry = OPP[d];
+    if (n.type === 'house') {
+      if (n.dir !== entry) return fail({ x: h.x, y: h.y, d }, '家の壁に水がぶつかった！', '家には「給水口」がある面からしか入らない。');
+      if (!n.supplied) supply(n);
+      if (G.state !== 'flow') return;
+      continue;
+    }
+    if (n.type === 'empty') return fail({ x: h.x, y: h.y, d }, 'その先に管がない！', '赤く光るマスが、水が次に向かう場所。');
+    if (n.type === 'rock') return fail({ x: h.x, y: h.y, d }, '岩盤にぶつかって水があふれた！', '岩盤の手前で曲げよう。');
+    if (n.type === 'channel') return fail({ x: h.x, y: h.y, d }, '用水路に水が流れ込んだ！', '用水路はすき間から回り込もう。');
+    if (n.type === 'source') return fail({ x: h.x, y: h.y, d }, '本管に逆流した！', '水は本管に戻せない。');
+    if (!(n.mask & entry)) return fail({ x: h.x, y: h.y, d }, '管の向きが合わずに水漏れ！', '次の管の口が、水の来る向きと合っているか確認。');
+    const ch = n.mask === CROSS ? ((d === E || d === W) ? 'h' : 'v') : 'a';
+    if (n.segs[ch]) continue; // すでに水が来ている管に合流
+    const exits = exitsFor(n.mask, entry);
+    n.segs[ch] = { entry, exits, t: 0, done: false, paths: waterPaths(n.mask, entry, exits) };
+    next.push({ x: nx, y: ny, ch });
+  }
 }
 
-function closeModal() {
-  playSFX('clank');
-  document.getElementById('resultModal').classList.add('hidden');
+function supply(house) {
+  house.supplied = true;
+  G.stats.houses++;
+  G.score += 1000;
+  const cx = (house.x + 0.5) * CELL, cy = (house.y + 0.5) * CELL;
+  floater(cx, cy - CELL * 0.5, '給水OK！ +1000', '#86efac', 18);
+  burst(cx, cy, 34, ['#22d3ee', '#a5f3fc', '#ffffff', '#86efac'], 5);
+  SFX.house();
+  buzz([20, 40, 20]);
+  updateHud();
+  const st = STAGES[G.stageIdx];
+  if (G.stats.houses >= st.houses.length) {
+    G.state = 'clearing';
+    G.doneAt = G.now;
+    confetti();
+    SFX.clear();
+    syncButtons();
+  }
 }
 
-function goToNextAction() {
-  if (modalPrimaryCallback) modalPrimaryCallback();
+function fail(at, title, tip) {
+  G.state = 'leaking';
+  G.doneAt = G.now;
+  G.leak = at ? { ...at, title, tip } : { title, tip };
+  G.shake = 16;
+  SFX.leak();
+  buzz([60, 40, 140]);
+  syncButtons();
 }
 
-// 初期描画
-renderDrainSlots();
-updateStage2HUD();
+/* ============================================================================
+   エフェクト
+   ============================================================================ */
+function floater(x, y, text, color, size) {
+  G.floaters.push({ x, y, text, color, size, t0: G.now, dur: 900 });
+}
+
+function burst(x, y, n, colors, speed) {
+  for (let i = 0; i < n; i++) {
+    const a = Math.random() * Math.PI * 2, v = speed * (0.4 + Math.random());
+    G.particles.push({
+      x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5,
+      g: 0.18, life: 1, decay: 0.02 + Math.random() * 0.015,
+      size: 2 + Math.random() * 3, color: colors[i % colors.length], sq: false
+    });
+  }
+}
+
+function confetti() {
+  const colors = ['#38bdf8', '#fbbf24', '#4ade80', '#f472b6', '#a78bfa', '#ffffff'];
+  for (let i = 0; i < 90; i++) {
+    G.particles.push({
+      x: BW / 2 + (Math.random() - 0.5) * BW * 0.4, y: BH * 0.35,
+      vx: (Math.random() - 0.5) * 9, vy: -4 - Math.random() * 7,
+      g: 0.22, life: 1, decay: 0.008 + Math.random() * 0.008,
+      size: 4 + Math.random() * 4, color: colors[i % colors.length], sq: true, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4
+    });
+  }
+}
+
+function sprayLeak() {
+  const L = G.leak;
+  if (!L || L.d === undefined) return;
+  const px = (L.x + EDGE[L.d][0]) * CELL, py = (L.y + EDGE[L.d][1]) * CELL;
+  for (let i = 0; i < 4; i++) {
+    const spread = (Math.random() - 0.5) * 1.6;
+    const base = { [N]: [0, -1], [E]: [1, 0], [S]: [0, 1], [W]: [-1, 0] }[L.d];
+    const v = 3 + Math.random() * 3;
+    G.particles.push({
+      x: px, y: py,
+      vx: (base[0] + (base[1] ? spread : 0)) * v, vy: (base[1] + (base[0] ? spread : 0)) * v - 1,
+      g: 0.25, life: 1, decay: 0.03, size: 2 + Math.random() * 2.5,
+      color: Math.random() < 0.5 ? '#22d3ee' : '#e0f2fe', sq: false
+    });
+  }
+}
+
+/* ============================================================================
+   描画
+   ============================================================================ */
+function rr(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function layout() {
+  const wrap = $('boardWrap');
+  CELL = Math.max(30, Math.floor(Math.min(wrap.clientWidth / COLS, wrap.clientHeight / ROWS)));
+  BW = CELL * COLS;
+  BH = CELL * ROWS;
+  DPR = Math.min(window.devicePixelRatio || 1, 3);
+  board.width = BW * DPR;
+  board.height = BH * DPR;
+  board.style.width = BW + 'px';
+  board.style.height = BH + 'px';
+  bg.width = BW * DPR;
+  bg.height = BH * DPR;
+  renderBg();
+  ['q0', 'q1', 'q2', 'q3'].forEach(id => {
+    const cv = $(id);
+    const size = id === 'q0' ? 58 : 36;
+    cv.width = size * DPR;
+    cv.height = size * DPR;
+  });
+  renderQueue();
+}
+
+// 土の断面（背景は1回だけ描いておく）
+function renderBg() {
+  const c = bgctx;
+  c.setTransform(DPR, 0, 0, DPR, 0, 0);
+  const g = c.createLinearGradient(0, 0, 0, BH);
+  g.addColorStop(0, '#4a3424');
+  g.addColorStop(1, '#2a1c12');
+  c.fillStyle = g;
+  c.fillRect(0, 0, BW, BH);
+  let seed = 7;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  for (let i = 0; i < (BW * BH) / 80; i++) {
+    c.fillStyle = rnd() < 0.5 ? `rgba(255,214,170,${0.03 + rnd() * 0.07})` : `rgba(0,0,0,${0.05 + rnd() * 0.1})`;
+    c.beginPath();
+    c.arc(rnd() * BW, rnd() * BH, 0.5 + rnd() * 1.8, 0, Math.PI * 2);
+    c.fill();
+  }
+  for (let y = 0; y < ROWS; y++) {
+    for (let x = 0; x < COLS; x++) {
+      c.fillStyle = (x + y) % 2 ? 'rgba(255,240,220,0.035)' : 'rgba(0,0,0,0.07)';
+      rr(c, x * CELL + 2, y * CELL + 2, CELL - 4, CELL - 4, 6);
+      c.fill();
+    }
+  }
+}
+
+function tracePipe(ctx, x, y, s, mask) {
+  ctx.beginPath();
+  if (isElbow(mask)) {
+    const [a, b] = dirsOf(mask);
+    const pts = arcPts(a, b);
+    ctx.moveTo(x + pts[0][0] * s, y + pts[0][1] * s);
+    for (let i = 1; i < pts.length; i++) ctx.lineTo(x + pts[i][0] * s, y + pts[i][1] * s);
+  } else {
+    for (const d of dirsOf(mask)) {
+      ctx.moveTo(x + s / 2, y + s / 2);
+      ctx.lineTo(x + EDGE[d][0] * s, y + EDGE[d][1] * s);
+    }
+  }
+}
+
+function drawPipeBody(ctx, x, y, s, mask) {
+  const steel = ctx.createLinearGradient(x, y, x + s, y + s);
+  steel.addColorStop(0, '#dbe4ee');
+  steel.addColorStop(1, '#6f8299');
+  const layers = [[0.46, '#0a0f1a'], [0.36, steel], [0.2, '#0b1426']];
+  const hub = !isElbow(mask) && !isStraight(mask) && dirsOf(mask).length > 1;
+  ctx.lineCap = 'butt';
+  ctx.lineJoin = 'round';
+  for (const [w, col] of layers) {
+    ctx.lineWidth = w * s;
+    ctx.strokeStyle = col;
+    tracePipe(ctx, x, y, s, mask);
+    ctx.stroke();
+    if (hub) {
+      ctx.beginPath();
+      ctx.arc(x + s / 2, y + s / 2, (w * s) / 2, 0, Math.PI * 2);
+      ctx.fillStyle = col;
+      ctx.fill();
+    }
+  }
+  // 継手（フランジ）
+  for (const d of dirsOf(mask)) {
+    ctx.save();
+    ctx.translate(x + EDGE[d][0] * s, y + EDGE[d][1] * s);
+    ctx.rotate(ROT[d]);
+    ctx.fillStyle = '#0a0f1a';
+    ctx.fillRect(-s * 0.1, -s * 0.28, s * 0.1, s * 0.56);
+    ctx.fillStyle = '#8796ab';
+    ctx.fillRect(-s * 0.085, -s * 0.255, s * 0.07, s * 0.51);
+    ctx.restore();
+  }
+}
+
+function strokePolyline(ctx, pts, frac) {
+  if (frac <= 0) return;
+  const lens = [];
+  let total = 0;
+  for (let i = 1; i < pts.length; i++) {
+    const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
+    lens.push(l);
+    total += l;
+  }
+  let remain = total * Math.min(1, frac);
+  ctx.beginPath();
+  ctx.moveTo(pts[0][0], pts[0][1]);
+  for (let i = 1; i < pts.length; i++) {
+    const l = lens[i - 1];
+    if (remain >= l) {
+      ctx.lineTo(pts[i][0], pts[i][1]);
+      remain -= l;
+    } else {
+      const r = l ? remain / l : 0;
+      ctx.lineTo(pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * r, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * r);
+      break;
+    }
+  }
+  ctx.stroke();
+}
+
+function drawWater(ctx, x, y, s, paths, t, ts) {
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  for (const p of paths) {
+    const pts = p.map(([u, v]) => [x + u * s, y + v * s]);
+    ctx.strokeStyle = '#22d3ee';
+    ctx.lineWidth = s * 0.17;
+    strokePolyline(ctx, pts, t);
+    ctx.strokeStyle = 'rgba(230,252,255,0.8)';
+    ctx.lineWidth = s * 0.05;
+    ctx.setLineDash([s * 0.1, s * 0.18]);
+    ctx.lineDashOffset = -ts * 0.06;
+    strokePolyline(ctx, pts, t);
+    ctx.setLineDash([]);
+  }
+}
+
+function drawRock(ctx, x, y, s, gx, gy) {
+  let seed = (gx * 7919 + gy * 104729 + 13) % 2147483647;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  ctx.beginPath();
+  for (let i = 0; i < 8; i++) {
+    const a = (i / 8) * Math.PI * 2 + rnd() * 0.4;
+    const r = s * (0.3 + rnd() * 0.12);
+    const px = x + s / 2 + Math.cos(a) * r, py = y + s / 2 + Math.sin(a) * r * 0.85 + s * 0.04;
+    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+  }
+  ctx.closePath();
+  const g = ctx.createLinearGradient(x, y, x + s, y + s);
+  g.addColorStop(0, '#a8a29e');
+  g.addColorStop(1, '#3f3a36');
+  ctx.fillStyle = g;
+  ctx.fill();
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = '#1c1917';
+  ctx.stroke();
+  ctx.fillStyle = 'rgba(255,255,255,0.2)';
+  ctx.beginPath();
+  ctx.ellipse(x + s * 0.4, y + s * 0.36, s * 0.1, s * 0.05, -0.5, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+function drawChannel(ctx, x, y, s, ts) {
+  ctx.fillStyle = '#0b4266';
+  ctx.fillRect(x, y + s * 0.08, s, s * 0.84);
+  ctx.fillStyle = '#5b4636';
+  ctx.fillRect(x, y + s * 0.04, s, s * 0.06);
+  ctx.fillRect(x, y + s * 0.9, s, s * 0.06);
+  ctx.strokeStyle = 'rgba(125,211,252,0.55)';
+  ctx.lineWidth = 2;
+  for (let k = 0; k < 3; k++) {
+    ctx.beginPath();
+    for (let i = 0; i <= 10; i++) {
+      const px = x + (i / 10) * s;
+      const py = y + s * (0.3 + k * 0.2) + Math.sin((x + px) * 0.12 + ts * 0.004 + k) * s * 0.035;
+      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
+    }
+    ctx.stroke();
+  }
+}
+
+function drawSource(ctx, c, x, y, s, ts) {
+  ctx.fillStyle = 'rgba(14,165,233,0.2)';
+  rr(ctx, x + 3, y + 3, s - 6, s - 6, 8);
+  ctx.fill();
+  drawPipeBody(ctx, x, y, s, c.dir);
+  if (c.segs.a) drawWater(ctx, x, y, s, c.segs.a.paths, c.segs.a.t, ts);
+  const cx = x + s / 2, cy = y + s / 2;
+  if (G.state === 'build' || G.state === 'intro') {
+    const p = (ts % 1200) / 1200;
+    ctx.strokeStyle = `rgba(56,189,248,${1 - p})`;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(cx, cy, s * (0.3 + p * 0.25), 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  ctx.beginPath();
+  ctx.arc(cx, cy, s * 0.3, 0, Math.PI * 2);
+  ctx.fillStyle = '#0284c7';
+  ctx.fill();
+  ctx.lineWidth = s * 0.06;
+  ctx.strokeStyle = '#7dd3fc';
+  ctx.stroke();
+  ctx.fillStyle = '#fff';
+  ctx.font = `900 ${Math.round(s * 0.21)}px 'M PLUS Rounded 1c', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('本管', cx, cy + 1);
+}
+
+function drawHouse(ctx, c, x, y, s, ts) {
+  drawPipeBody(ctx, x, y, s, c.dir);
+  if (c.supplied) drawWater(ctx, x, y, s, [[EDGE[c.dir], [0.5, 0.5]]], 1, ts);
+  const cx = x + s / 2, cy = y + s * 0.56, w = s * 0.6;
+  ctx.fillStyle = c.supplied ? '#fef9c3' : '#e2e8f0';
+  rr(ctx, cx - w / 2, cy - w * 0.12, w, w * 0.56, 3);
+  ctx.fill();
+  ctx.beginPath();
+  ctx.moveTo(cx - w * 0.64, cy - w * 0.08);
+  ctx.lineTo(cx, cy - w * 0.64);
+  ctx.lineTo(cx + w * 0.64, cy - w * 0.08);
+  ctx.closePath();
+  ctx.fillStyle = '#f97316';
+  ctx.fill();
+  ctx.lineWidth = 1.5;
+  ctx.strokeStyle = '#7c2d12';
+  ctx.stroke();
+  ctx.fillStyle = '#7c2d12';
+  ctx.fillRect(cx - w * 0.1, cy + w * 0.15, w * 0.2, w * 0.29);
+  ctx.fillStyle = c.supplied ? '#facc15' : '#475569';
+  ctx.fillRect(cx - w * 0.38, cy + w * 0.02, w * 0.18, w * 0.16);
+  ctx.fillRect(cx + w * 0.2, cy + w * 0.02, w * 0.18, w * 0.16);
+  if (c.supplied) {
+    const bob = Math.sin(ts * 0.006) * 2;
+    ctx.beginPath();
+    ctx.arc(x + s * 0.82, y + s * 0.2 + bob, s * 0.15, 0, Math.PI * 2);
+    ctx.fillStyle = '#22c55e';
+    ctx.fill();
+    ctx.fillStyle = '#fff';
+    ctx.font = `900 ${Math.round(s * 0.15)}px 'M PLUS Rounded 1c', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('OK', x + s * 0.82, y + s * 0.2 + bob + 1);
+  }
+}
+
+// 水の行き先がふさがっていないマスを光らせる（ビルド中は黄色、通水中は赤）
+function drawHints(ctx, ts) {
+  const targets = [];
+  if (G.state === 'build' || G.state === 'intro') {
+    const s = STAGES[G.stageIdx].source;
+    targets.push({ x: s.x + DX[s.dir], y: s.y + DY[s.dir], from: s.dir, warn: false });
+  } else if (G.state === 'flow') {
+    for (const h of G.heads) {
+      const seg = G.grid[h.y][h.x].segs[h.ch];
+      for (const d of seg.exits) targets.push({ x: h.x + DX[d], y: h.y + DY[d], from: d, warn: true, t: seg.t });
+    }
+  } else {
+    return;
+  }
+  const pulse = 0.5 + 0.5 * Math.sin(ts * (G.state === 'flow' ? 0.016 : 0.008));
+  for (const t of targets) {
+    if (t.x < 0 || t.y < 0 || t.x >= COLS || t.y >= ROWS) continue;
+    const n = G.grid[t.y][t.x];
+    const ok = (n.type === 'pipe' && (n.mask & OPP[t.from])) || (n.type === 'house' && n.dir === OPP[t.from]);
+    if (ok) continue;
+    const rgb = t.warn ? '244,63,94' : '250,204,21';
+    rr(ctx, t.x * CELL + 3, t.y * CELL + 3, CELL - 6, CELL - 6, 8);
+    ctx.fillStyle = `rgba(${rgb},${0.08 + 0.17 * pulse})`;
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = `rgba(${rgb},${0.45 + 0.55 * pulse})`;
+    ctx.stroke();
+    ctx.fillStyle = `rgba(${rgb},${0.7 + 0.3 * pulse})`;
+    ctx.font = `900 ${Math.round(CELL * 0.42)}px 'M PLUS Rounded 1c', sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(t.warn ? '!' : ARROW[t.from], (t.x + 0.5) * CELL, (t.y + 0.5) * CELL);
+  }
+}
+
+const easeOutBack = k => 1 + 2.7 * Math.pow(k - 1, 3) + 1.7 * Math.pow(k - 1, 2);
+
+function draw(ts) {
+  const ctx = bctx;
+  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  ctx.clearRect(0, 0, BW, BH);
+  ctx.save();
+  if (G.shake > 0.3) ctx.translate((Math.random() - 0.5) * G.shake, (Math.random() - 0.5) * G.shake);
+  ctx.drawImage(bg, 0, 0, BW, BH);
+  if (G.grid) {
+    for (const row of G.grid) {
+      for (const c of row) {
+        const x = c.x * CELL, y = c.y * CELL, s = CELL;
+        if (c.type === 'rock') drawRock(ctx, x, y, s, c.x, c.y);
+        else if (c.type === 'channel') drawChannel(ctx, x, y, s, ts);
+      }
+    }
+    drawHints(ctx, ts);
+    for (const row of G.grid) {
+      for (const c of row) {
+        const x = c.x * CELL, y = c.y * CELL, s = CELL;
+        if (c.type === 'source') drawSource(ctx, c, x, y, s, ts);
+        else if (c.type === 'house') drawHouse(ctx, c, x, y, s, ts);
+        else if (c.type === 'pipe') {
+          const k = Math.min(1, (ts - c.placedAt) / 170);
+          const sc = k < 1 ? 0.55 + 0.45 * easeOutBack(k) : 1;
+          ctx.save();
+          if (sc !== 1) {
+            ctx.translate(x + s / 2, y + s / 2);
+            ctx.scale(sc, sc);
+            ctx.translate(-(x + s / 2), -(y + s / 2));
+          }
+          drawPipeBody(ctx, x, y, s, c.mask);
+          for (const ch in c.segs) drawWater(ctx, x, y, s, c.segs[ch].paths, c.segs[ch].t, ts);
+          ctx.restore();
+        }
+      }
+    }
+  }
+  for (const p of G.particles) {
+    ctx.globalAlpha = Math.max(0, p.life);
+    ctx.fillStyle = p.color;
+    if (p.sq) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      ctx.restore();
+    } else {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  for (const f of G.floaters) {
+    const k = (ts - f.t0) / f.dur;
+    if (k < 0 || k > 1) continue;
+    ctx.globalAlpha = k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3;
+    ctx.font = `900 ${f.size}px 'M PLUS Rounded 1c', sans-serif`;
+    const fx = Math.min(BW - 40, Math.max(40, f.x)), fy = f.y - k * 30;
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = 'rgba(0,0,0,0.75)';
+    ctx.strokeText(f.text, fx, fy);
+    ctx.fillStyle = f.color;
+    ctx.fillText(f.text, fx, fy);
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+function renderQueue() {
+  ['q0', 'q1', 'q2', 'q3'].forEach((id, i) => {
+    const cv = $(id);
+    const ctx = cv.getContext('2d');
+    const size = i === 0 ? 58 : 36;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    ctx.clearRect(0, 0, size, size);
+    ctx.fillStyle = i === 0 ? '#2a1c12' : '#1e293b';
+    rr(ctx, 0, 0, size, size, i === 0 ? 12 : 8);
+    ctx.fill();
+    const m = G.queue[i];
+    if (m) drawPipeBody(ctx, 0, 0, size, m);
+  });
+}
+
+/* ============================================================================
+   HUD・ボタン
+   ============================================================================ */
+function updateHud() {
+  const st = STAGES[G.stageIdx];
+  $('scoreText').textContent = G.score.toLocaleString();
+  const goal = $('goalText');
+  goal.textContent = `${G.stats.pipes}/${st.goal}`;
+  goal.classList.toggle('done', G.stats.pipes >= st.goal);
+  const timer = $('timer');
+  timer.classList.toggle('flow', G.state === 'flow' || G.state === 'clearing');
+  timer.classList.toggle('warn', G.state === 'build' && G.countdown <= 5);
+  if (G.state === 'build' || G.state === 'intro') {
+    $('timerFill').style.width = `${(G.countdown / st.countdown) * 100}%`;
+    $('timerText').textContent = G.state === 'intro' ? '準備中' : `通水まで ${Math.ceil(G.countdown)}秒`;
+  } else if (G.state === 'flow') {
+    $('timerFill').style.width = '100%';
+    $('timerText').textContent = G.fast ? '⏩ 早送り中！' : '💧 通水中！ 水の先回りで管を置け';
+  } else if (G.state === 'clearing') {
+    $('timerText').textContent = '✨ 全戸給水完了！';
+  } else if (G.state === 'leaking') {
+    $('timerFill').style.width = '0%';
+    $('timerText').textContent = '💥 水漏れ発生！';
+  }
+}
+
+function syncButtons() {
+  const b = $('actionBtn');
+  if (G.state === 'build') {
+    b.disabled = false;
+    b.className = 'btn btn-primary grow';
+    b.textContent = '💧 今すぐ通水（早いほどボーナス）';
+  } else if (G.state === 'flow') {
+    b.disabled = G.fast;
+    b.className = 'btn btn-amber grow';
+    b.textContent = G.fast ? '⏩ 早送り中…' : '⏩ 早送り';
+  } else {
+    b.disabled = true;
+  }
+  $('retryBtn').disabled = !(G.state === 'build' || G.state === 'flow');
+}
+
+/* ============================================================================
+   画面（オーバーレイ）
+   ============================================================================ */
+const overlay = $('overlay');
+
+function showOverlay(html) {
+  overlay.innerHTML = html;
+  overlay.classList.add('show');
+}
+
+function hideOverlay() {
+  overlay.classList.remove('show');
+  overlay.innerHTML = '';
+}
+
+function loadBest() {
+  try { return Number(localStorage.getItem('mpc_best') || 0); } catch (e) { return 0; }
+}
+
+function saveBest(v) {
+  try { localStorage.setItem('mpc_best', String(v)); } catch (e) { /* プライベートモード等 */ }
+}
+
+function showTitle() {
+  G.state = 'title';
+  buildStage(0);
+  syncButtons();
+  const best = loadBest();
+  showOverlay(`
+    <div class="card">
+      <div class="brand">松下工業 presents</div>
+      <h1 class="logo"><span>快感！</span><em>配管クラフト</em></h1>
+      <p class="lead">水が流れてくる前に、管をつなげ。<br>漏らさず家まで届けたら、プロの仕事。</p>
+      <ol class="howto">
+        <li><b>マスをタップ</b>すると「次の管」が置ける</li>
+        <li>水が来る前なら<b>上から置き直し</b>OK（−50点）</li>
+        <li>時間になると<b>本管から水が出る</b>。水の先回りで管をつなげ！</li>
+        <li>1滴でも漏れたら失敗。全部の家に届けばクリア</li>
+      </ol>
+      <button class="btn btn-amber" data-act="start">▶ スタート（全5ステージ）</button>
+      ${best ? `<div class="best">あなたのベスト：${best.toLocaleString()}点</div>` : ''}
+    </div>`);
+}
+
+function showIntro() {
+  const st = STAGES[G.stageIdx];
+  showOverlay(`
+    <div class="card">
+      <span class="tag">STAGE ${G.stageIdx + 1} / ${STAGES.length}</span>
+      <h2>${st.name}</h2>
+      <p>${st.sub}</p>
+      <ul class="missions">
+        <li><span class="st">★</span>全部の家（${st.houses.length}軒）に水を届ける</li>
+        <li><span class="st">★</span>水が通らない「ムダな管」を1本以下に</li>
+        <li><span class="st">★</span>管を${st.goal}本以上つないで届ける</li>
+      </ul>
+      <p style="font-size:12px;color:#8ea0bd">通水まで ${st.countdown}秒。早く流すほどボーナス！</p>
+      <button class="btn btn-primary" data-act="go">準備OK！</button>
+    </div>`);
+}
+
+function finishStage() {
+  const st = STAGES[G.stageIdx];
+  let waste = 0;
+  for (const row of G.grid) for (const c of row) if (c.type === 'pipe' && !Object.keys(c.segs).length) waste++;
+  const wastePenalty = waste * 100;
+  G.score = Math.max(0, G.score - wastePenalty);
+  const okWaste = waste <= 1, okGoal = G.stats.pipes >= st.goal;
+  const stars = 1 + (okWaste ? 1 : 0) + (okGoal ? 1 : 0);
+  G.results[G.stageIdx] = { score: G.score, stars };
+  updateHud();
+  const s = G.stats;
+  const last = G.stageIdx === STAGES.length - 1;
+  showOverlay(`
+    <div class="card">
+      <span class="tag">STAGE ${G.stageIdx + 1} CLEAR!</span>
+      <div class="stars">${'<span class="on">★</span>'.repeat(stars)}${'<span class="off">★</span>'.repeat(3 - stars)}</div>
+      <ul class="missions">
+        <li class="ok"><span class="st">★</span>全部の家に給水</li>
+        <li class="${okWaste ? 'ok' : 'ng'}"><span class="st">★</span>ムダな管 ${waste}本（1本以下）</li>
+        <li class="${okGoal ? 'ok' : 'ng'}"><span class="st">★</span>つないだ管 ${s.pipes}本（${st.goal}本以上）</li>
+      </ul>
+      <div class="bd">
+        <div><span>つないだ管 ×${s.pipes}</span><span>+${(s.pipes * 100).toLocaleString()}</span></div>
+        <div><span>給水 ×${s.houses}</span><span>+${(s.houses * 1000).toLocaleString()}</span></div>
+        ${s.cross ? `<div><span>クロス通水 ×${s.cross}</span><span>+${(s.cross * 400).toLocaleString()}</span></div>` : ''}
+        ${s.early ? `<div><span>早出しボーナス</span><span>+${s.early}</span></div>` : ''}
+        ${s.replaced ? `<div class="minus"><span>置き直し ×${s.replaced}</span><span>−${s.replaced * 50}</span></div>` : ''}
+        ${waste ? `<div class="minus"><span>ムダな管 ×${waste}</span><span>−${wastePenalty}</span></div>` : ''}
+        <div class="total"><span>ステージ得点</span><span>${G.score.toLocaleString()}</span></div>
+      </div>
+      <div class="memo"><b>🔧 松下社長の現場メモ</b><p>${MEMOS[G.stageIdx]}</p></div>
+      <div class="row2">
+        <button class="btn btn-ghost" data-act="retry">↺ もう一回</button>
+        <button class="btn btn-amber" data-act="next">${last ? '🏆 結果を見る' : '次のステージ ▶'}</button>
+      </div>
+    </div>`);
+}
+
+function showFail() {
+  const L = G.leak;
+  showOverlay(`
+    <div class="card fail">
+      <div class="big-emoji">💦</div>
+      <h2>${L.title}</h2>
+      <p>${L.tip}</p>
+      <p style="font-size:12px;color:#8ea0bd">ヒント：通水中は、水が次に向かうマスが<b style="color:#fb7185">赤く光る</b>。そこに向きの合う管を置けばセーフ！</p>
+      <div class="row2">
+        <button class="btn btn-ghost" data-act="title">タイトルへ</button>
+        <button class="btn btn-primary" data-act="retry">↺ もう一回</button>
+      </div>
+    </div>`);
+}
+
+function rankTitle(stars) {
+  if (stars >= 14) return '松下社長級の名職人';
+  if (stars >= 10) return '頼れる職人';
+  if (stars >= 6) return '一人前の配管工';
+  return '見習い配管工';
+}
+
+function showFinal() {
+  G.state = 'result';
+  syncButtons();
+  const total = G.results.reduce((a, r) => a + (r ? r.score : 0), 0);
+  const stars = G.results.reduce((a, r) => a + (r ? r.stars : 0), 0);
+  const title = rankTitle(stars);
+  const best = loadBest();
+  const isBest = total > best;
+  if (isBest) saveBest(total);
+  G.share = { total, title };
+  showOverlay(`
+    <div class="card">
+      <span class="tag">ALL CLEAR!</span>
+      <div class="big-emoji" style="margin-top:8px">🏆</div>
+      <div class="total-score">${total.toLocaleString()}<small style="font-size:18px">点</small></div>
+      <div style="font-size:13px;color:#8ea0bd">★ ${stars} / ${STAGES.length * 3}${isBest ? '　<b style="color:#fde047">ベスト更新！</b>' : `　ベスト ${best.toLocaleString()}点`}</div>
+      <div class="rank-title">称号：${title}</div>
+      <div class="share-label">結果をシェア</div>
+      <div class="row2">
+        <button class="btn btn-x" data-act="share-x">𝕏 でポスト</button>
+        <button class="btn btn-line" data-act="share-line">LINEで送る</button>
+      </div>
+      <div class="recruit">
+        <b>🔧 この仕事、本物は松下工業で。</b>
+        <p>地面の下や壁の向こうで、街のライフラインを守るのが配管工。未経験から一生モノの技術を身につけませんか？</p>
+        ${RECRUIT_URL ? `<a class="btn btn-amber" style="display:block;text-decoration:none" href="${RECRUIT_URL}" target="_blank" rel="noopener">求人を見る ▶</a>` : ''}
+      </div>
+      <button class="btn btn-primary" data-act="title">もう一度あそぶ</button>
+    </div>`);
+}
+
+function shareText() {
+  const { total, title } = G.share;
+  return `快感！配管クラフトで${total.toLocaleString()}点！称号は「${title}」でした💧 #配管クラフト #松下工業`;
+}
+
+overlay.addEventListener('click', e => {
+  const btn = e.target.closest('[data-act]');
+  if (!btn) return;
+  ac();
+  const act = btn.dataset.act;
+  if (act === 'start') {
+    G.results = [];
+    startStage(0, false);
+  } else if (act === 'go') {
+    hideOverlay();
+    G.state = 'build';
+    syncButtons();
+    updateHud();
+  } else if (act === 'retry') {
+    startStage(G.stageIdx, true);
+  } else if (act === 'next') {
+    if (G.stageIdx < STAGES.length - 1) startStage(G.stageIdx + 1, false);
+    else showFinal();
+  } else if (act === 'title') {
+    showTitle();
+  } else if (act === 'share-x') {
+    window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText())}&url=${encodeURIComponent(SITE_URL)}`, '_blank', 'noopener');
+  } else if (act === 'share-line') {
+    window.open(`https://line.me/R/share?text=${encodeURIComponent(shareText() + '\n' + SITE_URL)}`, '_blank', 'noopener');
+  }
+});
+
+board.addEventListener('pointerdown', e => {
+  ac();
+  const r = board.getBoundingClientRect();
+  const x = Math.floor(((e.clientX - r.left) / r.width) * COLS);
+  const y = Math.floor(((e.clientY - r.top) / r.height) * ROWS);
+  if (x >= 0 && y >= 0 && x < COLS && y < ROWS) placeAt(x, y);
+});
+
+$('actionBtn').addEventListener('click', () => {
+  ac();
+  if (G.state === 'build') startFlow(true);
+  else if (G.state === 'flow' && !G.fast) {
+    G.fast = true;
+    syncButtons();
+    updateHud();
+  }
+});
+
+$('retryBtn').addEventListener('click', () => {
+  if (G.state === 'build' || G.state === 'flow') startStage(G.stageIdx, true);
+});
+
+$('soundBtn').addEventListener('click', () => {
+  soundOn = !soundOn;
+  $('soundBtn').textContent = soundOn ? '🔊' : '🔇';
+  if (soundOn) SFX.place();
+});
+
+/* ============================================================================
+   メインループ
+   ============================================================================ */
+let lastTs = performance.now();
+
+function update(dt) {
+  if (G.state === 'build') {
+    G.countdown -= dt / 1000;
+    const sec = Math.ceil(G.countdown);
+    if (sec <= 3 && sec >= 1 && sec !== G.lastBeep) {
+      G.lastBeep = sec;
+      SFX.beep();
+    }
+    if (G.countdown <= 0) startFlow(false);
+    updateHud();
+  } else if (G.state === 'flow') {
+    stepFlow(dt);
+    if (G.state !== 'flow') updateHud();
+  } else if (G.state === 'leaking') {
+    if (G.now - G.doneAt < 1200) sprayLeak();
+    else if (!overlay.classList.contains('show')) {
+      updateHud();
+      showFail();
+    }
+  } else if (G.state === 'clearing') {
+    if (G.now - G.doneAt > 1300 && !overlay.classList.contains('show')) finishStage();
+  }
+
+  for (let i = G.particles.length - 1; i >= 0; i--) {
+    const p = G.particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += p.g;
+    if (p.rot !== undefined) p.rot += p.vr;
+    p.life -= p.decay;
+    if (p.life <= 0) G.particles.splice(i, 1);
+  }
+  G.floaters = G.floaters.filter(f => G.now - f.t0 < f.dur);
+  G.shake *= 0.88;
+}
+
+function frame(ts) {
+  const dt = Math.min(50, ts - lastTs);
+  lastTs = ts;
+  G.now = ts;
+  update(dt);
+  draw(ts);
+  requestAnimationFrame(frame);
+}
+
+window.addEventListener('resize', layout);
+layout();
+showTitle();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderQueue);
+requestAnimationFrame(frame);
 </script>
 </body>
 </html>

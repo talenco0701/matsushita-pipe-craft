@@ -63,11 +63,11 @@ def make_ogp():
     d.text((68, 238), "配管クラフト", font=font(132), fill=WHITE)
 
     # サブコピー
-    d.text((74, 398), "詰まりゼロ＆限界水圧サバイバル", font=font(40), fill=CYAN)
+    d.text((74, 398), "水が来る前に、管をつなげ！", font=font(44), fill=CYAN)
 
     # 右上の CTA
     cta_font = font(30)
-    cta = "スマホで30秒プレイ ▶"
+    cta = "スマホでプレイ ▶"
     cw = d.textlength(cta, font=cta_font)
     d.rounded_rectangle([w - 72 - cw - 48, 64, w - 72, 120], radius=28, outline=AMBER, width=3)
     d.text((w - 72 - cw - 24, 64 + 9), cta, font=cta_font, fill=AMBER)
