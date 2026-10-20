@@ -22,6 +22,10 @@ wrangler.toml           Cloudflare Pages 設定（将来の Functions / KV も�
 npx wrangler pages deploy
 ```
 
+Windows PowerShell でスクリプト実行が禁止されている環境では `npx` が `npx.ps1` の読み込みで失敗するため、`npx.cmd wrangler ...` と打つ（`wrangler login` も同様）。
+
+Pages プロジェクトは作成済み（wrangler 4.151 以降は Workers へ委譲されるため、作成時のみ `--force` で旧来の Pages として作成した）。以降のコマンドに `--force` は不要。
+
 `main` ブランチから実行すると本番（上記URL）に反映される。別ブランチ名を付けるとプレビューURLになる:
 
 ```sh
