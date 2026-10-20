@@ -9,6 +9,7 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ROOT / "public"
 FONT_BOLD = "C:/Windows/Fonts/YuGothB.ttc"
+SCENE = ROOT / "tools" / "ogp_scene.jpg"  # ゲーム画面のキャプチャ（縦長）
 
 BG_TOP = (9, 13, 22)        # #090d16
 BG_BOTTOM = (15, 23, 42)    # slate-900
@@ -42,35 +43,38 @@ def draw_pipe(d, points, width, color, joint_color):
 def make_ogp():
     w, h = 1200, 630
     img = vertical_gradient(w, h, BG_TOP, BG_BOTTOM)
+
+    # 右側にゲーム画面（3D の現場を撮ったもの）を敷く
+    if SCENE.exists():
+        shot = Image.open(SCENE).convert("RGB")
+        sw, sh = shot.size
+        crop = shot.crop((0, int(sh * 0.2), sw, int(sh * 0.72)))
+        scale = h / crop.height
+        crop = crop.resize((int(crop.width * scale), h), Image.LANCZOS)
+        x0 = w - crop.width
+        img.paste(crop, (x0, 0))
+        # 左の文字エリアへなじませるグラデーション
+        fade = Image.new("L", (240, h))
+        for x in range(240):
+            ImageDraw.Draw(fade).line([(x, 0), (x, h)], fill=int(255 * (1 - x / 240)))
+        img.paste(Image.new("RGB", (240, h), BG_BOTTOM), (x0, 0), fade)
     d = ImageDraw.Draw(img)
 
-    # 背景の配管ライン（段階的に細くなる＝ゲームの「段階口径設計」）
-    draw_pipe(d, [(-20, 580), (260, 580), (260, 505), (560, 505)], 46, (12, 74, 110), (14, 116, 144))
-    draw_pipe(d, [(560, 505), (860, 505), (860, 565), (1220, 565)], 30, (12, 74, 110), (14, 116, 144))
-    d.line([(-20, 580), (260, 580)], fill=SKY, width=10)
-    d.line([(260, 505), (560, 505)], fill=CYAN, width=8)
-    d.line([(860, 565), (1220, 565)], fill=CYAN, width=6)
-
     # 上部バッジ
-    badge_font = font(30)
+    badge_font = font(28)
     badge = "松下工業 × 採用ミニゲーム"
     bw = d.textlength(badge, font=badge_font)
-    d.rounded_rectangle([72, 64, 72 + bw + 48, 64 + 56], radius=28, fill=SKY)
-    d.text((72 + 24, 64 + 9), badge, font=badge_font, fill=BG_TOP)
+    d.rounded_rectangle([64, 64, 64 + bw + 44, 64 + 52], radius=26, fill=SKY)
+    d.text((64 + 22, 64 + 8), badge, font=badge_font, fill=BG_TOP)
 
     # タイトル
-    d.text((68, 150), "快感！", font=font(84), fill=AMBER)
-    d.text((68, 238), "配管クラフト", font=font(132), fill=WHITE)
+    d.text((60, 150), "快感！", font=font(80), fill=AMBER)
+    d.text((60, 236), "配管", font=font(128), fill=WHITE)
+    d.text((60, 372), "クラフト", font=font(96), fill=WHITE)
 
     # サブコピー
-    d.text((74, 398), "水が来る前に、管をつなげ！", font=font(44), fill=CYAN)
-
-    # 右上の CTA
-    cta_font = font(30)
-    cta = "スマホでプレイ ▶"
-    cw = d.textlength(cta, font=cta_font)
-    d.rounded_rectangle([w - 72 - cw - 48, 64, w - 72, 120], radius=28, outline=AMBER, width=3)
-    d.text((w - 72 - cw - 24, 64 + 9), cta, font=cta_font, fill=AMBER)
+    d.text((66, 500), "安く・うまく・漏らさずつなげ！", font=font(36), fill=CYAN)
+    d.text((66, 554), "スマホで遊べる3D配管パズル ▶", font=font(26), fill=AMBER)
 
     img.save(PUBLIC / "ogp.png", optimize=True)
 

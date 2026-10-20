@@ -4,9 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>快感！配管クラフト｜松下工業 - 安く・うまく・漏らさずつなげ</title>
-<meta name="description" content="便利な管ほど高い。予算内で、安く・うまく・漏らさず家まで水を届ける配管パズル。全5ステージ、松下工業の「現場メモ」つき。">
-<meta name="theme-color" content="#0b1220">
-<meta name="color-scheme" content="dark">
+<meta name="description" content="便利な管ほど高い。予算内で、安く・うまく・漏らさず家まで水を届ける3D配管パズル。全5ステージ、松下工業の「現場メモ」つき。">
+<meta name="theme-color" content="#6ec6ff">
 <meta name="format-detection" content="telephone=no">
 <link rel="canonical" href="https://matsushita-pipe-craft.pages.dev/">
 
@@ -20,7 +19,7 @@
 <meta property="og:locale" content="ja_JP">
 <meta property="og:site_name" content="松下工業｜快感！配管クラフト">
 <meta property="og:title" content="快感！配管クラフト｜安く・うまく・漏らさずつなげ！">
-<meta property="og:description" content="便利な管ほど高い。予算内で家まで水を届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
+<meta property="og:description" content="便利な管ほど高い。予算内で家まで水を届けたらプロの仕事。スマホで遊べる3D配管パズル全5ステージ。あなたは何点？">
 <meta property="og:url" content="https://matsushita-pipe-craft.pages.dev/">
 <meta property="og:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
 <meta property="og:image:type" content="image/png">
@@ -31,7 +30,7 @@
 <!-- X（旧Twitter） -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="快感！配管クラフト｜安く・うまく・漏らさずつなげ！">
-<meta name="twitter:description" content="便利な管ほど高い。予算内で家まで水を届けたらプロの仕事。スマホで遊べる配管パズル全5ステージ。あなたは何点？">
+<meta name="twitter:description" content="便利な管ほど高い。予算内で家まで水を届けたらプロの仕事。スマホで遊べる3D配管パズル全5ステージ。あなたは何点？">
 <meta name="twitter:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
 <meta name="twitter:image:alt" content="快感！配管クラフト - 安く、うまく、漏らさずつなげ！">
 
@@ -40,23 +39,22 @@
 <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0b1220;
-    --panel: #121b2e;
-    --line: #23324f;
+    --panel: rgba(13, 22, 40, .82);
+    --line: rgba(120, 150, 200, .28);
     --sky: #38bdf8;
-    --cyan: #22d3ee;
     --amber: #fbbf24;
     --rose: #fb7185;
     --green: #4ade80;
-    --text: #e8eef8;
-    --muted: #8ea0bd;
+    --text: #f1f5fb;
+    --muted: #9fb0c9;
+    --outline: 0 2px 0 #0f172a, 2px 0 0 #0f172a, -2px 0 0 #0f172a, 0 -2px 0 #0f172a, 2px 2px 0 #0f172a, -2px 2px 0 #0f172a, 2px -2px 0 #0f172a, -2px -2px 0 #0f172a, 0 5px 10px rgba(0,0,0,.35);
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     height: 100%;
-    background: radial-gradient(120% 80% at 50% 0%, #15233d 0%, var(--bg) 60%);
-    background-color: var(--bg);
+    overflow: hidden;
+    background: linear-gradient(180deg, #6ec6ff 0%, #bfe7ff 55%, #e6f6ff 100%);
     color: var(--text);
     font-family: 'M PLUS Rounded 1c', system-ui, sans-serif;
     font-weight: 800;
@@ -69,7 +67,11 @@
   }
   button { font: inherit; }
 
+  #scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+
   #app {
+    position: relative;
+    z-index: 2;
     max-width: 460px;
     height: 100vh;
     height: 100dvh;
@@ -78,10 +80,21 @@
     display: flex;
     flex-direction: column;
     gap: 6px;
+    pointer-events: none;
   }
+  #app > * { pointer-events: auto; }
+  #app > #boardWrap { pointer-events: none; }
 
   /* ---------- HUD ---------- */
-  .hud { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .hud {
+    display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 5px 6px 5px 8px;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
   .hud-stage { display: flex; align-items: center; gap: 6px; min-width: 0; }
   .tag {
     flex-shrink: 0;
@@ -96,12 +109,12 @@
   #stageName { font-size: 14px; font-weight: 900; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .icon-btn {
     flex-shrink: 0;
-    width: 34px; height: 34px;
+    width: 32px; height: 32px;
     border-radius: 10px;
     border: 1px solid var(--line);
-    background: var(--panel);
+    background: rgba(255,255,255,.08);
     color: var(--text);
-    font-size: 16px;
+    font-size: 15px;
     cursor: pointer;
   }
 
@@ -109,7 +122,7 @@
     position: relative;
     height: 24px;
     border-radius: 999px;
-    background: #0a1324;
+    background: var(--panel);
     border: 1px solid var(--line);
     overflow: hidden;
   }
@@ -121,12 +134,7 @@
   }
   .costbar.over-est #costFill { background: linear-gradient(90deg, #d97706, #fbbf24); }
   .costbar.over-budget #costFill { background: linear-gradient(90deg, #e11d48, #fb7185); }
-  #estMark {
-    position: absolute; top: 0; bottom: 0;
-    width: 2px;
-    background: #fff;
-    opacity: .7;
-  }
+  #estMark { position: absolute; top: 0; bottom: 0; width: 2px; background: #fff; opacity: .8; }
   #costText {
     position: relative;
     display: block;
@@ -143,26 +151,11 @@
   .chips .good b { color: var(--green); }
   .chips .bad b { color: var(--rose); }
 
-  #boardWrap {
-    flex: 1 1 0;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-  }
-  #board {
-    display: block;
-    border-radius: 14px;
-    box-shadow: 0 0 0 2px #3b2a1e, 0 12px 30px rgba(0,0,0,.5);
-    touch-action: none;
-    cursor: pointer;
-  }
+  #boardWrap { flex: 1 1 0; min-height: 0; }
 
   /* ---------- 部材パレット ---------- */
   .palette { display: grid; grid-template-columns: repeat(5, 1fr); gap: 5px; }
   .part {
-    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,13 +167,15 @@
     color: var(--text);
     cursor: pointer;
     transition: transform .08s;
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
   }
   .part:active { transform: scale(.95); }
   .part canvas { width: 34px; height: 34px; border-radius: 7px; }
   .part span { font-size: 10.5px; font-weight: 900; line-height: 1.2; }
   .part b { font-size: 11px; color: var(--amber); line-height: 1.1; }
-  .part.on { border-color: var(--amber); background: #2a1f0d; box-shadow: 0 0 14px rgba(251,191,36,.35); }
-  .part:disabled { opacity: .45; }
+  .part.on { border-color: var(--amber); background: rgba(60, 40, 8, .9); box-shadow: 0 0 14px rgba(251,191,36,.55); }
+  .part:disabled { opacity: .5; }
 
   .controls { display: flex; gap: 8px; }
 
@@ -192,18 +187,97 @@
     font-weight: 900;
     font-size: 15px;
     cursor: pointer;
-    box-shadow: 0 5px 0 rgba(0,0,0,.45);
+    box-shadow: 0 5px 0 rgba(0,0,0,.35);
     transition: transform .08s cubic-bezier(.34,1.56,.64,1), box-shadow .08s;
   }
-  .btn:active:not(:disabled) { transform: translateY(4px) scale(.97); box-shadow: 0 1px 0 rgba(0,0,0,.45); }
-  .btn:disabled { opacity: .45; cursor: default; }
+  .btn:active:not(:disabled) { transform: translateY(4px) scale(.97); box-shadow: 0 1px 0 rgba(0,0,0,.35); }
+  .btn:disabled { opacity: .55; cursor: default; }
   .btn-primary { background: linear-gradient(90deg, #38bdf8, #22d3ee); color: #04121f; }
   .btn-amber { background: linear-gradient(90deg, #fbbf24, #f97316); color: #1c0d00; }
-  .btn-ghost { background: #1e293b; color: #e2e8f0; border: 1px solid #334155; }
+  .btn-ghost { background: var(--panel); color: #e2e8f0; border: 1px solid var(--line); }
   .btn-x { background: #000; color: #fff; border: 1px solid #333; }
   .btn-line { background: #06c755; color: #fff; }
   .grow { flex: 1; }
   .btn.small { padding: 13px 14px; }
+
+  /* ---------- 演出レイヤー ---------- */
+  #fx { position: fixed; inset: 0; z-index: 5; pointer-events: none; overflow: hidden; }
+  .pop {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: 17px;
+    font-weight: 900;
+    color: #fff;
+    white-space: nowrap;
+    text-shadow: var(--outline);
+    animation: popUp 1.05s ease-out forwards;
+  }
+  .pop.good { color: #86efac; }
+  .pop.bad { color: #fda4af; font-size: 15px; }
+  .pop.gold { color: #fde047; }
+  .pop.cyan { color: #a5f3fc; }
+  .pop.big { font-size: 26px; }
+  @keyframes popUp {
+    0% { transform: translate(-50%, -30%) scale(.4); opacity: 0; }
+    16% { transform: translate(-50%, -70%) scale(1.3); opacity: 1; }
+    28% { transform: translate(-50%, -80%) scale(1); }
+    75% { opacity: 1; }
+    100% { transform: translate(-50%, -190%) scale(1); opacity: 0; }
+  }
+  .banner {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 44px;
+    font-weight: 900;
+    white-space: nowrap;
+    color: #fff;
+    letter-spacing: .02em;
+    text-shadow: 0 4px 0 #0f172a, 4px 0 0 #0f172a, -4px 0 0 #0f172a, 0 -4px 0 #0f172a, 3px 3px 0 #0f172a, -3px 3px 0 #0f172a, 3px -3px 0 #0f172a, -3px -3px 0 #0f172a, 0 10px 20px rgba(0,0,0,.35);
+    animation: bannerIn 1.6s cubic-bezier(.34,1.56,.64,1) forwards;
+  }
+  .banner.blue { color: #7dd3fc; }
+  .banner.small { font-size: 30px; }
+  .banner.red { color: #fb7185; }
+  .banner.rainbow {
+    font-size: 58px;
+    background: linear-gradient(90deg, #ff4d6d, #ffb84d, #fff35c, #5cff8d, #4dc9ff, #b04dff, #ff4d6d);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    text-shadow: none;
+    -webkit-text-stroke: 2px #fff;
+    filter: drop-shadow(0 5px 0 #1e1b4b) drop-shadow(0 0 22px rgba(255,255,255,.9));
+    animation: bannerIn 2.4s cubic-bezier(.34,1.56,.64,1) forwards, rainbow .9s linear infinite;
+  }
+  .banner small { display: block; font-size: 15px; text-align: center; letter-spacing: .1em; }
+  @keyframes bannerIn {
+    0% { transform: translate(-50%, -50%) scale(0) rotate(-10deg); opacity: 0; }
+    14% { transform: translate(-50%, -50%) scale(1.25) rotate(3deg); opacity: 1; }
+    24% { transform: translate(-50%, -50%) scale(1) rotate(0); }
+    80% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.35); opacity: 0; }
+  }
+  @keyframes rainbow { to { background-position: 200% 0; } }
+  .combo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 4px 14px;
+    border-radius: 999px;
+    background: rgba(8, 47, 73, .85);
+    border: 2px solid #22d3ee;
+    color: #a5f3fc;
+    font-size: 18px;
+    font-weight: 900;
+    box-shadow: 0 0 18px rgba(34,211,238,.6);
+    opacity: 0;
+    transition: opacity .2s;
+  }
+  .combo.show { opacity: 1; }
+  .combo.bump { animation: bump .25s ease-out; }
+  @keyframes bump { 40% { transform: translateX(-50%) scale(1.3); } }
 
   /* ---------- オーバーレイ ---------- */
   .overlay {
@@ -214,9 +288,9 @@
     align-items: center;
     justify-content: center;
     padding: 16px;
-    background: rgba(4, 8, 18, .78);
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
+    background: rgba(4, 12, 28, .55);
+    -webkit-backdrop-filter: blur(3px);
+    backdrop-filter: blur(3px);
   }
   .overlay.show { display: flex; }
   .card {
@@ -224,12 +298,12 @@
     max-width: 400px;
     max-height: 100%;
     overflow-y: auto;
-    background: linear-gradient(180deg, #16223a, #0f182b);
+    background: linear-gradient(180deg, rgba(22,34,58,.97), rgba(15,24,43,.97));
     border: 2px solid #2b4067;
     border-radius: 24px;
     padding: 20px 18px;
     text-align: center;
-    box-shadow: 0 20px 50px rgba(0,0,0,.6);
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
     animation: pop .32s cubic-bezier(.34,1.56,.64,1);
   }
   @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
@@ -280,15 +354,18 @@
   .money b { display: block; font-size: 20px; color: var(--text); }
 
   .stars { font-size: 44px; letter-spacing: .08em; line-height: 1; margin: 6px 0; }
-  .stars .on { color: var(--amber); text-shadow: 0 0 18px rgba(251,191,36,.6); }
+  .stars span { display: inline-block; animation: starIn .45s cubic-bezier(.34,1.56,.64,1) both; }
+  .stars .on { color: var(--amber); text-shadow: 0 0 18px rgba(251,191,36,.7); }
   .stars .off { color: #334155; }
+  @keyframes starIn { from { transform: scale(0) rotate(-90deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
   .bd { margin: 10px 0 0; padding: 8px 12px; background: #0b1324; border: 1px solid var(--line); border-radius: 14px; font-size: 13px; text-align: left; }
   .bd > div { display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; }
   .bd .minus { color: var(--rose); }
   .bd .total { border-top: 1px dashed #334155; margin-top: 4px; padding-top: 6px; font-size: 16px; color: var(--amber); }
   .bonus { margin-top: 10px; text-align: left; display: grid; gap: 6px; }
-  .bonus > div { background: #0b1324; border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; }
+  .bonus > div { background: #0b1324; border: 1px solid var(--line); border-radius: 12px; padding: 7px 10px; animation: slideIn .35s ease-out both; }
   .bonus > div.got { border-color: #a16207; background: linear-gradient(90deg, #2a1f0d, #0b1324); }
+  @keyframes slideIn { from { transform: translateX(-24px); opacity: 0; } to { transform: none; opacity: 1; } }
   .bonus .head { display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; }
   .bonus .got .head { color: var(--amber); }
   .bonus .miss .head { color: #64748b; }
@@ -327,9 +404,12 @@
   .recruit b { font-size: 14px; color: #fff; }
   .recruit p { font-size: 12.5px; }
   .share-label { margin-top: 14px; font-size: 11px; color: var(--muted); }
+  .loading { color: #0f172a; font-size: 15px; font-weight: 900; text-align: center; line-height: 1.8; }
 </style>
 </head>
 <body>
+
+<canvas id="scene"></canvas>
 
 <div id="app">
   <header class="hud">
@@ -347,7 +427,7 @@
     <span id="failChip">手戻り <b id="failText">0回</b></span>
   </div>
 
-  <div id="boardWrap"><canvas id="board"></canvas></div>
+  <div id="boardWrap"></div>
 
   <div class="palette" id="palette">
     <button class="part on" data-tool="straight"><canvas></canvas><span>直管</span><b>1万</b></button>
@@ -363,10 +443,36 @@
   </div>
 </div>
 
-<div id="overlay" class="overlay"></div>
+<div id="fx"><div id="combo" class="combo">💧 0本</div></div>
+<div id="overlay" class="overlay show"><div class="loading" id="loadingMsg">現場を準備中…</div></div>
 
 <script>
-'use strict';
+  // 3D の読み込み（CDN）に失敗したときだけ案内を出す
+  setTimeout(function () {
+    if (!window.__pcReady) {
+      var el = document.getElementById('loadingMsg');
+      if (el) el.innerHTML = '読み込みに失敗しました。<br>通信環境を確認して、再読み込みしてください。';
+    }
+  }, 12000);
+</script>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 /* ============================================================================
    設定
@@ -383,7 +489,6 @@ const DY = { [N]: -1, [E]: 0, [S]: 1, [W]: 0 };
 const OPP = { [N]: S, [E]: W, [S]: N, [W]: E };
 const EDGE = { [N]: [0.5, 0], [E]: [1, 0.5], [S]: [0.5, 1], [W]: [0, 0.5] };
 const ROT = { [N]: -Math.PI / 2, [E]: 0, [S]: Math.PI / 2, [W]: Math.PI };
-const ARROW = { [N]: '↑', [E]: '→', [S]: '↓', [W]: '←' };
 const CROSS = 15;
 
 // 部材（便利なものほど高い）。orients はタップで回転する順番
@@ -552,6 +657,7 @@ function noise(dur, { freq = 800, type = 'lowpass', vol = 0.3, delay = 0 } = {})
 const PENTA = [0, 2, 4, 7, 9];
 const SFX = {
   place() { tone(520, 0.08, { to: 840, vol: 0.16 }); },
+  land() { noise(0.12, { freq: 300, vol: 0.18 }); tone(140, 0.1, { to: 90, type: 'triangle', vol: 0.12 }); },
   rotate() { tone(700, 0.05, { to: 900, type: 'triangle', vol: 0.1 }); },
   select() { tone(980, 0.04, { type: 'triangle', vol: 0.08 }); },
   deny() { tone(150, 0.12, { type: 'square', vol: 0.05 }); },
@@ -566,7 +672,11 @@ const SFX = {
   house() { [784, 988, 1175, 1568].forEach((f, i) => tone(f, 0.28, { vol: 0.15, delay: i * 0.07 })); },
   leak() { noise(0.8, { freq: 500, vol: 0.5 }); tone(150, 0.5, { to: 45, type: 'sawtooth', vol: 0.1 }); },
   clear() { [523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, 0.32, { type: 'triangle', vol: 0.16, delay: i * 0.09 })); },
-  coin(i) { tone(1319 + i * 120, 0.12, { type: 'square', vol: 0.05, delay: i * 0.12 }); },
+  legend() {
+    [523, 659, 784, 1047, 1319, 1568, 2093].forEach((f, i) => tone(f, 0.5, { type: 'triangle', vol: 0.14, delay: i * 0.06 }));
+    [1047, 1319, 1568].forEach(f => tone(f, 1.2, { vol: 0.08, delay: 0.5 }));
+  },
+  coin(i) { tone(1319 + i * 120, 0.12, { type: 'square', vol: 0.05, delay: 0.25 + i * 0.12 }); },
   start() { noise(0.7, { freq: 1100, type: 'bandpass', vol: 0.3 }); tone(220, 0.35, { to: 440, vol: 0.08 }); }
 };
 
@@ -574,20 +684,963 @@ function buzz(pattern) {
   try { if (navigator.vibrate) navigator.vibrate(pattern); } catch (e) { /* 非対応端末 */ }
 }
 
+const $ = id => document.getElementById(id);
+const easeOutBack = k => 1 + 2.7 * Math.pow(k - 1, 3) + 1.7 * Math.pow(k - 1, 2);
+function easeOutBounce(k) {
+  if (k < 1 / 2.75) return 7.5625 * k * k;
+  if (k < 2 / 2.75) return 7.5625 * (k -= 1.5 / 2.75) * k + 0.75;
+  if (k < 2.5 / 2.75) return 7.5625 * (k -= 2.25 / 2.75) * k + 0.9375;
+  return 7.5625 * (k -= 2.625 / 2.75) * k + 0.984375;
+}
+
+/* ============================================================================
+   3D の現場（Three.js）
+   ============================================================================ */
+const View = (() => {
+  const P_Y = 0.24;        // 管の中心の高さ
+  const R_SHELL = 0.165;   // 管の太さ
+  const R_WATER = 0.1;     // 中を流れる水の太さ
+  const ARCH = 0.36;       // 立体交差の縦管が持ち上がる高さ
+  const RIM = 0.55, BACK = 1.9;
+
+  const canvas = $('scene');
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, powerPreference: 'high-performance' });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.05;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+  const scene = new THREE.Scene();
+  // 映り込み用の環境マップ（管と金物のつやだけに使う）
+  const envMap = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+  const camera = new THREE.PerspectiveCamera(30, 1, 0.1, 200);
+  const cam = { target: new THREE.Vector3(0, 0, 0.2), dist: 16, pitch: THREE.MathUtils.degToRad(52), punchAt: -1e9, punchTo: new THREE.Vector3(), shake: 0 };
+
+  const composer = new EffectComposer(renderer);
+  composer.addPass(new RenderPass(scene, camera));
+  const bloom = new UnrealBloomPass(new THREE.Vector2(256, 256), 0.65, 0.5, 0.86);
+  composer.addPass(bloom);
+  composer.addPass(new OutputPass());
+
+  // ---------- テクスチャ ----------
+  function canvasTex(w, h, paint, repeat) {
+    const c = document.createElement('canvas');
+    c.width = w;
+    c.height = h;
+    paint(c.getContext('2d'), w, h);
+    const t = new THREE.CanvasTexture(c);
+    t.colorSpace = THREE.SRGBColorSpace;
+    if (repeat) {
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(repeat[0], repeat[1]);
+    }
+    return t;
+  }
+  scene.background = canvasTex(4, 256, (g, w, h) => {
+    const gr = g.createLinearGradient(0, 0, 0, h);
+    gr.addColorStop(0, '#5bbcff');
+    gr.addColorStop(0.6, '#b9e6ff');
+    gr.addColorStop(1, '#eaf8ff');
+    g.fillStyle = gr;
+    g.fillRect(0, 0, w, h);
+  });
+  const stripeTex = canvasTex(64, 8, (g, w, h) => {
+    g.fillStyle = '#0aa6e8';
+    g.fillRect(0, 0, w, h);
+    g.fillStyle = '#7ff0ff';
+    g.fillRect(0, 0, 14, h);
+    g.fillStyle = '#3cd2ff';
+    g.fillRect(30, 0, 6, h);
+  }, [3, 1]);
+  const channelTex = canvasTex(64, 64, (g, w, h) => {
+    g.fillStyle = '#1d8fd6';
+    g.fillRect(0, 0, w, h);
+    g.strokeStyle = 'rgba(200,240,255,.7)';
+    g.lineWidth = 3;
+    for (let k = 0; k < 3; k++) {
+      g.beginPath();
+      for (let x = 0; x <= w; x += 4) {
+        const y = 12 + k * 20 + Math.sin((x / w) * Math.PI * 2) * 4;
+        x ? g.lineTo(x, y) : g.moveTo(x, y);
+      }
+      g.stroke();
+    }
+  }, [1, 1]);
+  const soilTex = canvasTex(8, 128, (g, w, h) => {
+    const bands = ['#6fbf4a', '#5a9c3a', '#8a5a36', '#7a4e2e', '#946642', '#6a4227', '#7d5535', '#5e3b22'];
+    const hs = [8, 4, 22, 18, 20, 16, 22, 18];
+    let y = 0;
+    bands.forEach((c, i) => { g.fillStyle = c; g.fillRect(0, y, w, hs[i]); y += hs[i]; });
+  });
+  soilTex.wrapS = THREE.RepeatWrapping;
+  // 土と芝のザラつき
+  const speckle = (base, dots) => canvasTex(128, 128, (g, w, h) => {
+    g.fillStyle = base;
+    g.fillRect(0, 0, w, h);
+    let seed = 5;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 900; i++) {
+      g.fillStyle = dots[i % dots.length];
+      g.globalAlpha = 0.25 + rnd() * 0.35;
+      g.fillRect(rnd() * w, rnd() * h, 1 + rnd() * 2.5, 1 + rnd() * 2.5);
+    }
+    g.globalAlpha = 1;
+  }, [1, 1]);
+  const dirtTex = speckle('#ffffff', ['#c9b49a', '#8f7a63', '#f3e6d4', '#6e5a46']);
+  const grassTex = speckle('#ffffff', ['#d7f5b0', '#9fd18a', '#f8ffe8', '#7fb86a']);
+  grassTex.repeat.set(6, 8);
+  const dotTex = canvasTex(32, 32, (g) => {
+    const gr = g.createRadialGradient(16, 16, 0, 16, 16, 16);
+    gr.addColorStop(0, 'rgba(255,255,255,1)');
+    gr.addColorStop(0.4, 'rgba(255,255,255,.8)');
+    gr.addColorStop(1, 'rgba(255,255,255,0)');
+    g.fillStyle = gr;
+    g.fillRect(0, 0, 32, 32);
+  });
+
+  // ---------- マテリアル ----------
+  const std = (color, o = {}) => new THREE.MeshStandardMaterial({ color, roughness: 0.8, ...o });
+  const M = {
+    shell: std(0xd6ecfa, { metalness: 0.05, roughness: 0.08, transparent: true, opacity: 0.32, depthWrite: false, envMap, envMapIntensity: 0.7 }),
+    flange: std(0x3a4c66, { metalness: 0.75, roughness: 0.28, envMap, envMapIntensity: 0.6 }),
+    water: std(0xffffff, { emissive: 0xffffff, emissiveIntensity: 1.25, roughness: 0.1, map: stripeTex, emissiveMap: stripeTex }),
+    head: new THREE.MeshBasicMaterial({ color: new THREE.Color(1.4, 2.2, 2.6), toneMapped: false }),
+    dirtA: std(0xb07a4e, { map: dirtTex }),
+    dirtB: std(0xa06d44, { map: dirtTex }),
+    trench: std(0x5e3d27, { map: dirtTex }),
+    lotGrass: std(0x86d45a, { map: grassTex }),
+    lotStone: std(0xa7b0ba, { map: dirtTex }),
+    lotRock: std(0x7a563a, { map: dirtTex }),
+    grass: std(0x7ccf52, { map: grassTex }),
+    soilSide: std(0xffffff, { map: soilTex }),
+    under: std(0x6b4b35, { flatShading: true }),
+    road: std(0x4b5563),
+    white: std(0xf8fafc),
+    rock: std(0x938d86, { flatShading: true }),
+    rockDark: std(0x6f6963, { flatShading: true }),
+    concrete: std(0xb8c0c8),
+    channel: std(0x5ecbff, { map: channelTex, emissive: 0x0b5f99, emissiveIntensity: 0.35, roughness: 0.2 }),
+    trunk: std(0x7a4b2a),
+    leafA: std(0x4caf50, { flatShading: true }),
+    leafB: std(0x6cc24a, { flatShading: true }),
+    leafC: std(0x2f8f4e, { flatShading: true }),
+    bamboo: std(0x7cc65a),
+    main: std(0x2563eb, { roughness: 0.35, metalness: 0.2, envMap, envMapIntensity: 0.5 }),
+    valve: std(0xdc2626, { roughness: 0.35, metalness: 0.3, envMap, envMapIntensity: 0.5 }),
+    door: std(0x7c3f1d),
+    hint: new THREE.MeshBasicMaterial({ color: 0xfde047, transparent: true, opacity: 0.9 }),
+    leakX: new THREE.MeshBasicMaterial({ color: 0xff3b5c })
+  };
+
+  // ---------- 光 ----------
+  scene.add(new THREE.HemisphereLight(0xe6f6ff, 0x7a5232, 0.9));
+  const sun = new THREE.DirectionalLight(0xfff0d0, 2.8);
+  sun.position.set(-6, 10, 5);
+  sun.castShadow = true;
+  sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, { left: -8, right: 8, top: 9, bottom: -9, near: 1, far: 40 });
+  sun.shadow.bias = -0.0005;
+  sun.shadow.normalBias = 0.02;
+  scene.add(sun);
+
+  // ---------- 座標 ----------
+  const cellPos = (x, y) => new THREE.Vector3(x - (COLS - 1) / 2, 0, y - (ROWS - 1) / 2);
+  const local = (u, v, h = P_Y) => new THREE.Vector3(u - 0.5, h, v - 0.5);
+  const shadowed = (m, cast = true, receive = true) => { m.castShadow = cast; m.receiveShadow = receive; return m; };
+  const mesh = (geo, mat) => shadowed(new THREE.Mesh(geo, mat));
+
+  function curveOf(points, arch) {
+    const pts = points.map(([u, v]) => local(u, v, arch ? P_Y + ARCH * Math.sin(Math.PI * v) : P_Y));
+    if (pts.length === 2) return new THREE.LineCurve3(pts[0], pts[1]);
+    return new THREE.CatmullRomCurve3(pts, false, 'centripetal');
+  }
+  const archPoints = (from, to) => {
+    const pts = [];
+    for (let i = 0; i <= 12; i++) {
+      const v = from + (to - from) * (i / 12);
+      pts.push([0.5, v]);
+    }
+    return pts;
+  };
+
+  // 管1本ぶんの形（透明な管＋継手）
+  function shellCurves(mask) {
+    if (mask === CROSS) return [[curveOf([EDGE[W], EDGE[E]]), false], [curveOf(archPoints(0, 1), true), true]];
+    if (isElbow(mask)) {
+      const [a, b] = dirsOf(mask);
+      return [[curveOf(arcPts(a, b)), false]];
+    }
+    if (isStraight(mask)) {
+      const [a, b] = dirsOf(mask);
+      return [[curveOf([EDGE[a], EDGE[b]]), false]];
+    }
+    return dirsOf(mask).map(d => [curveOf([[0.5, 0.5], EDGE[d]]), false]);
+  }
+
+  const flangeGeo = new THREE.CylinderGeometry(R_SHELL * 1.4, R_SHELL * 1.4, 0.07, 18);
+  const hubGeo = new THREE.SphereGeometry(R_SHELL * 1.18, 18, 12);
+
+  function buildPipe(mask, shellMat = M.shell) {
+    const g = new THREE.Group();
+    for (const [curve] of shellCurves(mask)) {
+      const segs = curve.isLineCurve3 ? 2 : 24;
+      const m = new THREE.Mesh(new THREE.TubeGeometry(curve, segs, R_SHELL, 16, false), shellMat);
+      m.renderOrder = 2;
+      g.add(m);
+    }
+    if (!isElbow(mask) && !isStraight(mask) && mask !== CROSS && dirsOf(mask).length > 1) {
+      const hub = new THREE.Mesh(hubGeo, shellMat);
+      hub.position.set(0, P_Y, 0);
+      hub.renderOrder = 2;
+      g.add(hub);
+    }
+    for (const d of dirsOf(mask)) {
+      const f = mesh(flangeGeo, M.flange);
+      const [u, v] = EDGE[d];
+      f.position.copy(local(u + (0.5 - u) * 0.07, v + (0.5 - v) * 0.07));
+      f.rotation.z = (d === E || d === W) ? Math.PI / 2 : 0;
+      f.rotation.x = (d === N || d === S) ? Math.PI / 2 : 0;
+      g.add(f);
+    }
+    return g;
+  }
+
+  // ---------- 現場の土台 ----------
+  const world = new THREE.Group();
+  scene.add(world);
+  let stageGroup = null;
+  const tiles = new Map();
+  const pipeViews = new Map();
+  const houseViews = new Map();
+  let sourceView = null;
+  let waters = [];
+  const decorSway = [];
+
+  function buildIsland() {
+    const w = COLS + RIM * 2, front = ROWS / 2 + RIM, back = ROWS / 2 + BACK, d = front + back;
+    const block = mesh(new RoundedBoxGeometry(w, 1.0, d, 3, 0.12), [M.soilSide, M.soilSide, M.grass, M.under, M.soilSide, M.soilSide]);
+    block.position.set(0, -0.14 - 0.5, (front - back) / 2);
+    world.add(block);
+
+    // 浮き島の下の岩肌
+    const under = new THREE.CylinderGeometry(1, 0.28, 2.6, 9, 3);
+    const pos = under.attributes.position;
+    for (let i = 0; i < pos.count; i++) {
+      if (Math.abs(pos.getY(i)) < 1.29) {
+        pos.setX(i, pos.getX(i) * (0.85 + Math.random() * 0.3));
+        pos.setZ(i, pos.getZ(i) * (0.85 + Math.random() * 0.3));
+      }
+    }
+    under.computeVertexNormals();
+    const u = shadowed(new THREE.Mesh(under, M.under), false, false);
+    u.scale.set(w * 0.47, 1, d * 0.47);
+    u.position.set(0, -1.14 - 1.3, (front - back) / 2);
+    world.add(u);
+
+    // 道路（本管が通っている）
+    const road = mesh(new THREE.BoxGeometry(w - 0.1, 0.04, 0.7), M.road);
+    road.position.set(0, -0.12, -(ROWS / 2 + 0.6));
+    world.add(road);
+    for (let x = -w / 2 + 0.5; x < w / 2 - 0.3; x += 0.9) {
+      const dash = mesh(new THREE.BoxGeometry(0.45, 0.045, 0.06), M.white);
+      dash.position.set(x, -0.1, -(ROWS / 2 + 0.6));
+      world.add(dash);
+    }
+    const mainPipe = mesh(new THREE.CylinderGeometry(0.12, 0.12, w - 0.2, 16), M.main);
+    mainPipe.rotation.z = Math.PI / 2;
+    mainPipe.position.set(0, -0.02, -(ROWS / 2 + 0.25));
+    world.add(mainPipe);
+
+    // 木と竹（奥と左右）
+    let seed = 11;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    for (let i = 0; i < 9; i++) {
+      const t = makeTree(0.8 + rnd() * 0.5, rnd());
+      t.position.set(-w / 2 + 0.5 + i * ((w - 1) / 8) + (rnd() - 0.5) * 0.3, -0.14, -(ROWS / 2 + 1.45 + rnd() * 0.25));
+      world.add(t);
+    }
+    for (let i = 0; i < 3; i++) {
+      const b = makeBamboo(rnd);
+      b.position.set((i - 1) * 3.2 + (rnd() - 0.5), -0.14, -(ROWS / 2 + 1.75));
+      world.add(b);
+    }
+    for (const side of [-1, 1]) {
+      for (let i = 0; i < 4; i++) {
+        const bush = makeBush(0.3 + rnd() * 0.15);
+        bush.position.set(side * (COLS / 2 + RIM * 0.55), -0.14, -ROWS / 2 + 0.8 + i * 2.4 + rnd() * 0.5);
+        world.add(bush);
+      }
+    }
+    // 手前の花
+    const flowerCols = [0xfacc15, 0xf472b6, 0xffffff, 0xfb923c];
+    for (let i = 0; i < 16; i++) {
+      const f = mesh(new THREE.SphereGeometry(0.05, 8, 6), std(flowerCols[i % 4], { emissive: flowerCols[i % 4], emissiveIntensity: 0.15 }));
+      f.position.set(-COLS / 2 - 0.2 + rnd() * (COLS + 0.4), -0.1, ROWS / 2 + 0.15 + rnd() * 0.3);
+      world.add(f);
+    }
+  }
+
+  function makeTree(s, r) {
+    const g = new THREE.Group();
+    const trunk = mesh(new THREE.CylinderGeometry(0.05 * s, 0.08 * s, 0.45 * s, 7), M.trunk);
+    trunk.position.y = 0.22 * s;
+    g.add(trunk);
+    const leaves = new THREE.Group();
+    const mats = [M.leafA, M.leafB, M.leafC];
+    [[0, 0.62, 0, 0.36], [0.16, 0.5, 0.08, 0.24], [-0.14, 0.52, -0.06, 0.22], [0.02, 0.85, 0, 0.24]].forEach(([x, y, z, rad], i) => {
+      const l = mesh(new THREE.IcosahedronGeometry(rad * s, 0), mats[(i + Math.floor(r * 3)) % 3]);
+      l.position.set(x * s, y * s, z * s);
+      leaves.add(l);
+    });
+    g.add(leaves);
+    decorSway.push({ obj: leaves, phase: r * 10 });
+    return g;
+  }
+
+  function makeBamboo(rnd) {
+    const g = new THREE.Group();
+    for (let i = 0; i < 5; i++) {
+      const h = 1.4 + rnd() * 0.9;
+      const stalk = new THREE.Group();
+      const pole = mesh(new THREE.CylinderGeometry(0.035, 0.04, h, 6), M.bamboo);
+      pole.position.y = h / 2;
+      stalk.add(pole);
+      for (let k = 1; k < 4; k++) {
+        const node = mesh(new THREE.TorusGeometry(0.04, 0.012, 4, 8), M.leafC);
+        node.rotation.x = Math.PI / 2;
+        node.position.y = (h / 4) * k;
+        stalk.add(node);
+      }
+      const leaf = mesh(new THREE.IcosahedronGeometry(0.18, 0), M.leafB);
+      leaf.scale.set(1, 0.5, 1);
+      leaf.position.y = h;
+      stalk.add(leaf);
+      stalk.position.set((rnd() - 0.5) * 0.6, 0, (rnd() - 0.5) * 0.3);
+      stalk.rotation.z = (rnd() - 0.5) * 0.12;
+      g.add(stalk);
+      decorSway.push({ obj: stalk, phase: rnd() * 10, amp: 0.03 });
+    }
+    return g;
+  }
+
+  function makeBush(s) {
+    const g = new THREE.Group();
+    [[0, 0.12, 0, 1], [0.15, 0.1, 0.05, 0.75], [-0.13, 0.09, -0.04, 0.7]].forEach(([x, y, z, k], i) => {
+      const b = mesh(new THREE.IcosahedronGeometry(s * k * 0.6, 0), [M.leafA, M.leafB, M.leafC][i]);
+      b.position.set(x, y, z);
+      g.add(b);
+    });
+    return g;
+  }
+
+  // ---------- ステージの組み立て ----------
+  const tileGeo = new RoundedBoxGeometry(0.94, 0.14, 0.94, 2, 0.04);
+
+  function tileMat(c) {
+    if (c.type === 'pipe') return M.trench;
+    if (c.type === 'house') return M.lotGrass;
+    if (c.type === 'source') return M.lotStone;
+    if (c.type === 'rock') return M.lotRock;
+    return (c.x + c.y) % 2 ? M.dirtA : M.dirtB;
+  }
+
+  function disposeTree(obj) {
+    obj.traverse(o => { if (o.isMesh && o.geometry && !o.geometry.userData.shared) o.geometry.dispose(); });
+  }
+
+  function buildStage(stage, grid) {
+    if (stageGroup) {
+      world.remove(stageGroup);
+      disposeTree(stageGroup);
+    }
+    stageGroup = new THREE.Group();
+    world.add(stageGroup);
+    tiles.clear();
+    pipeViews.clear();
+    houseViews.clear();
+    waters = [];
+    let houseIdx = 0;
+    for (const row of grid) {
+      for (const c of row) {
+        const p = cellPos(c.x, c.y);
+        if (c.type !== 'channel') {
+          const t = shadowed(new THREE.Mesh(tileGeo, tileMat(c)), false, true);
+          t.position.set(p.x, -0.07, p.z);
+          stageGroup.add(t);
+          tiles.set(`${c.x},${c.y}`, t);
+        }
+        if (c.type === 'rock') stageGroup.add(makeRock(p, c.x, c.y));
+        if (c.type === 'channel') stageGroup.add(makeChannel(p, c, grid));
+        if (c.type === 'house') {
+          const hv = makeHouse(c, houseIdx++);
+          stageGroup.add(hv.group);
+          houseViews.set(`${c.x},${c.y}`, hv);
+        }
+        if (c.type === 'source') {
+          sourceView = makeSource(c);
+          stageGroup.add(sourceView.group);
+        }
+      }
+    }
+    stageGroup.add(hintArrow, leakX, tapRing);
+  }
+  tileGeo.userData.shared = true;
+  flangeGeo.userData.shared = true;
+  hubGeo.userData.shared = true;
+
+  function makeRock(p, gx, gy) {
+    const g = new THREE.Group();
+    let seed = (gx * 7919 + gy * 104729 + 13) % 2147483647;
+    const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+    [[0, 0, 0.36, M.rock], [0.22, 0.16, 0.18, M.rockDark], [-0.2, -0.18, 0.15, M.rock]].forEach(([x, z, r, mat]) => {
+      const geo = new THREE.IcosahedronGeometry(r, 0);
+      const pos = geo.attributes.position;
+      for (let i = 0; i < pos.count; i++) pos.setXYZ(i, pos.getX(i) * (0.85 + rnd() * 0.3), pos.getY(i) * (0.7 + rnd() * 0.25), pos.getZ(i) * (0.85 + rnd() * 0.3));
+      geo.computeVertexNormals();
+      const m = mesh(geo, mat);
+      m.position.set(p.x + x, r * 0.55, p.z + z);
+      m.rotation.y = rnd() * 6;
+      g.add(m);
+    });
+    return g;
+  }
+
+  function makeChannel(p, c, grid) {
+    const g = new THREE.Group();
+    const isCh = (x, y) => x >= 0 && y >= 0 && x < COLS && y < ROWS && grid[y][x].type === 'channel';
+    const horizontal = isCh(c.x - 1, c.y) || isCh(c.x + 1, c.y);
+    const water = shadowed(new THREE.Mesh(new THREE.BoxGeometry(1.0, 0.1, 1.0), M.channel), false, true);
+    water.position.set(p.x, -0.16, p.z);
+    if (!horizontal) water.rotation.y = Math.PI / 2;
+    g.add(water);
+    for (const side of [-1, 1]) {
+      const bank = mesh(new THREE.BoxGeometry(1.0, 0.2, 0.08), M.concrete);
+      bank.position.set(p.x, -0.05, p.z + side * 0.47);
+      if (!horizontal) {
+        bank.rotation.y = Math.PI / 2;
+        bank.position.set(p.x + side * 0.47, -0.05, p.z);
+      }
+      g.add(bank);
+    }
+    return g;
+  }
+
+  function makeHouse(c, idx) {
+    const g = new THREE.Group();
+    g.position.copy(cellPos(c.x, c.y));
+    const walls = [0xfff7e6, 0xf1f5f9, 0xe0f2fe][idx % 3];
+    const roofs = [0xef6c35, 0xdc2626, 0x0d9488][idx % 3];
+    const arm = buildPipe(c.dir);
+    g.add(arm);
+    const body = new THREE.Group();
+    body.scale.setScalar(1.18);
+    const wall = mesh(new RoundedBoxGeometry(0.62, 0.42, 0.56, 2, 0.04), std(walls));
+    wall.position.y = 0.23;
+    body.add(wall);
+    const roof = mesh(new THREE.ConeGeometry(0.52, 0.34, 4), std(roofs, { flatShading: true }));
+    roof.rotation.y = Math.PI / 4;
+    roof.scale.set(1, 1, 0.92);
+    roof.position.y = 0.61;
+    body.add(roof);
+    const chimney = mesh(new THREE.BoxGeometry(0.08, 0.18, 0.08), std(0x78716c));
+    chimney.position.set(0.16, 0.7, -0.08);
+    body.add(chimney);
+    const door = mesh(new THREE.BoxGeometry(0.13, 0.2, 0.02), M.door);
+    door.position.set(0, 0.12, 0.29);
+    body.add(door);
+    const win = new THREE.MeshStandardMaterial({ color: 0x64748b, emissive: 0xffd34d, emissiveIntensity: 0, roughness: 0.3 });
+    for (const x of [-0.18, 0.18]) {
+      const w = mesh(new THREE.BoxGeometry(0.12, 0.11, 0.02), win);
+      w.position.set(x, 0.28, 0.29);
+      body.add(w);
+    }
+    const sideWin = mesh(new THREE.BoxGeometry(0.02, 0.11, 0.12), win);
+    sideWin.position.set(0.32, 0.28, 0);
+    body.add(sideWin);
+    g.add(body);
+    const inlet = new THREE.Mesh(new THREE.TubeGeometry(curveOf([EDGE[c.dir], [0.5, 0.5]]), 4, R_WATER, 8), M.water);
+    inlet.visible = false;
+    g.add(inlet);
+    return { group: g, body, win, inlet, bounceAt: -1e9 };
+  }
+
+  function labelSprite(text) {
+    const tex = canvasTex(128, 64, (g, w, h) => {
+      g.fillStyle = '#1d4ed8';
+      g.beginPath();
+      g.roundRect(4, 8, w - 8, h - 16, 18);
+      g.fill();
+      g.fillStyle = '#fff';
+      g.font = "900 30px 'M PLUS Rounded 1c', sans-serif";
+      g.textAlign = 'center';
+      g.textBaseline = 'middle';
+      g.fillText(text, w / 2, h / 2 + 2);
+    });
+    const s = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, depthTest: false }));
+    s.scale.set(0.62, 0.31, 1);
+    s.renderOrder = 10;
+    return s;
+  }
+
+  function makeSource(c) {
+    const g = new THREE.Group();
+    g.position.copy(cellPos(c.x, c.y));
+    const base = mesh(new THREE.CylinderGeometry(0.36, 0.4, 0.12, 20), M.concrete);
+    base.position.y = 0.06;
+    g.add(base);
+    const riser = mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.34, 18), M.main);
+    riser.position.y = 0.22;
+    g.add(riser);
+    g.add(buildPipe(c.dir));
+    const wheel = new THREE.Group();
+    const ring = mesh(new THREE.TorusGeometry(0.2, 0.035, 8, 24), M.valve);
+    wheel.add(ring);
+    for (const r of [0, Math.PI / 2]) {
+      const spoke = mesh(new THREE.BoxGeometry(0.4, 0.03, 0.03), M.valve);
+      spoke.rotation.z = r;
+      wheel.add(spoke);
+    }
+    wheel.rotation.x = -Math.PI / 2;
+    wheel.position.y = 0.46;
+    g.add(wheel);
+    const label = labelSprite('本管');
+    label.position.y = 0.95;
+    g.add(label);
+    const ring2 = new THREE.Mesh(new THREE.RingGeometry(0.38, 0.46, 32), new THREE.MeshBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.6, side: THREE.DoubleSide }));
+    ring2.rotation.x = -Math.PI / 2;
+    ring2.position.y = 0.02;
+    g.add(ring2);
+    return { group: g, wheel, pulse: ring2 };
+  }
+
+  // 本管の出口に浮かぶ矢印、漏れた場所の ✕、タップした場所の輪
+  const hintArrow = new THREE.Group();
+  {
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(0.16, 0.3, 4), M.hint);
+    cone.rotation.x = Math.PI;
+    hintArrow.add(cone);
+    const plate = new THREE.Mesh(new THREE.RingGeometry(0.3, 0.4, 4), new THREE.MeshBasicMaterial({ color: 0xfde047, transparent: true, opacity: 0.7, side: THREE.DoubleSide }));
+    plate.rotation.x = -Math.PI / 2;
+    plate.rotation.z = Math.PI / 4;
+    plate.position.y = -0.5;
+    hintArrow.add(plate);
+  }
+  const leakX = new THREE.Group();
+  for (const r of [Math.PI / 4, -Math.PI / 4]) {
+    const bar = new THREE.Mesh(new THREE.BoxGeometry(0.75, 0.06, 0.12), M.leakX);
+    bar.rotation.y = r;
+    leakX.add(bar);
+  }
+  const tapRing = new THREE.Mesh(new THREE.RingGeometry(0.36, 0.46, 32), new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false }));
+  tapRing.rotation.x = -Math.PI / 2;
+  let tapAt = -1e9;
+
+  // ---------- 管 ----------
+  function setTile(c) {
+    const t = tiles.get(`${c.x},${c.y}`);
+    if (t) t.material = tileMat(c);
+  }
+
+  function removePipe(c) {
+    const key = `${c.x},${c.y}`;
+    const v = pipeViews.get(key);
+    if (v) {
+      stageGroup.remove(v.group);
+      disposeTree(v.group);
+      pipeViews.delete(key);
+    }
+    setTile(c);
+  }
+
+  function setPipe(c, anim) {
+    removePipe(c);
+    const g = buildPipe(c.mask);
+    g.position.copy(cellPos(c.x, c.y));
+    stageGroup.add(g);
+    pipeViews.set(`${c.x},${c.y}`, { group: g, anim, at: performance.now(), landed: anim !== 'drop' });
+    setTile(c);
+  }
+
+  // ---------- 水 ----------
+  const headGeo = new THREE.SphereGeometry(R_WATER * 1.25, 12, 8);
+  headGeo.userData.shared = true;
+
+  function addWater(c, ch, seg) {
+    const arch = c.type === 'pipe' && c.mask === CROSS && ch === 'v';
+    const g = new THREE.Group();
+    g.position.copy(cellPos(c.x, c.y));
+    const parts = seg.paths.map(p => {
+      const pts = arch ? archPoints(p[0][1], p[p.length - 1][1]) : p;
+      const curve = curveOf(pts, arch);
+      const tub = curve.isLineCurve3 ? 8 : 24;
+      const geo = new THREE.TubeGeometry(curve, tub, R_WATER, 8, false);
+      geo.setDrawRange(0, 0);
+      const m = new THREE.Mesh(geo, M.water);
+      g.add(m);
+      const head = new THREE.Mesh(headGeo, M.head);
+      head.visible = false;
+      g.add(head);
+      return { m, tub, curve, head };
+    });
+    stageGroup.add(g);
+    waters.push({ g, seg, parts, cell: c });
+  }
+
+  function clearWater() {
+    for (const w of waters) {
+      stageGroup.remove(w.g);
+      disposeTree(w.g);
+    }
+    waters = [];
+    for (const hv of houseViews.values()) {
+      hv.win.emissiveIntensity = 0;
+      hv.inlet.visible = false;
+    }
+  }
+
+  // ---------- 粒子 ----------
+  class Pool {
+    constructor(n, size, additive) {
+      this.n = n;
+      this.items = [];
+      this.geo = new THREE.BufferGeometry();
+      this.pos = new Float32Array(n * 3);
+      this.col = new Float32Array(n * 3);
+      this.geo.setAttribute('position', new THREE.BufferAttribute(this.pos, 3));
+      this.geo.setAttribute('color', new THREE.BufferAttribute(this.col, 3));
+      this.points = new THREE.Points(this.geo, new THREE.PointsMaterial({
+        size, map: dotTex, vertexColors: true, transparent: true, depthWrite: false,
+        blending: additive ? THREE.AdditiveBlending : THREE.NormalBlending
+      }));
+      this.points.frustumCulled = false;
+      scene.add(this.points);
+    }
+    spawn(p) {
+      if (this.items.length >= this.n) this.items.shift();
+      this.items.push(p);
+    }
+    update(dt) {
+      const k = dt / 16;
+      this.items = this.items.filter(p => (p.life -= p.decay * k) > 0);
+      for (let i = 0; i < this.n; i++) {
+        const p = this.items[i];
+        if (!p) {
+          this.pos[i * 3 + 1] = -999;
+          continue;
+        }
+        p.vy -= p.g * k;
+        p.x += p.vx * k;
+        p.y += p.vy * k;
+        p.z += p.vz * k;
+        if (p.y < 0.02 && p.bounce) { p.y = 0.02; p.vy *= -0.3; p.vx *= 0.6; p.vz *= 0.6; }
+        this.pos.set([p.x, p.y, p.z], i * 3);
+        const f = Math.min(1, p.life * 1.5);
+        this.col.set([p.c.r * f, p.c.g * f, p.c.b * f], i * 3);
+      }
+      this.geo.attributes.position.needsUpdate = true;
+      this.geo.attributes.color.needsUpdate = true;
+    }
+  }
+  const glow = new Pool(500, 0.16, true);
+  const solid = new Pool(300, 0.11, false);
+
+  const confettiN = 160;
+  const confetti = new THREE.InstancedMesh(new THREE.PlaneGeometry(0.09, 0.14), new THREE.MeshBasicMaterial({ side: THREE.DoubleSide }), confettiN);
+  confetti.frustumCulled = false;
+  confetti.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+  scene.add(confetti);
+  let confItems = [];
+  const tmpM = new THREE.Matrix4(), tmpQ = new THREE.Quaternion(), tmpE = new THREE.Euler(), tmpS = new THREE.Vector3(1, 1, 1), tmpV = new THREE.Vector3();
+  const colorsConf = [0x38bdf8, 0xfbbf24, 0x4ade80, 0xf472b6, 0xa78bfa, 0xffffff].map(c => new THREE.Color(c));
+  for (let i = 0; i < confettiN; i++) confetti.setColorAt(i, colorsConf[i % colorsConf.length]);
+
+  function burstAt(p, n, colors, speed, { up = 0.06, g = 0.004, pool = glow, decay = 0.02, bounce = false } = {}) {
+    for (let i = 0; i < n; i++) {
+      const a = Math.random() * Math.PI * 2, v = speed * (0.3 + Math.random());
+      pool.spawn({
+        x: p.x, y: p.y, z: p.z,
+        vx: Math.cos(a) * v, vz: Math.sin(a) * v, vy: up * (0.5 + Math.random()),
+        g, life: 1, decay: decay * (0.7 + Math.random() * 0.6), bounce,
+        c: new THREE.Color(colors[i % colors.length])
+      });
+    }
+  }
+
+  // ---------- 画面上の文字 ----------
+  const fx = $('fx');
+  function toScreen(v) {
+    const p = v.clone().project(camera);
+    return { x: (p.x + 1) / 2 * window.innerWidth, y: (1 - p.y) / 2 * window.innerHeight };
+  }
+  function pop(cx, cy, text, cls = '', lift = 0.6) {
+    const s = toScreen(cellPos(cx, cy).add(new THREE.Vector3(0, lift, 0)));
+    const el = document.createElement('div');
+    el.className = `pop ${cls}`;
+    el.textContent = text;
+    el.style.left = `${Math.min(window.innerWidth - 60, Math.max(60, s.x))}px`;
+    el.style.top = `${s.y}px`;
+    fx.appendChild(el);
+    setTimeout(() => el.remove(), 1100);
+  }
+  function banner(html, cls, ms = 1700, yFrac = 0.4) {
+    const r = $('boardWrap').getBoundingClientRect();
+    const el = document.createElement('div');
+    el.className = `banner ${cls}`;
+    el.innerHTML = html;
+    el.style.top = `${r.top + r.height * yFrac}px`;
+    fx.appendChild(el);
+    setTimeout(() => el.remove(), ms);
+  }
+  const comboEl = $('combo');
+  function combo(n) {
+    const r = $('boardWrap').getBoundingClientRect();
+    comboEl.style.top = `${r.top + 4}px`;
+    comboEl.textContent = `💧 ${n}本`;
+    comboEl.classList.add('show');
+    comboEl.classList.remove('bump');
+    void comboEl.offsetWidth;
+    comboEl.classList.add('bump');
+  }
+  const hideCombo = () => comboEl.classList.remove('show');
+
+  // ---------- 演出 ----------
+  function dropDust(c) {
+    const p = cellPos(c.x, c.y);
+    burstAt(new THREE.Vector3(p.x, 0.05, p.z), 14, [0xb08a63, 0x8a6a4a, 0xd6c3a5], 0.03, { up: 0.04, g: 0.003, pool: solid, decay: 0.03 });
+  }
+  function sparkleCell(c) {
+    const p = cellPos(c.x, c.y);
+    burstAt(new THREE.Vector3(p.x, P_Y + 0.1, p.z), 6, [0xa5f3fc, 0xffffff], 0.025, { up: 0.05, g: 0.002, decay: 0.035 });
+  }
+  function supply(c) {
+    const hv = houseViews.get(`${c.x},${c.y}`);
+    if (!hv) return;
+    hv.win.emissiveIntensity = 2.4;
+    hv.inlet.visible = true;
+    hv.bounceAt = performance.now();
+    const p = cellPos(c.x, c.y);
+    burstAt(new THREE.Vector3(p.x, 0.5, p.z), 46, [0x22d3ee, 0xa5f3fc, 0xffffff, 0x86efac, 0xfde047], 0.06, { up: 0.12, g: 0.005, decay: 0.014 });
+    cam.punchTo.copy(p);
+    cam.punchAt = performance.now();
+  }
+  function leak(at) {
+    cam.shake = 0.35;
+    if (!at || at.d === undefined) return;
+    leakSpray = { at, until: performance.now() + 1300 };
+  }
+  let leakSpray = null;
+  function sprayTick() {
+    if (!leakSpray || performance.now() > leakSpray.until) return;
+    const { at } = leakSpray;
+    const p = cellPos(at.x, at.y).add(local(EDGE[at.d][0], EDGE[at.d][1])).add(new THREE.Vector3(0.5, 0, 0.5));
+    for (let i = 0; i < 5; i++) {
+      const sp = 0.07 + Math.random() * 0.05;
+      glow.spawn({
+        x: p.x, y: p.y, z: p.z,
+        vx: DX[at.d] * sp + (Math.random() - 0.5) * 0.04, vz: DY[at.d] * sp + (Math.random() - 0.5) * 0.04, vy: 0.06 + Math.random() * 0.06,
+        g: 0.006, life: 1, decay: 0.025, bounce: true, c: new THREE.Color(Math.random() < 0.5 ? 0x22d3ee : 0xe0f2fe)
+      });
+    }
+  }
+  function celebrate() {
+    confItems = [];
+    for (let i = 0; i < confettiN; i++) {
+      confItems.push({
+        p: new THREE.Vector3((Math.random() - 0.5) * 3, 3 + Math.random() * 1.5, (Math.random() - 0.5) * 3),
+        v: new THREE.Vector3((Math.random() - 0.5) * 0.12, 0.05 + Math.random() * 0.1, (Math.random() - 0.5) * 0.12),
+        r: new THREE.Vector3(Math.random() * 6, Math.random() * 6, Math.random() * 6),
+        vr: (Math.random() - 0.5) * 0.3
+      });
+    }
+  }
+  function legendary() {
+    for (let i = 0; i < 6; i++) {
+      const p = new THREE.Vector3((Math.random() - 0.5) * COLS, 0.6 + Math.random(), (Math.random() - 0.5) * ROWS);
+      burstAt(p, 40, [0xff4d6d, 0xffb84d, 0xfff35c, 0x5cff8d, 0x4dc9ff, 0xb04dff, 0xffffff], 0.07, { up: 0.1, g: 0.003, decay: 0.012 });
+    }
+    celebrate();
+    bloom.strength = 1.4;
+  }
+  function tapFx(c) {
+    tapRing.position.copy(cellPos(c.x, c.y)).setY(0.02);
+    tapAt = performance.now();
+  }
+
+  // ---------- カメラ ----------
+  const camDir = new THREE.Vector3();
+  function placeCamera(dist, target) {
+    camDir.set(0, Math.sin(cam.pitch), Math.cos(cam.pitch));
+    camera.position.copy(target).addScaledVector(camDir, dist);
+    camera.lookAt(target);
+    camera.updateMatrixWorld();
+  }
+
+  // 盤面が #boardWrap の範囲にぴったり収まる距離を探す
+  function fit() {
+    const W = window.innerWidth, H = window.innerHeight;
+    renderer.setSize(W, H, false);
+    composer.setSize(W, H);
+    camera.aspect = W / H;
+    const r = $('boardWrap').getBoundingClientRect();
+    camera.setViewOffset(W, H, W / 2 - (r.left + r.width / 2), H / 2 - (r.top + r.height / 2), W, H);
+    camera.updateProjectionMatrix();
+    const hx = COLS / 2 + 0.25, hz = ROWS / 2 + 0.25;
+    const corners = [[-hx, 0.4, -hz], [hx, 0.4, -hz], [-hx, 0, hz], [hx, 0, hz], [-hx, -0.9, ROWS / 2 + RIM], [hx, -0.9, ROWS / 2 + RIM]].map(a => new THREE.Vector3(...a));
+    let lo = 4, hi = 80;
+    for (let i = 0; i < 28; i++) {
+      const mid = (lo + hi) / 2;
+      placeCamera(mid, cam.target);
+      const ok = corners.every(c => {
+        const s = toScreen(c);
+        return s.x >= r.left + 2 && s.x <= r.right - 2 && s.y >= r.top + 2 && s.y <= r.bottom - 2;
+      });
+      if (ok) hi = mid; else lo = mid;
+    }
+    cam.dist = hi;
+    placeCamera(cam.dist, cam.target);
+  }
+
+  // ---------- 毎フレーム ----------
+  const raycaster = new THREE.Raycaster();
+  const ground = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+  const hit = new THREE.Vector3();
+
+  function pick(clientX, clientY) {
+    raycaster.setFromCamera(new THREE.Vector2((clientX / window.innerWidth) * 2 - 1, -(clientY / window.innerHeight) * 2 + 1), camera);
+    if (!raycaster.ray.intersectPlane(ground, hit)) return null;
+    const x = Math.round(hit.x + (COLS - 1) / 2), y = Math.round(hit.z + (ROWS - 1) / 2);
+    return x >= 0 && y >= 0 && x < COLS && y < ROWS ? { x, y } : null;
+  }
+
+  let last = performance.now();
+  function update(now, game) {
+    const dt = Math.min(50, now - last);
+    last = now;
+
+    stripeTex.offset.x -= dt * 0.0016;
+    channelTex.offset.x -= dt * 0.0003;
+    for (const d of decorSway) d.obj.rotation.z = Math.sin(now * 0.0012 + d.phase) * (d.amp || 0.05);
+
+    // 置いた管の落下・回転
+    for (const [key, v] of pipeViews) {
+      const k = Math.min(1, (now - v.at) / (v.anim === 'drop' ? 420 : 200));
+      if (v.anim === 'drop') {
+        v.group.position.y = (1 - easeOutBounce(k)) * 1.6;
+        if (k > 0.35 && !v.landed) {
+          v.landed = true;
+          const [x, y] = key.split(',').map(Number);
+          dropDust({ x, y });
+          SFX.land();
+        }
+      } else if (v.anim === 'rotate') {
+        v.group.rotation.y = (1 - easeOutBack(k)) * (Math.PI / 2);
+      }
+    }
+
+    // 水の伸び
+    for (const w of waters) {
+      for (const p of w.parts) {
+        const t = Math.min(1, w.seg.t);
+        p.m.geometry.setDrawRange(0, Math.ceil(t * p.tub) * 8 * 6);
+        p.head.visible = t > 0 && t < 1 && game.state === 'flow';
+        if (p.head.visible) p.head.position.copy(p.curve.getPointAt(Math.min(1, t)));
+      }
+    }
+
+    // 家のぴょこん
+    for (const hv of houseViews.values()) {
+      const k = (now - hv.bounceAt) / 600;
+      const s = k < 1 ? Math.sin(k * Math.PI) * Math.exp(-k * 2) : 0;
+      hv.body.scale.set(1 - s * 0.15, 1 + s * 0.35, 1 - s * 0.15);
+    }
+
+    if (sourceView) {
+      if (game.state === 'flow') sourceView.wheel.rotation.z += dt * 0.012;
+      const p = (now % 1400) / 1400;
+      sourceView.pulse.visible = game.state === 'design';
+      sourceView.pulse.scale.setScalar(1 + p * 0.6);
+      sourceView.pulse.material.opacity = 0.7 * (1 - p);
+    }
+
+    // ヒント
+    hintArrow.visible = false;
+    if (game.state === 'design' || game.state === 'intro') {
+      const s0 = game.source;
+      const tx = s0.x + DX[s0.dir], ty = s0.y + DY[s0.dir];
+      const tc = game.grid[ty][tx];
+      if (!(tc.type === 'pipe' && (tc.mask & OPP[s0.dir]))) {
+        hintArrow.visible = true;
+        hintArrow.position.copy(cellPos(tx, ty)).setY(0.62 + Math.sin(now * 0.006) * 0.08);
+      }
+    }
+    leakX.visible = !!game.leakMark && game.state === 'design';
+    if (leakX.visible) {
+      leakX.position.copy(cellPos(game.leakMark.x, game.leakMark.y)).setY(0.08);
+      leakX.scale.setScalar(1 + Math.sin(now * 0.01) * 0.1);
+    }
+    const tk = (now - tapAt) / 350;
+    tapRing.material.opacity = tk < 1 ? 0.8 * (1 - tk) : 0;
+    tapRing.scale.setScalar(0.7 + Math.min(1, tk) * 0.5);
+
+    sprayTick();
+    glow.update(dt);
+    solid.update(dt);
+
+    if (confItems.length) {
+      const k = dt / 16;
+      confItems.forEach((c, i) => {
+        c.v.y -= 0.004 * k;
+        c.v.multiplyScalar(0.99);
+        c.p.addScaledVector(c.v, k);
+        c.r.x += c.vr * k;
+        c.r.y += c.vr * 0.7 * k;
+        tmpQ.setFromEuler(tmpE.set(c.r.x, c.r.y, c.r.z));
+        tmpM.compose(c.p, tmpQ, tmpS);
+        confetti.setMatrixAt(i, tmpM);
+      });
+      confetti.instanceMatrix.needsUpdate = true;
+      if (confItems.every(c => c.p.y < -3)) confItems = [];
+    } else {
+      tmpM.makeScale(0, 0, 0);
+      for (let i = 0; i < confettiN; i++) confetti.setMatrixAt(i, tmpM);
+      confetti.instanceMatrix.needsUpdate = true;
+    }
+    bloom.strength += (0.65 - bloom.strength) * Math.min(1, dt / 900);
+
+    // カメラ（給水した家に一瞬寄る、漏水で揺れる）
+    const pk = (now - cam.punchAt) / 900;
+    const punch = pk < 1 ? Math.sin(pk * Math.PI) : 0;
+    const target = tmpV.copy(cam.target).lerp(cam.punchTo, punch * 0.35);
+    placeCamera(cam.dist * (1 - punch * 0.14), target);
+    if (cam.shake > 0.005) {
+      camera.position.x += (Math.random() - 0.5) * cam.shake;
+      camera.position.y += (Math.random() - 0.5) * cam.shake;
+      cam.shake *= 0.9;
+    }
+  }
+
+  function render() {
+    composer.render();
+  }
+
+  buildIsland();
+
+  return {
+    buildStage, setPipe, removePipe, addWater, clearWater, supply, leak, celebrate, legendary,
+    pop, banner, combo, hideCombo, sparkleCell, dropDust, tapFx, pick, fit, update, render
+  };
+})();
+
 /* ============================================================================
    ゲーム状態
    ============================================================================ */
-const $ = id => document.getElementById(id);
-const board = $('board');
-const bctx = board.getContext('2d');
-const bg = document.createElement('canvas');
-const bgctx = bg.getContext('2d');
-let DPR = 1, CELL = 48, BW = CELL * COLS, BH = CELL * ROWS;
-
 const G = {
   state: 'title',   // title / intro / design / flow / leaking / clearing / result
   stageIdx: 0,
   grid: null,
+  source: null,
   tool: 'straight',
   heads: [],
   fails: 0,
@@ -596,10 +1649,9 @@ const G = {
   leak: null,
   leakMark: null,
   doneAt: 0,
-  shake: 0,
+  result: null,
+  cardAt: 0,
   results: [],
-  particles: [],
-  floaters: [],
   now: 0
 };
 
@@ -611,8 +1663,9 @@ const bendCount = () => pipeCells().filter(c => c.part === 'elbow').length;
 function buildStage(i) {
   const st = STAGES[i];
   G.stageIdx = i;
+  G.source = st.source;
   G.grid = Array.from({ length: ROWS }, (_, y) =>
-    Array.from({ length: COLS }, (_, x) => ({ x, y, type: 'empty', part: null, mask: 0, segs: {}, placedAt: -1e9, rotAt: -1e9 })));
+    Array.from({ length: COLS }, (_, x) => ({ x, y, type: 'empty', part: null, mask: 0, segs: {} })));
   st.rocks.forEach(([x, y]) => { G.grid[y][x].type = 'rock'; });
   st.channel.forEach(([x, y]) => { G.grid[y][x].type = 'channel'; });
   const src = G.grid[st.source.y][st.source.x];
@@ -628,8 +1681,8 @@ function buildStage(i) {
   G.fails = 0;
   G.leak = null;
   G.leakMark = null;
-  G.particles = [];
-  G.floaters = [];
+  G.result = null;
+  View.buildStage(st, G.grid);
   resetWater();
   $('stageTag').textContent = `STAGE ${i + 1}/${STAGES.length}`;
   $('stageName').textContent = st.name;
@@ -657,25 +1710,30 @@ function resetWater() {
   G.heads = [];
   G.stats = { pipes: 0, houses: 0 };
   G.firstSplit = null;
+  View.clearWater();
+  View.hideCombo();
 }
 
 /* ============================================================================
    操作
    ============================================================================ */
+const neighbor = (x, y, d) => {
+  const nx = x + DX[d], ny = y + DY[d];
+  return nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS ? null : G.grid[ny][nx];
+};
+
 // 隣のマスから、このマスに向かって口が開いているか
 function portInto(x, y, d) {
-  const nx = x + DX[d], ny = y + DY[d];
-  if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) return false;
-  const n = G.grid[ny][nx];
+  const n = neighbor(x, y, d);
+  if (!n) return false;
   if (n.type === 'pipe') return !!(n.mask & OPP[d]);
   if (n.type === 'source' || n.type === 'house') return n.dir === OPP[d];
   return false;
 }
 
 function portBlocked(x, y, d) {
-  const nx = x + DX[d], ny = y + DY[d];
-  if (nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS) return true;
-  const n = G.grid[ny][nx];
+  const n = neighbor(x, y, d);
+  if (!n) return true;
   if (n.type === 'rock' || n.type === 'channel') return true;
   if (n.type === 'source' || n.type === 'house') return n.dir !== OPP[d];
   if (n.type === 'pipe') return !(n.mask & OPP[d]);
@@ -688,11 +1746,6 @@ function adaptOrient(q, dir) {
   const keep = dirsOf(q.mask).filter(d => portInto(q.x, q.y, d));
   return PARTS[q.part].orients.find(m => (m & dir) && keep.every(d => m & d)) ?? null;
 }
-
-const neighbor = (x, y, d) => {
-  const nx = x + DX[d], ny = y + DY[d];
-  return nx < 0 || ny < 0 || nx >= COLS || ny >= ROWS ? null : G.grid[ny][nx];
-};
 
 // 置いた瞬間に、まわりとつながる向きを自動で選ぶ（違えばタップで回転）。
 // まだどこにもつながっていない隣の口は、こちらに向け直せるものとして数える
@@ -720,7 +1773,7 @@ function adaptNeighbors(c) {
     const m = adaptOrient(q, OPP[d]);
     if (m !== null) {
       q.mask = m;
-      q.rotAt = G.now;
+      View.setPipe(q, 'rotate');
     }
   }
 }
@@ -728,10 +1781,10 @@ function adaptNeighbors(c) {
 function placeAt(x, y) {
   if (G.state !== 'design') return;
   const c = G.grid[y][x];
-  const cx = (x + 0.5) * CELL, cy = (y + 0.5) * CELL;
+  View.tapFx(c);
   if (c.type === 'rock' || c.type === 'channel' || c.type === 'source' || c.type === 'house') {
     SFX.deny();
-    floater(cx, cy, c.type === 'rock' ? '岩盤は掘れない！' : c.type === 'channel' ? '用水路には置けない！' : 'ここには置けない', '#fda4af', 13);
+    View.pop(x, y, c.type === 'rock' ? '岩盤は掘れない！' : c.type === 'channel' ? '用水路には置けない！' : 'ここには置けない', 'bad');
     return;
   }
   G.leakMark = null;
@@ -741,13 +1794,14 @@ function placeAt(x, y) {
     c.type = 'empty';
     c.part = null;
     c.mask = 0;
+    View.removePipe(c);
+    View.dropDust(c);
     SFX.remove();
-    floater(cx, cy, `撤去 -${price}万`, '#cbd5e1', 13);
-    burst(cx, cy, 12, ['#a16207', '#78350f', '#d6d3d1'], 3);
+    View.pop(x, y, `撤去 −${price}万`, '');
   } else if (c.type === 'pipe' && c.part === G.tool) {
     const o = PARTS[c.part].orients;
     c.mask = o[(o.indexOf(c.mask) + 1) % o.length];
-    c.rotAt = G.now;
+    View.setPipe(c, 'rotate');
     SFX.rotate();
   } else {
     const part = PARTS[G.tool];
@@ -755,9 +1809,9 @@ function placeAt(x, y) {
     c.mask = bestOrient(x, y, part.orients);
     c.type = 'pipe';
     c.part = G.tool;
-    c.placedAt = G.now;
+    View.setPipe(c, 'drop');
     adaptNeighbors(c);
-    floater(cx, cy, `${part.price}万`, '#fde68a', 13);
+    View.pop(x, y, `${part.price}万`, 'gold');
     SFX.place();
   }
   buzz(8);
@@ -772,15 +1826,16 @@ function selectTool(tool) {
 
 function clearAll() {
   if (G.state !== 'design') return;
-  let n = 0;
-  for (const c of pipeCells()) {
+  const list = pipeCells();
+  for (const c of list) {
     c.type = 'empty';
     c.part = null;
     c.mask = 0;
-    n++;
+    View.removePipe(c);
+    View.dropDust(c);
   }
   G.leakMark = null;
-  if (n) SFX.remove();
+  if (list.length) SFX.remove();
   updateHud();
 }
 
@@ -789,14 +1844,16 @@ function startTest() {
   const st = STAGES[G.stageIdx];
   if (totalCost() > st.budget) {
     SFX.deny();
-    floater(BW / 2, BH * 0.4, '予算オーバー！ 部材を見直そう', '#fb7185', 17);
+    View.banner('予算オーバー！<small>部材を見直そう</small>', 'red', 1500);
     return;
   }
   resetWater();
   G.leakMark = null;
+  G.result = null;
   G.state = 'flow';
   const src = G.grid[st.source.y][st.source.x];
   src.segs.a = { entry: null, exits: [src.dir], t: 0, done: false, paths: waterPaths(0, null, [src.dir]) };
+  View.addWater(src, 'a', src.segs.a);
   G.heads = [{ x: src.x, y: src.y, ch: 'a' }];
   SFX.start();
   buzz(30);
@@ -809,7 +1866,7 @@ function startTest() {
    ============================================================================ */
 function stepFlow(dt) {
   // 流れ始めはゆっくり、つながるほど速く
-  const ms = 260 * Math.max(0.5, 1 - G.stats.pipes * 0.025);
+  const ms = 300 * Math.max(0.5, 1 - G.stats.pipes * 0.025);
   const next = [];
   for (const h of G.heads) {
     const seg = G.grid[h.y][h.x].segs[h.ch];
@@ -831,15 +1888,16 @@ function stepFlow(dt) {
 
 function onSegDone(h, seg, next) {
   const cell = G.grid[h.y][h.x];
-  const cx = (h.x + 0.5) * CELL, cy = (h.y + 0.5) * CELL;
 
   if (cell.type === 'pipe') {
     G.stats.pipes++;
     SFX.tick(G.stats.pipes);
+    View.combo(G.stats.pipes);
+    View.sparkleCell(cell);
     if (seg.exits.length === 2) {
       if (G.firstSplit === null) G.firstSplit = G.stats.pipes;
       SFX.split();
-      floater(cx, cy - CELL * 0.3, '分岐！', '#fde047', 15);
+      View.pop(h.x, h.y, '分岐！', 'gold big', 0.9);
     }
   }
 
@@ -865,6 +1923,7 @@ function onSegDone(h, seg, next) {
     if (n.segs[ch]) continue; // すでに水が来ている管に合流
     const exits = exitsFor(n.mask, entry);
     n.segs[ch] = { entry, exits, t: 0, done: false, paths: waterPaths(n.mask, entry, exits) };
+    View.addWater(n, ch, n.segs[ch]);
     next.push({ x: nx, y: ny, ch });
   }
 }
@@ -872,16 +1931,16 @@ function onSegDone(h, seg, next) {
 function supply(house) {
   house.supplied = true;
   G.stats.houses++;
-  const cx = (house.x + 0.5) * CELL, cy = (house.y + 0.5) * CELL;
-  floater(cx, cy - CELL * 0.5, '給水OK！', '#86efac', 18);
-  burst(cx, cy, 34, ['#22d3ee', '#a5f3fc', '#ffffff', '#86efac'], 5);
+  View.supply(house);
+  View.pop(house.x, house.y, '給水OK！', 'good big', 1.1);
   SFX.house();
   buzz([20, 40, 20]);
   const st = STAGES[G.stageIdx];
   if (G.stats.houses >= st.houses.length) {
     G.state = 'clearing';
     G.doneAt = G.now;
-    confetti();
+    View.celebrate();
+    View.banner('全戸給水！', 'blue');
     SFX.clear();
     syncButtons();
     updateHud();
@@ -892,7 +1951,9 @@ function fail(at, title, tip) {
   G.state = 'leaking';
   G.doneAt = G.now;
   G.leak = at ? { ...at, title, tip } : { title, tip };
-  G.shake = 16;
+  View.leak(at);
+  View.banner('水漏れ！', 'red', 1300);
+  View.hideCombo();
   SFX.leak();
   buzz([60, 40, 140]);
   syncButtons();
@@ -943,54 +2004,7 @@ function scoreStage() {
 }
 
 /* ============================================================================
-   エフェクト
-   ============================================================================ */
-function floater(x, y, text, color, size) {
-  G.floaters.push({ x, y, text, color, size, t0: G.now, dur: 900 });
-}
-
-function burst(x, y, n, colors, speed) {
-  for (let i = 0; i < n; i++) {
-    const a = Math.random() * Math.PI * 2, v = speed * (0.4 + Math.random());
-    G.particles.push({
-      x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5,
-      g: 0.18, life: 1, decay: 0.02 + Math.random() * 0.015,
-      size: 2 + Math.random() * 3, color: colors[i % colors.length], sq: false
-    });
-  }
-}
-
-function confetti() {
-  const colors = ['#38bdf8', '#fbbf24', '#4ade80', '#f472b6', '#a78bfa', '#ffffff'];
-  for (let i = 0; i < 90; i++) {
-    G.particles.push({
-      x: BW / 2 + (Math.random() - 0.5) * BW * 0.4, y: BH * 0.35,
-      vx: (Math.random() - 0.5) * 9, vy: -4 - Math.random() * 7,
-      g: 0.22, life: 1, decay: 0.008 + Math.random() * 0.008,
-      size: 4 + Math.random() * 4, color: colors[i % colors.length], sq: true, rot: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4
-    });
-  }
-}
-
-function sprayLeak() {
-  const L = G.leak;
-  if (!L || L.d === undefined) return;
-  const px = (L.x + EDGE[L.d][0]) * CELL, py = (L.y + EDGE[L.d][1]) * CELL;
-  const base = { [N]: [0, -1], [E]: [1, 0], [S]: [0, 1], [W]: [-1, 0] }[L.d];
-  for (let i = 0; i < 4; i++) {
-    const spread = (Math.random() - 0.5) * 1.6;
-    const v = 3 + Math.random() * 3;
-    G.particles.push({
-      x: px, y: py,
-      vx: (base[0] + (base[1] ? spread : 0)) * v, vy: (base[1] + (base[0] ? spread : 0)) * v - 1,
-      g: 0.25, life: 1, decay: 0.03, size: 2 + Math.random() * 2.5,
-      color: Math.random() < 0.5 ? '#22d3ee' : '#e0f2fe', sq: false
-    });
-  }
-}
-
-/* ============================================================================
-   描画
+   パレットのアイコン（2D）
    ============================================================================ */
 function rr(ctx, x, y, w, h, r) {
   ctx.beginPath();
@@ -1002,372 +2016,51 @@ function rr(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function layout() {
-  const wrap = $('boardWrap');
-  CELL = Math.max(30, Math.floor(Math.min(wrap.clientWidth / COLS, wrap.clientHeight / ROWS)));
-  BW = CELL * COLS;
-  BH = CELL * ROWS;
-  DPR = Math.min(window.devicePixelRatio || 1, 3);
-  board.width = BW * DPR;
-  board.height = BH * DPR;
-  board.style.width = BW + 'px';
-  board.style.height = BH + 'px';
-  bg.width = BW * DPR;
-  bg.height = BH * DPR;
-  renderBg();
-  renderPalette();
-}
-
-// 土の断面（背景は1回だけ描いておく）
-function renderBg() {
-  const c = bgctx;
-  c.setTransform(DPR, 0, 0, DPR, 0, 0);
-  const g = c.createLinearGradient(0, 0, 0, BH);
-  g.addColorStop(0, '#4a3424');
-  g.addColorStop(1, '#2a1c12');
-  c.fillStyle = g;
-  c.fillRect(0, 0, BW, BH);
-  let seed = 7;
-  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  for (let i = 0; i < (BW * BH) / 80; i++) {
-    c.fillStyle = rnd() < 0.5 ? `rgba(255,214,170,${0.03 + rnd() * 0.07})` : `rgba(0,0,0,${0.05 + rnd() * 0.1})`;
-    c.beginPath();
-    c.arc(rnd() * BW, rnd() * BH, 0.5 + rnd() * 1.8, 0, Math.PI * 2);
-    c.fill();
-  }
-  for (let y = 0; y < ROWS; y++) {
-    for (let x = 0; x < COLS; x++) {
-      c.fillStyle = (x + y) % 2 ? 'rgba(255,240,220,0.035)' : 'rgba(0,0,0,0.07)';
-      rr(c, x * CELL + 2, y * CELL + 2, CELL - 4, CELL - 4, 6);
-      c.fill();
+function drawIcon(ctx, s, mask) {
+  const trace = () => {
+    ctx.beginPath();
+    if (isElbow(mask)) {
+      const pts = arcPts(...dirsOf(mask));
+      ctx.moveTo(pts[0][0] * s, pts[0][1] * s);
+      pts.slice(1).forEach(p => ctx.lineTo(p[0] * s, p[1] * s));
+    } else {
+      for (const d of dirsOf(mask)) {
+        ctx.moveTo(s / 2, s / 2);
+        ctx.lineTo(EDGE[d][0] * s, EDGE[d][1] * s);
+      }
     }
-  }
-}
-
-function tracePipe(ctx, x, y, s, mask) {
-  ctx.beginPath();
-  if (isElbow(mask)) {
-    const [a, b] = dirsOf(mask);
-    const pts = arcPts(a, b);
-    ctx.moveTo(x + pts[0][0] * s, y + pts[0][1] * s);
-    for (let i = 1; i < pts.length; i++) ctx.lineTo(x + pts[i][0] * s, y + pts[i][1] * s);
-  } else {
-    for (const d of dirsOf(mask)) {
-      ctx.moveTo(x + s / 2, y + s / 2);
-      ctx.lineTo(x + EDGE[d][0] * s, y + EDGE[d][1] * s);
-    }
-  }
-}
-
-function drawPipeBody(ctx, x, y, s, mask) {
-  const steel = ctx.createLinearGradient(x, y, x + s, y + s);
-  steel.addColorStop(0, '#dbe4ee');
-  steel.addColorStop(1, '#6f8299');
-  const layers = [[0.46, '#0a0f1a'], [0.36, steel], [0.2, '#0b1426']];
-  const hub = !isElbow(mask) && !isStraight(mask) && dirsOf(mask).length > 1;
+  };
   ctx.lineCap = 'butt';
   ctx.lineJoin = 'round';
-  for (const [w, col] of layers) {
+  for (const [w, col] of [[0.44, '#0a0f1a'], [0.34, '#b9cde0'], [0.16, '#22d3ee']]) {
     ctx.lineWidth = w * s;
     ctx.strokeStyle = col;
-    tracePipe(ctx, x, y, s, mask);
-    ctx.stroke();
-    if (hub) {
-      ctx.beginPath();
-      ctx.arc(x + s / 2, y + s / 2, (w * s) / 2, 0, Math.PI * 2);
-      ctx.fillStyle = col;
-      ctx.fill();
-    }
-  }
-  // 継手（フランジ）
-  for (const d of dirsOf(mask)) {
-    ctx.save();
-    ctx.translate(x + EDGE[d][0] * s, y + EDGE[d][1] * s);
-    ctx.rotate(ROT[d]);
-    ctx.fillStyle = '#0a0f1a';
-    ctx.fillRect(-s * 0.1, -s * 0.28, s * 0.1, s * 0.56);
-    ctx.fillStyle = '#8796ab';
-    ctx.fillRect(-s * 0.085, -s * 0.255, s * 0.07, s * 0.51);
-    ctx.restore();
-  }
-}
-
-function strokePolyline(ctx, pts, frac) {
-  if (frac <= 0) return;
-  const lens = [];
-  let total = 0;
-  for (let i = 1; i < pts.length; i++) {
-    const l = Math.hypot(pts[i][0] - pts[i - 1][0], pts[i][1] - pts[i - 1][1]);
-    lens.push(l);
-    total += l;
-  }
-  let remain = total * Math.min(1, frac);
-  ctx.beginPath();
-  ctx.moveTo(pts[0][0], pts[0][1]);
-  for (let i = 1; i < pts.length; i++) {
-    const l = lens[i - 1];
-    if (remain >= l) {
-      ctx.lineTo(pts[i][0], pts[i][1]);
-      remain -= l;
-    } else {
-      const r = l ? remain / l : 0;
-      ctx.lineTo(pts[i - 1][0] + (pts[i][0] - pts[i - 1][0]) * r, pts[i - 1][1] + (pts[i][1] - pts[i - 1][1]) * r);
-      break;
-    }
-  }
-  ctx.stroke();
-}
-
-function drawWater(ctx, x, y, s, paths, t, ts) {
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  for (const p of paths) {
-    const pts = p.map(([u, v]) => [x + u * s, y + v * s]);
-    ctx.strokeStyle = '#22d3ee';
-    ctx.lineWidth = s * 0.17;
-    strokePolyline(ctx, pts, t);
-    ctx.strokeStyle = 'rgba(230,252,255,0.8)';
-    ctx.lineWidth = s * 0.05;
-    ctx.setLineDash([s * 0.1, s * 0.18]);
-    ctx.lineDashOffset = -ts * 0.06;
-    strokePolyline(ctx, pts, t);
-    ctx.setLineDash([]);
-  }
-}
-
-function drawRock(ctx, x, y, s, gx, gy) {
-  let seed = (gx * 7919 + gy * 104729 + 13) % 2147483647;
-  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  ctx.beginPath();
-  for (let i = 0; i < 8; i++) {
-    const a = (i / 8) * Math.PI * 2 + rnd() * 0.4;
-    const r = s * (0.3 + rnd() * 0.12);
-    const px = x + s / 2 + Math.cos(a) * r, py = y + s / 2 + Math.sin(a) * r * 0.85 + s * 0.04;
-    i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
-  }
-  ctx.closePath();
-  const g = ctx.createLinearGradient(x, y, x + s, y + s);
-  g.addColorStop(0, '#a8a29e');
-  g.addColorStop(1, '#3f3a36');
-  ctx.fillStyle = g;
-  ctx.fill();
-  ctx.lineWidth = 2;
-  ctx.strokeStyle = '#1c1917';
-  ctx.stroke();
-  ctx.fillStyle = 'rgba(255,255,255,0.2)';
-  ctx.beginPath();
-  ctx.ellipse(x + s * 0.4, y + s * 0.36, s * 0.1, s * 0.05, -0.5, 0, Math.PI * 2);
-  ctx.fill();
-}
-
-function drawChannel(ctx, x, y, s, ts) {
-  ctx.fillStyle = '#0b4266';
-  ctx.fillRect(x, y + s * 0.08, s, s * 0.84);
-  ctx.fillStyle = '#5b4636';
-  ctx.fillRect(x, y + s * 0.04, s, s * 0.06);
-  ctx.fillRect(x, y + s * 0.9, s, s * 0.06);
-  ctx.strokeStyle = 'rgba(125,211,252,0.55)';
-  ctx.lineWidth = 2;
-  for (let k = 0; k < 3; k++) {
-    ctx.beginPath();
-    for (let i = 0; i <= 10; i++) {
-      const px = x + (i / 10) * s;
-      const py = y + s * (0.3 + k * 0.2) + Math.sin((x + px) * 0.12 + ts * 0.004 + k) * s * 0.035;
-      i ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
-    }
+    trace();
     ctx.stroke();
   }
-}
-
-function drawSource(ctx, c, x, y, s, ts) {
-  ctx.fillStyle = 'rgba(14,165,233,0.2)';
-  rr(ctx, x + 3, y + 3, s - 6, s - 6, 8);
-  ctx.fill();
-  drawPipeBody(ctx, x, y, s, c.dir);
-  if (c.segs.a) drawWater(ctx, x, y, s, c.segs.a.paths, c.segs.a.t, ts);
-  const cx = x + s / 2, cy = y + s / 2;
-  if (G.state === 'design' || G.state === 'intro') {
-    const p = (ts % 1200) / 1200;
-    ctx.strokeStyle = `rgba(56,189,248,${1 - p})`;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.arc(cx, cy, s * (0.3 + p * 0.25), 0, Math.PI * 2);
-    ctx.stroke();
-  }
-  ctx.beginPath();
-  ctx.arc(cx, cy, s * 0.3, 0, Math.PI * 2);
-  ctx.fillStyle = '#0284c7';
-  ctx.fill();
-  ctx.lineWidth = s * 0.06;
-  ctx.strokeStyle = '#7dd3fc';
-  ctx.stroke();
-  ctx.fillStyle = '#fff';
-  ctx.font = `900 ${Math.round(s * 0.21)}px 'M PLUS Rounded 1c', sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('本管', cx, cy + 1);
-}
-
-function drawHouse(ctx, c, x, y, s, ts) {
-  drawPipeBody(ctx, x, y, s, c.dir);
-  if (c.supplied) drawWater(ctx, x, y, s, [[EDGE[c.dir], [0.5, 0.5]]], 1, ts);
-  const cx = x + s / 2, cy = y + s * 0.56, w = s * 0.6;
-  ctx.fillStyle = c.supplied ? '#fef9c3' : '#e2e8f0';
-  rr(ctx, cx - w / 2, cy - w * 0.12, w, w * 0.56, 3);
-  ctx.fill();
-  ctx.beginPath();
-  ctx.moveTo(cx - w * 0.64, cy - w * 0.08);
-  ctx.lineTo(cx, cy - w * 0.64);
-  ctx.lineTo(cx + w * 0.64, cy - w * 0.08);
-  ctx.closePath();
-  ctx.fillStyle = '#f97316';
-  ctx.fill();
-  ctx.lineWidth = 1.5;
-  ctx.strokeStyle = '#7c2d12';
-  ctx.stroke();
-  ctx.fillStyle = '#7c2d12';
-  ctx.fillRect(cx - w * 0.1, cy + w * 0.15, w * 0.2, w * 0.29);
-  ctx.fillStyle = c.supplied ? '#facc15' : '#475569';
-  ctx.fillRect(cx - w * 0.38, cy + w * 0.02, w * 0.18, w * 0.16);
-  ctx.fillRect(cx + w * 0.2, cy + w * 0.02, w * 0.18, w * 0.16);
-  if (c.supplied) {
-    const bob = Math.sin(ts * 0.006) * 2;
-    ctx.beginPath();
-    ctx.arc(x + s * 0.82, y + s * 0.2 + bob, s * 0.15, 0, Math.PI * 2);
-    ctx.fillStyle = '#22c55e';
-    ctx.fill();
-    ctx.fillStyle = '#fff';
-    ctx.font = `900 ${Math.round(s * 0.15)}px 'M PLUS Rounded 1c', sans-serif`;
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('OK', x + s * 0.82, y + s * 0.2 + bob + 1);
-  }
-}
-
-// 設計中：本管の出口と、前回漏れた場所を示す
-function drawHints(ctx, ts) {
-  if (G.state !== 'design' && G.state !== 'intro') return;
-  const pulse = 0.5 + 0.5 * Math.sin(ts * 0.008);
-  const marks = [];
-  const s0 = STAGES[G.stageIdx].source;
-  const sx = s0.x + DX[s0.dir], sy = s0.y + DY[s0.dir];
-  if (!portInto(sx, sy, OPP[s0.dir]) || G.grid[sy][sx].type !== 'pipe') marks.push({ x: sx, y: sy, rgb: '250,204,21', label: ARROW[s0.dir] });
-  if (G.leakMark) marks.push({ x: G.leakMark.x, y: G.leakMark.y, rgb: '244,63,94', label: '✕' });
-  for (const m of marks) {
-    if (m.x < 0 || m.y < 0 || m.x >= COLS || m.y >= ROWS) continue;
-    rr(ctx, m.x * CELL + 3, m.y * CELL + 3, CELL - 6, CELL - 6, 8);
-    ctx.fillStyle = `rgba(${m.rgb},${0.08 + 0.17 * pulse})`;
-    ctx.fill();
-    ctx.lineWidth = 3;
-    ctx.strokeStyle = `rgba(${m.rgb},${0.45 + 0.55 * pulse})`;
-    ctx.stroke();
-    if (G.grid[m.y][m.x].type === 'empty') {
-      ctx.fillStyle = `rgba(${m.rgb},${0.7 + 0.3 * pulse})`;
-      ctx.font = `900 ${Math.round(CELL * 0.42)}px 'M PLUS Rounded 1c', sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(m.label, (m.x + 0.5) * CELL, (m.y + 0.5) * CELL);
-    }
-  }
-}
-
-const easeOutBack = k => 1 + 2.7 * Math.pow(k - 1, 3) + 1.7 * Math.pow(k - 1, 2);
-
-function draw(ts) {
-  const ctx = bctx;
-  ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-  ctx.clearRect(0, 0, BW, BH);
-  ctx.save();
-  if (G.shake > 0.3) ctx.translate((Math.random() - 0.5) * G.shake, (Math.random() - 0.5) * G.shake);
-  ctx.drawImage(bg, 0, 0, BW, BH);
-  if (G.grid) {
-    for (const row of G.grid) {
-      for (const c of row) {
-        const x = c.x * CELL, y = c.y * CELL, s = CELL;
-        if (c.type === 'rock') drawRock(ctx, x, y, s, c.x, c.y);
-        else if (c.type === 'channel') drawChannel(ctx, x, y, s, ts);
-      }
-    }
-    drawHints(ctx, ts);
-    for (const row of G.grid) {
-      for (const c of row) {
-        const x = c.x * CELL, y = c.y * CELL, s = CELL;
-        if (c.type === 'source') drawSource(ctx, c, x, y, s, ts);
-        else if (c.type === 'house') drawHouse(ctx, c, x, y, s, ts);
-        else if (c.type === 'pipe') {
-          const kp = Math.min(1, (ts - c.placedAt) / 170);
-          const kr = Math.min(1, (ts - c.rotAt) / 140);
-          const sc = kp < 1 ? 0.55 + 0.45 * easeOutBack(kp) : 1;
-          const rot = kr < 1 ? -(1 - kr) * Math.PI / 2 : 0;
-          ctx.save();
-          if (sc !== 1 || rot) {
-            ctx.translate(x + s / 2, y + s / 2);
-            ctx.rotate(rot);
-            ctx.scale(sc, sc);
-            ctx.translate(-(x + s / 2), -(y + s / 2));
-          }
-          drawPipeBody(ctx, x, y, s, c.mask);
-          for (const ch in c.segs) drawWater(ctx, x, y, s, c.segs[ch].paths, c.segs[ch].t, ts);
-          ctx.restore();
-        }
-      }
-    }
-  }
-  for (const p of G.particles) {
-    ctx.globalAlpha = Math.max(0, p.life);
-    ctx.fillStyle = p.color;
-    if (p.sq) {
-      ctx.save();
-      ctx.translate(p.x, p.y);
-      ctx.rotate(p.rot);
-      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
-      ctx.restore();
-    } else {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-  ctx.globalAlpha = 1;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  for (const f of G.floaters) {
-    const k = (ts - f.t0) / f.dur;
-    if (k < 0 || k > 1) continue;
-    ctx.globalAlpha = k < 0.7 ? 1 : 1 - (k - 0.7) / 0.3;
-    ctx.font = `900 ${f.size}px 'M PLUS Rounded 1c', sans-serif`;
-    const fx = Math.min(BW - 40, Math.max(40, f.x)), fy = f.y - k * 30;
-    ctx.lineWidth = 4;
-    ctx.strokeStyle = 'rgba(0,0,0,0.75)';
-    ctx.strokeText(f.text, fx, fy);
-    ctx.fillStyle = f.color;
-    ctx.fillText(f.text, fx, fy);
-  }
-  ctx.globalAlpha = 1;
-  ctx.restore();
 }
 
 function renderPalette() {
   const icons = { straight: E | W, elbow: E | S, tee: E | S | W, cross: CROSS };
+  const dpr = Math.min(window.devicePixelRatio || 1, 3);
   document.querySelectorAll('.part').forEach(btn => {
     const cv = btn.querySelector('canvas');
     const size = 34;
-    cv.width = size * DPR;
-    cv.height = size * DPR;
+    cv.width = size * dpr;
+    cv.height = size * dpr;
     const ctx = cv.getContext('2d');
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    ctx.fillStyle = '#2a1c12';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.fillStyle = '#5e3d27';
     rr(ctx, 0, 0, size, size, 7);
     ctx.fill();
     const m = icons[btn.dataset.tool];
     if (m) {
-      drawPipeBody(ctx, 0, 0, size, m);
+      drawIcon(ctx, size, m);
     } else {
-      ctx.fillStyle = '#e2e8f0';
-      ctx.font = `900 20px 'M PLUS Rounded 1c', sans-serif`;
+      ctx.font = '20px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText('⛏', size / 2, size / 2 + 1);
+      ctx.fillText('⛏️', size / 2, size / 2 + 1);
     }
   });
 }
@@ -1477,16 +2170,14 @@ function showIntro() {
     </div>`);
 }
 
-function finishStage() {
+function showResultCard(r) {
   const st = STAGES[G.stageIdx];
-  const r = scoreStage();
-  G.results[G.stageIdx] = { score: r.score, stars: r.stars };
   const last = G.stageIdx === STAGES.length - 1;
   r.list.filter(b => b.got).forEach((b, i) => SFX.coin(i));
   showOverlay(`
     <div class="card">
       <span class="tag">STAGE ${G.stageIdx + 1} CLEAR!</span>
-      <div class="stars">${'<span class="on">★</span>'.repeat(r.stars)}${'<span class="off">★</span>'.repeat(3 - r.stars)}</div>
+      <div class="stars">${[0, 1, 2].map(i => `<span class="${i < r.stars ? 'on' : 'off'}" style="animation-delay:${0.1 + i * 0.15}s">★</span>`).join('')}</div>
       <ul class="missions">
         <li class="ok"><span class="st">★</span>全部の家に給水</li>
         <li class="${r.cost <= st.estimate ? 'ok' : 'ng'}"><span class="st">★</span>施工費 ${r.cost}万（見積り ${st.estimate}万以内）</li>
@@ -1501,7 +2192,7 @@ function finishStage() {
         <div class="total"><span>ステージ得点</span><span>${r.score.toLocaleString()}</span></div>
       </div>
       <div class="bonus">
-        ${r.list.map(b => `<div class="${b.got ? 'got' : 'miss'}"><div class="head"><span>${b.got ? '✓' : '✕'} ${BONUSES[b.key].name}</span><span>${b.got ? '+' + BONUSES[b.key].pts : '—'}</span></div><small>${b.note}。${BONUSES[b.key].why}</small></div>`).join('')}
+        ${r.list.map((b, i) => `<div class="${b.got ? 'got' : 'miss'}" style="animation-delay:${0.3 + i * 0.12}s"><div class="head"><span>${b.got ? '✓' : '✕'} ${BONUSES[b.key].name}</span><span>${b.got ? '+' + BONUSES[b.key].pts : '—'}</span></div><small>${b.note}。${BONUSES[b.key].why}</small></div>`).join('')}
       </div>
       <div class="memo"><b>🔧 松下社長の現場メモ</b><p>${MEMOS[G.stageIdx]}</p></div>
       <div class="row2">
@@ -1543,6 +2234,8 @@ function showFinal() {
   const isBest = total > best;
   if (isBest) saveBest(total);
   G.share = { total, title };
+  View.celebrate();
+  SFX.legend();
   showOverlay(`
     <div class="card">
       <span class="tag">ALL CLEAR!</span>
@@ -1586,8 +2279,8 @@ overlay.addEventListener('click', e => {
     // 管は残したまま水だけ抜いて設計に戻る。手戻りは1回分加算
     G.fails++;
     G.leakMark = G.leak && G.leak.d !== undefined ? { x: G.leak.x + DX[G.leak.d], y: G.leak.y + DY[G.leak.d] } : null;
+    if (G.leakMark && (G.leakMark.x < 0 || G.leakMark.y < 0 || G.leakMark.x >= COLS || G.leakMark.y >= ROWS)) G.leakMark = { x: G.leak.x, y: G.leak.y };
     resetWater();
-    G.particles = [];
     hideOverlay();
     G.state = 'design';
     syncButtons();
@@ -1606,12 +2299,10 @@ overlay.addEventListener('click', e => {
   }
 });
 
-board.addEventListener('pointerdown', e => {
+$('scene').addEventListener('pointerdown', e => {
   ac();
-  const r = board.getBoundingClientRect();
-  const x = Math.floor(((e.clientX - r.left) / r.width) * COLS);
-  const y = Math.floor(((e.clientY - r.top) / r.height) * ROWS);
-  if (x >= 0 && y >= 0 && x < COLS && y < ROWS) placeAt(x, y);
+  const cell = View.pick(e.clientX, e.clientY);
+  if (cell) placeAt(cell.x, cell.y);
 });
 
 $('palette').addEventListener('click', e => {
@@ -1641,23 +2332,33 @@ function update(dt) {
   if (G.state === 'flow') {
     stepFlow(dt);
   } else if (G.state === 'leaking') {
-    if (G.now - G.doneAt < 1200) sprayLeak();
-    else if (!overlay.classList.contains('show')) showFail();
+    if (G.now - G.doneAt > 1300 && !overlay.classList.contains('show')) showFail();
   } else if (G.state === 'clearing') {
-    if (G.now - G.doneAt > 1300 && !overlay.classList.contains('show')) finishStage();
+    const t = G.now - G.doneAt;
+    if (!G.result && t > 1100) {
+      const st = STAGES[G.stageIdx];
+      G.result = scoreStage();
+      G.results[G.stageIdx] = { score: G.result.score, stars: G.result.stars };
+      if (G.result.cost === st.estimate) View.banner('見積りピッタリ！', 'blue small', 1000, 0.66);
+      else if (G.result.cost < st.estimate) View.banner('見積りより安い！', 'blue small', 1000, 0.66);
+      if (G.result.stars === 3) {
+        // ★3は「神配管」演出
+        setTimeout(() => {
+          View.legendary();
+          View.banner('神配管！<small>PERFECT PIPING</small>', 'rainbow', 2400);
+          SFX.legend();
+          buzz([30, 30, 30, 30, 80]);
+        }, 900);
+        G.cardAt = G.now + 3100;
+      } else {
+        G.cardAt = G.now + 1100;
+      }
+    }
+    if (G.result && G.now >= G.cardAt && !overlay.classList.contains('show')) {
+      View.hideCombo();
+      showResultCard(G.result);
+    }
   }
-
-  for (let i = G.particles.length - 1; i >= 0; i--) {
-    const p = G.particles[i];
-    p.x += p.vx;
-    p.y += p.vy;
-    p.vy += p.g;
-    if (p.rot !== undefined) p.rot += p.vr;
-    p.life -= p.decay;
-    if (p.life <= 0) G.particles.splice(i, 1);
-  }
-  G.floaters = G.floaters.filter(f => G.now - f.t0 < f.dur);
-  G.shake *= 0.88;
 }
 
 function frame(ts) {
@@ -1665,15 +2366,21 @@ function frame(ts) {
   lastTs = ts;
   G.now = ts;
   update(dt);
-  draw(ts);
+  View.update(ts, G);
+  View.render();
   requestAnimationFrame(frame);
 }
 
-window.addEventListener('resize', layout);
-layout();
+window.addEventListener('resize', () => View.fit());
+renderPalette();
 showTitle();
-if (document.fonts && document.fonts.ready) document.fonts.ready.then(renderPalette);
+View.fit();
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { renderPalette(); View.fit(); });
+window.__pcReady = true;
 requestAnimationFrame(frame);
+
+// テスト・デバッグ用（ブラウザのコンソールから操作できるように）
+Object.assign(window, { G, View, placeAt, selectTool, startTest, startStage, update, totalCost, pipeCells, COLS, ROWS, N, E, S, W });
 </script>
 </body>
 </html>
