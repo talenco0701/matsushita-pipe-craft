@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>快感！配管クラフト｜松下工業 - 詰まりゼロ＆限界水圧サバイバル</title>
+<meta name="description" content="トイレ・キッチン・お風呂の排水順と勾配、100m先まで水を届ける口径とコスト。松下工業の現場ノウハウをスマホで30秒体験できる配管パズルゲーム。">
+<meta name="theme-color" content="#090d16">
+<meta name="color-scheme" content="dark">
+<meta name="format-detection" content="telephone=no">
+<link rel="canonical" href="https://matsushita-pipe-craft.pages.dev/">
+
+<!-- アイコン -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔧</text></svg>">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="配管クラフト">
+
+<!-- OGP（Instagram / LINE / Facebook / 怪人 などのリンクカード） -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="松下工業｜快感！配管クラフト">
+<meta property="og:title" content="快感！配管クラフト｜あなたは詰まらない家をつくれるか？">
+<meta property="og:description" content="排水の順番と勾配、100m先まで水を届ける口径とコスト。プロの現場ノウハウをスマホで30秒体験！">
+<meta property="og:url" content="https://matsushita-pipe-craft.pages.dev/">
+<meta property="og:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="快感！配管クラフト - 詰まりゼロ＆限界水圧サバイバル">
+
+<!-- X（旧Twitter） -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="快感！配管クラフト｜あなたは詰まらない家をつくれるか？">
+<meta name="twitter:description" content="排水の順番と勾配、100m先まで水を届ける口径とコスト。プロの現場ノウハウをスマホで30秒体験！">
+<meta name="twitter:image" content="https://matsushita-pipe-craft.pages.dev/ogp.png">
+<meta name="twitter:image:alt" content="快感！配管クラフト - 詰まりゼロ＆限界水圧サバイバル">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+  * {
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+  }
+  body {
+    margin: 0;
+    background: #090d16;
+    color: #fff;
+    overflow-x: hidden;
+  }
+
+  /* 画面シェイク＆バウンス演出 */
+  @keyframes shakeHard {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    15% { transform: translate(-10px, -8px) rotate(-2deg); }
+    30% { transform: translate(10px, 6px) rotate(2deg); }
+    45% { transform: translate(-8px, 8px) rotate(-1.5deg); }
+    60% { transform: translate(8px, -6px) rotate(1.5deg); }
+    75% { transform: translate(-5px, 4px) rotate(-1deg); }
+  }
+  .shake-hard {
+    animation: shakeHard 0.45s cubic-bezier(.36,.07,.19,.97) both;
+  }
+
+  @keyframes popIn {
+    0% { transform: scale(0.4); opacity: 0; }
+    65% { transform: scale(1.14); opacity: 1; }
+    85% { transform: scale(0.95); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .pop-in {
+    animation: popIn 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.5), inset 0 0 10px rgba(56, 189, 248, 0.3); }
+    50% { box-shadow: 0 0 28px rgba(56, 189, 248, 0.95), inset 0 0 18px rgba(56, 189, 248, 0.6); }
+  }
+  .pulse-glow {
+    animation: pulseGlow 1.6s infinite;
+  }
+
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.8); opacity: 1; }
+    100% { transform: translateY(-48px) scale(1.15); opacity: 0; }
+  }
+  .floating-pop {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-weight: 900;
+    text-shadow: 0 3px 8px rgba(0,0,0,0.85);
+    animation: floatUp 0.75s ease-out forwards;
+  }
+
+  /* 3D風の押し心地ボタン */
+  .juicy-btn {
+    transition: transform 0.08s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.08s ease;
+    box-shadow: 0 5px 0 rgba(0,0,0,0.45);
+  }
+  .juicy-btn:active {
+    transform: translateY(4px) scale(0.96);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.45);
+  }
+
+  /* 水流アニメーション背景 */
+  @keyframes flowStripe {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 0; }
+  }
+  .water-stream {
+    background-image: linear-gradient(
+      45deg,
+      rgba(255, 255, 255, 0.35) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.35) 50%,
+      rgba(255, 255, 255, 0.35) 75%,
+      transparent 75%,
+      transparent
+    );
+    background-size: 28px 28px;
+    animation: flowStripe 0.35s linear infinite;
+  }
+</style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-start py-2 px-2 sm:px-4">
+
+<!-- パーティクル＆紙吹雪キャンバス -->
+<canvas id="fxCanvas" class="fixed inset-0 pointer-events-none z-50"></canvas>
+
+<!-- メインゲームコンテナ（スマホ縦画面最適化） -->
+<div id="gameContainer" class="w-full max-w-md bg-slate-900 border-2 border-slate-700/80 rounded-3xl shadow-2xl overflow-hidden relative flex flex-col">
+
+  <!-- トップヘッダー：ステージ＆サウンド切替 -->
+  <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 px-3.5 py-2.5 border-b border-slate-800 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="bg-sky-500 text-slate-950 font-black text-xs px-2 py-0.5 rounded-full tracking-wider shadow">配管CRAFT</span>
+      <h1 class="text-sm sm:text-base font-black tracking-tight text-white">水圧＆排水サバイバル</h1>
+    </div>
+    <div class="flex items-center gap-1.5">
+      <button id="soundToggleBtn" onclick="toggleSound()" class="juicy-btn bg-slate-800 hover:bg-slate-700 text-sky-400 text-xs font-extrabold px-2.5 py-1 rounded-xl border border-slate-700 flex items-center gap-1">
+        <span id="soundIcon">🔊</span><span>効果音ON</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ステージ切替ピルタブ -->
+  <div class="grid grid-cols-2 gap-1.5 p-2 bg-slate-950/80 border-b border-slate-800">
+    <button id="tabStage1" onclick="switchStage(1)" class="juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-lg">
+      <span>🏠</span><span>STAGE 1：排水コンボ</span>
+    </button>
+    <button id="tabStage2" onclick="switchStage(2)" class="juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-slate-800 text-slate-400 border border-slate-700">
+      <span>💥</span><span>STAGE 2：100m水圧＆コスト</span>
+    </button>
+  </div>
+
+  <!-- ==========================================
+       STAGE 1: 排水レイアウト＆油汚れ一掃パズル
+       ========================================== -->
+  <div id="stage1View" class="p-3 flex flex-col gap-3">
+    <!-- ミッションバナー -->
+    <div class="bg-gradient-to-br from-slate-800 to-slate-900 border border-amber-500/40 rounded-2xl p-3 flex items-center justify-between shadow-inner">
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-xs font-black bg-amber-400 text-slate-950 px-2 py-0.5 rounded-md">30秒パズル</span>
+          <span class="text-xs font-bold text-amber-300">油汚れと汚物を一掃せよ！</span>
+        </div>
+        <p class="text-xs text-slate-300 mt-1 leading-snug">
+          下水本管（左）へ向かって<span class="text-sky-400 font-black">詰まらない順番</span>に水回りを配置し、<span class="text-amber-300 font-black">勾配（傾き）</span>を決めろ！
+        </p>
+      </div>
+      <div class="text-3xl">🚽🍳🛁</div>
+    </div>
+
+    <!-- 住宅断面＆排水パイプキャンバス -->
+    <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-3 relative overflow-hidden">
+      <!-- 地面と道路下水ラベル -->
+      <div class="flex items-center justify-between text-[11px] font-bold text-slate-400 mb-2">
+        <span class="bg-emerald-950 text-emerald-300 border border-emerald-700 px-2 py-0.5 rounded-lg flex items-center gap-1">
+          🕳️ 道路の下水本管（ゴール）
+        </span>
+        <span class="text-slate-400">⬅️ 水が流れる方向 ⬅️</span>
+        <span class="bg-slate-800 text-slate-300 px-2 py-0.5 rounded-lg">家の奥</span>
+      </div>
+
+      <!-- 3つの配置スロット（手前・中央・奥） -->
+      <div class="grid grid-cols-3 gap-2 relative z-10 my-1">
+        <!-- スロット0：道路側（手前） -->
+        <div id="drainSlot0" onclick="removeDrainSlot(0)" class="cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative">
+          <span class="absolute top-1 left-1.5 text-[10px] font-black text-sky-400 bg-sky-950/90 px-1.5 py-0.5 rounded">① 手前(道路側)</span>
+          <div id="drainSlot0Content" class="flex flex-col items-center justify-center mt-3">
+            <span class="text-2xl opacity-40">➕</span>
+            <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
+          </div>
+        </div>
+
+        <!-- スロット1：中央 -->
+        <div id="drainSlot1" onclick="removeDrainSlot(1)" class="cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative">
+          <span class="absolute top-1 left-1.5 text-[10px] font-black text-sky-400 bg-sky-950/90 px-1.5 py-0.5 rounded">② 真ん中</span>
+          <div id="drainSlot1Content" class="flex flex-col items-center justify-center mt-3">
+            <span class="text-2xl opacity-40">➕</span>
+            <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
+          </div>
+        </div>
+
+        <!-- スロット2：一番奥 -->
+        <div id="drainSlot2" onclick="removeDrainSlot(2)" class="cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative">
+          <span class="absolute top-1 left-1.5 text-[10px] font-black text-sky-400 bg-sky-950/90 px-1.5 py-0.5 rounded">③ 一番奥</span>
+          <div id="drainSlot2Content" class="flex flex-col items-center justify-center mt-3">
+            <span class="text-2xl opacity-40">➕</span>
+            <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 床下の排水管ビジュアル（勾配連動アニメーション） -->
+      <div class="mt-3 pt-2 pb-1 bg-amber-950/30 border-t border-amber-800/40 rounded-xl px-2 relative">
+        <div class="text-[10px] font-bold text-amber-400/90 mb-1 flex justify-between">
+          <span>👇 床下の排水管（勾配シミュレーション）</span>
+          <span id="slopeStatusLabel" class="text-sky-300 font-black">勾配：1/50（黄金比✨）</span>
+        </div>
+
+        <!-- 傾くパイプ本体 -->
+        <div class="h-12 flex items-center justify-between px-1 relative">
+          <!-- 下水桝アイコン -->
+          <div class="w-9 h-10 bg-slate-700 border-2 border-slate-500 rounded-lg flex flex-col items-center justify-center z-20 shrink-0 shadow">
+            <span class="text-xs">🕳️</span>
+            <span class="text-[8px] font-black text-emerald-300">下水</span>
+          </div>
+
+          <!-- 排水パイプ（角度が変わる） -->
+          <div id="drainPipeTrack" class="flex-1 mx-1 h-5 bg-slate-800 border-2 border-slate-600 rounded-full relative overflow-hidden transition-transform duration-300 origin-left" style="transform: rotate(-4deg);">
+            <!-- 水流バー -->
+            <div id="drainWaterBar" class="h-full w-0 bg-gradient-to-r from-sky-400 via-cyan-300 to-blue-500 water-stream transition-all duration-500"></div>
+            <!-- 油汚れ塊アイコン -->
+            <div id="oilBlobIcon" class="hidden absolute top-0 left-1/2 -translate-x-1/2 text-xs leading-none">🟡💨</div>
+            <!-- 詰まりアイコン -->
+            <div id="clogBlobIcon" class="hidden absolute top-0 left-1/3 text-xs leading-none">💩🛑</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ワンタップ選択パレット：水回りアイテム -->
+    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-2.5">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-xs font-black text-sky-300">STEP 1：タップして配置！（再タップで外す）</span>
+        <button onclick="resetStage1()" class="text-[11px] font-extrabold text-slate-300 bg-slate-700 hover:bg-slate-600 px-2 py-0.5 rounded-lg">🔄 リセット</button>
+      </div>
+      <div class="grid grid-cols-3 gap-2">
+        <button id="itemBtn_toilet" onclick="placeDrainItem('toilet')" class="juicy-btn bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-rose-500/60 hover:border-rose-400 rounded-xl p-2 flex flex-col items-center">
+          <span class="text-2xl">🚽</span>
+          <span class="text-xs font-black text-white mt-0.5">トイレ</span>
+          <span class="text-[10px] font-bold text-rose-300 bg-rose-950/80 px-1.5 py-0.5 rounded mt-1">汚物・詰まり大</span>
+        </button>
+        <button id="itemBtn_kitchen" onclick="placeDrainItem('kitchen')" class="juicy-btn bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-amber-500/60 hover:border-amber-400 rounded-xl p-2 flex flex-col items-center">
+          <span class="text-2xl">🍳</span>
+          <span class="text-xs font-black text-white mt-0.5">キッチン</span>
+          <span class="text-[10px] font-bold text-amber-300 bg-amber-950/80 px-1.5 py-0.5 rounded mt-1">ギトギト油汚れ</span>
+        </button>
+        <button id="itemBtn_bath" onclick="placeDrainItem('bath')" class="juicy-btn bg-gradient-to-b from-slate-700 to-slate-800 border-2 border-sky-500/60 hover:border-sky-400 rounded-xl p-2 flex flex-col items-center">
+          <span class="text-2xl">🛁</span>
+          <span class="text-xs font-black text-white mt-0.5">お風呂</span>
+          <span class="text-[10px] font-bold text-sky-300 bg-sky-950/80 px-1.5 py-0.5 rounded mt-1">大量のお湯🌊</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: 排水管の勾配（傾き）セレクト -->
+    <div class="bg-slate-800/90 border border-slate-700 rounded-2xl p-2.5">
+      <div class="text-xs font-black text-amber-300 mb-2">STEP 2：排水管の「勾配（傾き）」を選べ！</div>
+      <div class="grid grid-cols-3 gap-2">
+        <button id="slopeBtn_flat" onclick="selectSlope('flat')" class="juicy-btn bg-slate-900 border-2 border-slate-700 rounded-xl p-2 text-center">
+          <div class="text-xs font-black text-slate-200">水平 (0°)</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">傾きなし</div>
+        </button>
+        <button id="slopeBtn_good" onclick="selectSlope('good')" class="juicy-btn bg-sky-950 border-2 border-sky-400 rounded-xl p-2 text-center shadow-md">
+          <div class="text-xs font-black text-sky-300">適正 (1/50)</div>
+          <div class="text-[10px] text-sky-200 mt-0.5">プロ基準✨</div>
+        </button>
+        <button id="slopeBtn_steep" onclick="selectSlope('steep')" class="juicy-btn bg-slate-900 border-2 border-slate-700 rounded-xl p-2 text-center">
+          <div class="text-xs font-black text-slate-200">急すぎ！</div>
+          <div class="text-[10px] text-slate-400 mt-0.5">水だけ先走る</div>
+        </button>
+      </div>
+    </div>
+
+    <!-- 排水テスト発射ボタン -->
+    <button onclick="runStage1Flush()" class="juicy-btn pulse-glow w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-400 via-cyan-400 to-blue-500 text-slate-950 font-black text-base tracking-wide shadow-xl flex items-center justify-center gap-2">
+      <span class="text-xl">🌊</span>
+      <span>一斉に水を流す！（排水テスト）</span>
+    </button>
+  </div>
+
+  <!-- ==========================================
+       STAGE 2: 100m給水サバイバル（口径×損失抵抗×コスト）
+       ========================================== -->
+  <div id="stage2View" class="hidden p-3 flex flex-col gap-2.5">
+
+    <!-- リアルタイムメーター（水圧・水量・施工費） -->
+    <div class="grid grid-cols-3 gap-1.5 bg-slate-950 p-2 rounded-2xl border border-slate-800">
+      <div class="bg-slate-900 rounded-xl p-2 text-center border border-slate-800">
+        <div class="text-[10px] font-bold text-slate-400">末端の蛇口水量</div>
+        <div id="hudFlowText" class="text-base sm:text-lg font-black text-sky-400">0.0 <span class="text-xs">L/分</span></div>
+        <div class="text-[9px] font-bold text-emerald-400">目標: 12〜25 L/分</div>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-2 text-center border border-slate-800">
+        <div class="text-[10px] font-bold text-slate-400">総施工コスト</div>
+        <div id="hudCostText" class="text-base sm:text-lg font-black text-amber-400">0 <span class="text-xs">万円</span></div>
+        <div class="text-[9px] font-bold text-amber-300">予算上限: 180万円</div>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-2 text-center border border-slate-800">
+        <div class="text-[10px] font-bold text-slate-400">安全率ランク</div>
+        <div id="hudSafetyText" class="text-sm sm:text-base font-black text-slate-300 mt-0.5">未判定</div>
+        <div class="text-[9px] font-bold text-slate-400">本管水圧 0.3MPa</div>
+      </div>
+    </div>
+
+    <!-- 100m断面ルートビュー（本管 → 区間1 → 用水路 → 区間2 → 引き込み → 蛇口） -->
+    <div class="bg-slate-950 border-2 border-slate-800 rounded-2xl p-2.5 relative overflow-hidden">
+      <div class="flex items-center justify-between text-[11px] font-bold mb-1.5">
+        <span class="text-sky-400 flex items-center gap-1">🚰 道路本管 (0.3MPa)</span>
+        <span class="text-amber-300 text-[10px]">距離100m！太すぎると高額・細すぎると摩擦で水が出ない！</span>
+        <span class="text-emerald-400">🏠 新築2軒</span>
+      </div>
+
+      <!-- パイプライン視覚化バー -->
+      <div class="bg-slate-900 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-1 relative min-h-[82px]">
+        <!-- 本管 -->
+        <div class="flex flex-col items-center shrink-0">
+          <div class="w-7 h-12 bg-sky-700 border-2 border-sky-400 rounded-lg flex items-center justify-center font-black text-[10px] text-white shadow">本管</div>
+        </div>
+
+        <!-- 区間1パイプ (0〜40m) -->
+        <div onclick="cyclePipeSize(0)" class="cursor-pointer flex-1 flex flex-col items-center group">
+          <span class="text-[9px] font-bold text-slate-400">①上流40m</span>
+          <div id="pipeVis0" class="w-full bg-sky-900/90 border-2 border-sky-400 rounded-lg flex items-center justify-center transition-all duration-200 relative overflow-hidden" style="height: 28px;">
+            <div class="pipe-water-fill h-full w-0 bg-gradient-to-r from-sky-400 to-cyan-300 water-stream absolute left-0 top-0 transition-all duration-300"></div>
+            <span id="pipeLabel0" class="relative z-10 text-xs font-black text-white drop-shadow">φ40</span>
+          </div>
+          <span id="pipeCost0" class="text-[9px] font-bold text-amber-300 mt-0.5">45万円</span>
+        </div>
+
+        <!-- 用水路かわし（90度 or 45度） -->
+        <div onclick="toggleBendType()" class="cursor-pointer flex flex-col items-center shrink-0 px-1">
+          <span class="text-[9px] font-bold text-purple-300">用水路越え</span>
+          <div id="bendVis" class="w-11 h-11 bg-purple-950 border-2 border-purple-400 rounded-xl flex flex-col items-center justify-center shadow transition-transform">
+            <span id="bendIcon" class="text-xs font-black text-purple-200">📐45°</span>
+            <span id="bendSub" class="text-[8px] font-bold text-emerald-300">抵抗小</span>
+          </div>
+          <span id="bendCost" class="text-[9px] font-bold text-amber-300 mt-0.5">+15万</span>
+        </div>
+
+        <!-- 区間2パイプ (40〜80m) -->
+        <div onclick="cyclePipeSize(1)" class="cursor-pointer flex-1 flex flex-col items-center">
+          <span class="text-[9px] font-bold text-slate-400">②中流40m</span>
+          <div id="pipeVis1" class="w-full bg-sky-900/90 border-2 border-sky-400 rounded-lg flex items-center justify-center transition-all duration-200 relative overflow-hidden" style="height: 22px;">
+            <div class="pipe-water-fill h-full w-0 bg-gradient-to-r from-cyan-400 to-sky-300 water-stream absolute left-0 top-0 transition-all duration-300"></div>
+            <span id="pipeLabel1" class="relative z-10 text-xs font-black text-white drop-shadow">φ25</span>
+          </div>
+          <span id="pipeCost1" class="text-[9px] font-bold text-amber-300 mt-0.5">25万円</span>
+        </div>
+
+        <!-- 区間3パイプ (末端20m) -->
+        <div onclick="cyclePipeSize(2)" class="cursor-pointer flex-1 flex flex-col items-center">
+          <span class="text-[9px] font-bold text-slate-400">③宅内20m</span>
+          <div id="pipeVis2" class="w-full bg-sky-900/90 border-2 border-sky-400 rounded-lg flex items-center justify-center transition-all duration-200 relative overflow-hidden" style="height: 16px;">
+            <div class="pipe-water-fill h-full w-0 bg-gradient-to-r from-sky-300 to-emerald-300 water-stream absolute left-0 top-0 transition-all duration-300"></div>
+            <span id="pipeLabel2" class="relative z-10 text-[11px] font-black text-white drop-shadow">φ20</span>
+          </div>
+          <span id="pipeCost2" class="text-[9px] font-bold text-amber-300 mt-0.5">12万円</span>
+        </div>
+
+        <!-- 家の蛇口＆破裂エフェクト -->
+        <div class="flex flex-col items-center shrink-0 relative">
+          <div id="houseBox" class="w-10 h-12 bg-slate-800 border-2 border-emerald-500/70 rounded-xl flex flex-col items-center justify-center">
+            <span id="houseIcon" class="text-lg leading-none">🏠</span>
+            <span id="faucetStatus" class="text-[9px] font-black text-sky-300 mt-0.5">待機中</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 断面図のすぐ下で口径をポンポン変えられるクイックボタン -->
+      <div class="mt-2 grid grid-cols-3 gap-1.5">
+        <button onclick="cyclePipeSize(0)" class="juicy-btn bg-slate-800 hover:bg-slate-700 border border-sky-500/50 rounded-xl py-1.5 px-2 flex flex-col items-center">
+          <span class="text-[10px] text-slate-300 font-bold">①上流40mをタップ変更</span>
+          <span id="btnPipeText0" class="text-xs font-black text-sky-300 mt-0.5">現在: φ40 (中口径)</span>
+        </button>
+        <button onclick="cyclePipeSize(1)" class="juicy-btn bg-slate-800 hover:bg-slate-700 border border-sky-500/50 rounded-xl py-1.5 px-2 flex flex-col items-center">
+          <span class="text-[10px] text-slate-300 font-bold">②中流40mをタップ変更</span>
+          <span id="btnPipeText1" class="text-xs font-black text-sky-300 mt-0.5">現在: φ25 (標準)</span>
+        </button>
+        <button onclick="cyclePipeSize(2)" class="juicy-btn bg-slate-800 hover:bg-slate-700 border border-sky-500/50 rounded-xl py-1.5 px-2 flex flex-col items-center">
+          <span class="text-[10px] text-slate-300 font-bold">③宅内20mをタップ変更</span>
+          <span id="btnPipeText2" class="text-xs font-black text-sky-300 mt-0.5">現在: φ20 (細め)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 現場の3大オプション（曲がり角・埋設深さ・増圧ポンプ） -->
+    <div class="grid grid-cols-3 gap-1.5">
+      <!-- 1. 用水路の曲げ角度 -->
+      <button id="optBendBtn" onclick="toggleBendType()" class="juicy-btn bg-purple-950/80 border-2 border-purple-400 rounded-2xl p-2 flex flex-col items-center text-center">
+        <span class="text-[10px] font-bold text-purple-300">用水路の曲げ方</span>
+        <span id="optBendTitle" class="text-xs font-black text-white mt-0.5">📐 45度曲げ</span>
+        <span id="optBendDesc" class="text-[9px] font-bold text-emerald-300 mt-0.5">抵抗小 / +15万円</span>
+      </button>
+
+      <!-- 2. 道路の埋設深さ -->
+      <button id="optDepthBtn" onclick="toggleDepthType()" class="juicy-btn bg-emerald-950/80 border-2 border-emerald-400 rounded-2xl p-2 flex flex-col items-center text-center">
+        <span class="text-[10px] font-bold text-emerald-300">道路の埋設深さ</span>
+        <span id="optDepthTitle" class="text-xs font-black text-white mt-0.5">⛏️ 深さ 1.2m</span>
+        <span id="optDepthDesc" class="text-[9px] font-bold text-emerald-300 mt-0.5">道路許可OK / +25万</span>
+      </button>
+
+      <!-- 3. 禁断の増圧ポンプ -->
+      <button id="optPumpBtn" onclick="togglePump()" class="juicy-btn bg-slate-800 border-2 border-slate-600 rounded-2xl p-2 flex flex-col items-center text-center">
+        <span class="text-[10px] font-bold text-rose-300">途中に増圧ポンプ</span>
+        <span id="optPumpTitle" class="text-xs font-black text-slate-300 mt-0.5">⚡ ポンプ OFF</span>
+        <span id="optPumpDesc" class="text-[9px] font-bold text-slate-400 mt-0.5">水圧2倍(破裂注意)</span>
+      </button>
+    </div>
+
+    <!-- 一発プリセット（いろんな失敗・成功を1秒で試せるドパガキボタン） -->
+    <div class="bg-slate-900 border border-slate-800 rounded-xl p-2 flex items-center justify-between gap-1">
+      <span class="text-[10px] font-black text-slate-400 shrink-0">ワンタップ実験👉</span>
+      <button onclick="applyPreset('burst')" class="juicy-btn bg-rose-950 hover:bg-rose-900 border border-rose-500/60 text-rose-200 text-[10px] font-black px-2 py-1 rounded-lg">💥 細管＋ポンプ破裂</button>
+      <button onclick="applyPreset('stingy')" class="juicy-btn bg-amber-950 hover:bg-amber-900 border border-amber-500/60 text-amber-200 text-[10px] font-black px-2 py-1 rounded-lg">💧 ケチりすぎ</button>
+      <button onclick="applyPreset('pro')" class="juicy-btn bg-sky-950 hover:bg-sky-900 border border-sky-400 text-sky-200 text-[10px] font-black px-2 py-1 rounded-lg">👑 社長の黄金設計</button>
+    </div>
+
+    <!-- 通水テスト発射ボタン -->
+    <button onclick="runStage2Test()" class="juicy-btn pulse-glow w-full py-3.5 rounded-2xl bg-gradient-to-r from-emerald-400 via-teal-400 to-sky-500 text-slate-950 font-black text-base tracking-wide shadow-xl flex items-center justify-center gap-2">
+      <span class="text-xl">🚀</span>
+      <span>バルブ全開！通水＆コスト判定！</span>
+    </button>
+  </div>
+
+</div>
+
+<!-- ==========================================
+     ド派手な結果ポップアップモーダル（診断＆ランキング＆採用導線）
+     ========================================== -->
+<div id="resultModal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-3">
+  <div id="resultCard" class="w-full max-w-md bg-slate-900 border-2 border-sky-400 rounded-3xl p-4 shadow-2xl flex flex-col gap-3 pop-in">
+    <div class="flex items-center justify-between">
+      <span id="modalBadge" class="bg-sky-400 text-slate-950 font-black text-xs px-2.5 py-0.5 rounded-full">STAGE CLEAR!</span>
+      <button onclick="closeModal()" class="text-slate-400 hover:text-white font-black text-sm px-2">✕ 閉じる</button>
+    </div>
+
+    <div class="text-center py-1">
+      <div id="modalEmoji" class="text-5xl mb-1">👑</div>
+      <h2 id="modalTitle" class="text-xl font-black text-white leading-tight">完璧な配管設計！</h2>
+      <p id="modalSubtitle" class="text-xs font-bold text-sky-300 mt-1"></p>
+    </div>
+
+    <!-- スコア・コスト内訳ボックス -->
+    <div id="modalStatsBox" class="bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs leading-relaxed text-slate-200 space-y-1.5">
+    </div>
+
+    <!-- 週間コストランキング（Stage2クリア時） -->
+    <div id="modalRankingBox" class="hidden bg-gradient-to-b from-amber-950/50 to-slate-950 border border-amber-500/40 rounded-2xl p-2.5">
+      <div class="text-[11px] font-black text-amber-300 mb-1.5 flex items-center justify-between">
+        <span>🏆 100m配管 最安クリア番付（安全率OK部門）</span>
+        <span class="text-[10px] bg-amber-400 text-slate-950 px-1.5 rounded font-black">LIVE</span>
+      </div>
+      <div id="rankingList" class="space-y-1 text-[11px]"></div>
+    </div>
+
+    <!-- 求人・松下工業PRボックス -->
+    <div class="bg-gradient-to-r from-sky-950 to-indigo-950 border border-sky-500/50 rounded-2xl p-3 flex flex-col gap-1.5">
+      <div class="flex items-center gap-1.5">
+        <span class="text-base">🔧</span>
+        <span class="text-xs font-black text-sky-300">松下工業の「現場の知恵」を体験！</span>
+      </div>
+      <p id="modalTrivia" class="text-[11px] text-slate-200 leading-normal">
+        地面の下や壁の向こう側で、水圧や油汚れを計算して街のライフラインを守るのが配管工のシゴト。未経験から一生モノの技術を身につけませんか？
+      </p>
+    </div>
+
+    <!-- アクションボタン -->
+    <div class="grid grid-cols-2 gap-2 mt-1">
+      <button id="modalNextBtn" onclick="closeModal()" class="juicy-btn py-3 rounded-xl bg-slate-800 hover:bg-slate-700 text-white font-black text-xs border border-slate-600">
+        🔄 別の設計を試す
+      </button>
+      <button id="modalPrimaryBtn" onclick="goToNextAction()" class="juicy-btn py-3 rounded-xl bg-gradient-to-r from-amber-400 to-orange-500 text-slate-950 font-black text-xs shadow-lg">
+        💥 STAGE 2 へ進む！
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   1. Web Audio API シンセ効果音（外部音声ファイル不要でドパガキ効果音を鳴らす）
+   ============================================================================ */
+let soundEnabled = true;
+let audioCtx = null;
+
+function initAudio() {
+  if (!audioCtx) {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (AudioContext) audioCtx = new AudioContext();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  document.getElementById('soundIcon').textContent = soundEnabled ? '🔊' : '🔇';
+  document.querySelector('#soundToggleBtn span:last-child').textContent = soundEnabled ? '効果音ON' : '消音中';
+  if (soundEnabled) playSFX('pop');
+}
+
+function playSFX(type) {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+
+  const now = audioCtx.currentTime;
+
+  if (type === 'pop') {
+    // 気持ちいい装着音「ポンッ！」
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(320, now);
+    osc.frequency.exponentialRampToValueAtTime(680, now + 0.09);
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.1);
+  } else if (type === 'clank') {
+    // パイプ口径切り替え金属音「ガシャン！」
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(520, now);
+    osc.frequency.exponentialRampToValueAtTime(180, now + 0.11);
+    gain.gain.setValueAtTime(0.3, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start(now);
+    osc.stop(now + 0.12);
+  } else if (type === 'water') {
+    // 水流ゴゴゴ音
+    const bufferSize = audioCtx.sampleRate * 0.45;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(400, now);
+    filter.frequency.linearRampToValueAtTime(1200, now + 0.4);
+
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.25, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start(now);
+  } else if (type === 'fanfare') {
+    // 大成功ファンファーレ「タラララン♪」
+    const notes = [523.25, 659.25, 783.99, 1046.5];
+    notes.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+      gain.gain.setValueAtTime(0.25, now + idx * 0.08);
+      gain.gain.exponentialRampToValueAtTime(0.008, now + idx * 0.08 + 0.28);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now + idx * 0.08);
+      osc.stop(now + idx * 0.08 + 0.29);
+    });
+  } else if (type === 'boom') {
+    // 破裂・失敗ドカーン音
+    const bufferSize = audioCtx.sampleRate * 0.55;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (audioCtx.sampleRate * 0.18));
+
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(260, now);
+
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.5, now);
+    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.55);
+
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start(now);
+  }
+}
+
+/* ============================================================================
+   2. 視覚エフェクト（フローティング文字・画面揺れ・紙吹雪パーティクル）
+   ============================================================================ */
+function spawnFloatingText(text, colorClass = 'text-sky-300', x = null, y = null) {
+  const el = document.createElement('div');
+  el.className = `floating-pop text-base sm:text-lg ${colorClass}`;
+  el.textContent = text;
+  const posX = x !== null ? x : window.innerWidth / 2 - 50 + (Math.random() * 60 - 30);
+  const posY = y !== null ? y : window.innerHeight / 2 - 40;
+  el.style.left = `${posX}px`;
+  el.style.top = `${posY}px`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 750);
+}
+
+function triggerShake() {
+  const container = document.getElementById('gameContainer');
+  container.classList.remove('shake-hard');
+  void container.offsetWidth;
+  container.classList.add('shake-hard');
+}
+
+// 紙吹雪＆水しぶきキャンバス
+const fxCanvas = document.getElementById('fxCanvas');
+const fxCtx = fxCanvas.getContext('2d');
+let particles = [];
+
+function resizeFxCanvas() {
+  fxCanvas.width = window.innerWidth;
+  fxCanvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeFxCanvas);
+resizeFxCanvas();
+
+function launchConfetti(mode = 'success') {
+  const colors = mode === 'success'
+    ? ['#38bdf8', '#fbbf24', '#34d399', '#f472b6', '#a78bfa']
+    : ['#ef4444', '#f97316', '#dc2626', '#64748b'];
+
+  for (let i = 0; i < 65; i++) {
+    particles.push({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      vx: (Math.random() - 0.5) * 16,
+      vy: (Math.random() - 0.8) * 16,
+      size: Math.random() * 8 + 4,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      rot: Math.random() * 360,
+      vRot: (Math.random() - 0.5) * 12,
+      life: 1.0
+    });
+  }
+}
+
+function updateParticles() {
+  fxCtx.clearRect(0, 0, fxCanvas.width, fxCanvas.height);
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.38; // 重力
+    p.rot += p.vRot;
+    p.life -= 0.016;
+    if (p.life <= 0) {
+      particles.splice(i, 1);
+      continue;
+    }
+    fxCtx.save();
+    fxCtx.translate(p.x, p.y);
+    fxCtx.rotate((p.rot * Math.PI) / 180);
+    fxCtx.globalAlpha = Math.max(0, p.life);
+    fxCtx.fillStyle = p.color;
+    fxCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+    fxCtx.restore();
+  }
+  requestAnimationFrame(updateParticles);
+}
+updateParticles();
+
+/* ============================================================================
+   3. ステージ切り替え管理
+   ============================================================================ */
+let currentStage = 1;
+
+function switchStage(stageNum) {
+  currentStage = stageNum;
+  playSFX('pop');
+  const s1 = document.getElementById('stage1View');
+  const s2 = document.getElementById('stage2View');
+  const t1 = document.getElementById('tabStage1');
+  const t2 = document.getElementById('tabStage2');
+
+  if (stageNum === 1) {
+    s1.classList.remove('hidden');
+    s2.classList.add('hidden');
+    t1.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 shadow-lg';
+    t2.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-slate-800 text-slate-400 border border-slate-700';
+  } else {
+    s1.classList.add('hidden');
+    s2.classList.remove('hidden');
+    t2.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-gradient-to-r from-sky-400 to-emerald-400 text-slate-950 shadow-lg';
+    t1.className = 'juicy-btn py-2 px-2 rounded-xl font-black text-xs sm:text-sm flex items-center justify-center gap-1.5 bg-slate-800 text-slate-400 border border-slate-700';
+    updateStage2HUD();
+  }
+}
+
+/* ============================================================================
+   4. STAGE 1：排水レイアウト＆油汚れ一掃パズル（トイレ・キッチン・お風呂）
+   ============================================================================ */
+const DRAIN_ITEMS = {
+  toilet:  { icon: '🚽', name: 'トイレ',   badge: '汚物・最短で流す', color: 'border-rose-400 bg-rose-950/50' },
+  kitchen: { icon: '🍳', name: 'キッチン', badge: '油汚れが出る',     color: 'border-amber-400 bg-amber-950/50' },
+  bath:    { icon: '🛁', name: 'お風呂',   badge: '大量のお湯で流す', color: 'border-sky-400 bg-sky-950/50' }
+};
+
+let drainSlots = [null, null, null]; // [手前(道路側), 真ん中, 一番奥]
+let selectedSlope = 'good'; // 'flat' | 'good' | 'steep'
+
+function placeDrainItem(itemKey) {
+  // 既に配置済みなら外す
+  const existingIdx = drainSlots.indexOf(itemKey);
+  if (existingIdx !== -1) {
+    removeDrainSlot(existingIdx);
+    return;
+  }
+  // 空いている最初のスロットに入れる
+  const emptyIdx = drainSlots.indexOf(null);
+  if (emptyIdx === -1) {
+    spawnFloatingText('満杯！枠をタップして外せます', 'text-amber-300');
+    return;
+  }
+  drainSlots[emptyIdx] = itemKey;
+  playSFX('pop');
+  const posLabels = ['①手前(道路側)', '②真ん中', '③一番奥'];
+  spawnFloatingText(`${DRAIN_ITEMS[itemKey].icon} ${posLabels[emptyIdx]}にセット！`, 'text-sky-300');
+  renderDrainSlots();
+}
+
+function removeDrainSlot(idx) {
+  if (!drainSlots[idx]) return;
+  playSFX('clank');
+  drainSlots[idx] = null;
+  renderDrainSlots();
+}
+
+function resetStage1() {
+  playSFX('clank');
+  drainSlots = [null, null, null];
+  selectedSlope = 'good';
+  selectSlope('good');
+  renderDrainSlots();
+}
+
+function renderDrainSlots() {
+  for (let i = 0; i < 3; i++) {
+    const slotEl = document.getElementById(`drainSlot${i}`);
+    const contentEl = document.getElementById(`drainSlot${i}Content`);
+    const key = drainSlots[i];
+
+    if (key) {
+      const item = DRAIN_ITEMS[key];
+      slotEl.className = `cursor-pointer rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] border-2 ${item.color} pop-in relative`;
+      contentEl.innerHTML = `
+        <span class="text-3xl mt-2">${item.icon}</span>
+        <span class="text-xs font-black text-white mt-1">${item.name}</span>
+        <span class="text-[9px] font-bold text-slate-200 bg-slate-900/80 px-1.5 py-0.5 rounded mt-0.5">${item.badge}</span>
+      `;
+    } else {
+      slotEl.className = `cursor-pointer bg-slate-900/90 border-2 border-dashed border-sky-500/60 rounded-2xl p-2 flex flex-col items-center justify-center min-h-[104px] transition-all hover:border-sky-400 relative`;
+      contentEl.innerHTML = `
+        <span class="text-2xl opacity-40">➕</span>
+        <span class="text-[11px] font-bold text-slate-400 mt-1">下から選ぶ</span>
+      `;
+    }
+  }
+
+  // 下部ボタンの選択状態ハイライト
+  ['toilet', 'kitchen', 'bath'].forEach(k => {
+    const btn = document.getElementById(`itemBtn_${k}`);
+    if (drainSlots.includes(k)) {
+      btn.classList.add('opacity-45', 'scale-95');
+    } else {
+      btn.classList.remove('opacity-45', 'scale-95');
+    }
+  });
+}
+
+function selectSlope(slopeKey) {
+  selectedSlope = slopeKey;
+  playSFX('clank');
+  const track = document.getElementById('drainPipeTrack');
+  const label = document.getElementById('slopeStatusLabel');
+
+  ['flat', 'good', 'steep'].forEach(k => {
+    const btn = document.getElementById(`slopeBtn_${k}`);
+    btn.className = k === slopeKey
+      ? 'juicy-btn bg-sky-950 border-2 border-sky-400 rounded-xl p-2 text-center shadow-md'
+      : 'juicy-btn bg-slate-900 border-2 border-slate-700 rounded-xl p-2 text-center opacity-75';
+  });
+
+  if (slopeKey === 'flat') {
+    track.style.transform = 'rotate(0deg)';
+    label.textContent = '勾配：0°（水平…水が停滞⚠️）';
+    label.className = 'text-rose-400 font-black';
+  } else if (slopeKey === 'good') {
+    track.style.transform = 'rotate(-4deg)';
+    label.textContent = '勾配：1/50（黄金比✨）';
+    label.className = 'text-sky-300 font-black';
+  } else {
+    track.style.transform = 'rotate(-11deg)';
+    label.textContent = '勾配：急すぎ！（水だけ先走る⚠️）';
+    label.className = 'text-amber-400 font-black';
+  }
+}
+
+function runStage1Flush() {
+  if (drainSlots.includes(null)) {
+    triggerShake();
+    playSFX('boom');
+    spawnFloatingText('⚠️ 3つすべて配置してね！', 'text-rose-400');
+    return;
+  }
+
+  playSFX('water');
+  const waterBar = document.getElementById('drainWaterBar');
+  const oilIcon = document.getElementById('oilBlobIcon');
+  const clogIcon = document.getElementById('clogBlobIcon');
+
+  waterBar.style.width = '100%';
+  oilIcon.classList.add('hidden');
+  clogIcon.classList.add('hidden');
+
+  setTimeout(() => {
+    // 判定ロジック（松下社長のノウハウ：手前トイレ・中キッチン・奥お風呂 ＋ 適正勾配）
+    const isOrderPerfect = (drainSlots[0] === 'toilet' && drainSlots[1] === 'kitchen' && drainSlots[2] === 'bath');
+    const isSlopeGood = (selectedSlope === 'good');
+
+    if (isOrderPerfect && isSlopeGood) {
+      playSFX('fanfare');
+      launchConfetti('success');
+      showModal({
+        badge: 'STAGE 1 大成功！✨',
+        emoji: '🌊✨',
+        title: '油汚れ＆汚物を完全一掃！！',
+        subtitle: 'プロ直伝！「手前トイレ・中キッチン・奥お風呂」の黄金レイアウト！',
+        statsHtml: `
+          <div class="font-bold text-emerald-300">✅ ① 手前（トイレ）：汚物が最短ルートで下水へ直行！</div>
+          <div class="font-bold text-amber-300">✅ ② 真ん中（キッチン）：冷えると固まるギトギト油汚れを…</div>
+          <div class="font-bold text-sky-300">✅ ③ 一番奥（お風呂）：最上流からの大量のお湯がイッキに洗い流した！</div>
+          <div class="font-bold text-purple-300">✅ 適正勾配（1/50）：水と固形物が一緒に流れるベスト角度！</div>
+        `,
+        trivia: '松下社長の現場ノウハウ：「キッチンの奥にお風呂を配置すると、お風呂の大量の排水がキッチンの油汚れを毎日キレイに流してくれる」。こういう見えない工夫が、何十年も詰まらない家を作ります！',
+        primaryText: '💥 STAGE 2（100m水圧＆コスト）へ！',
+        primaryAction: () => { closeModal(); switchStage(2); }
+      });
+    } else {
+      playSFX('boom');
+      triggerShake();
+      launchConfetti('fail');
+
+      let failReason = '';
+      if (drainSlots[0] !== 'toilet') {
+        clogIcon.classList.remove('hidden');
+        failReason = '🚽 <b>トイレが奥にあるため</b>、汚物が長い距離を流れる途中で止まり、他の排水と合流して大詰まりを起こしました！（トイレは下水本管に一番近い「①手前」が鉄則！）';
+      } else if (drainSlots[2] !== 'bath') {
+        oilIcon.classList.remove('hidden');
+        failReason = '🍳 <b>キッチンが一番奥にあるため</b>、流れた油汚れが配管の途中で冷えて白く固まり、洗い流す水量が足りず配管が閉塞しました！（一番奥に「🛁お風呂」を置けば大量のお湯で油を流せます！）';
+      } else if (selectedSlope === 'flat') {
+        failReason = '📐 <b>配管が水平（0°）なため</b>、水が流れず汚物と油がその場に溜まって逆流しました！';
+      } else if (selectedSlope === 'steep') {
+        failReason = '📐 <b>勾配を急に傾けすぎたため</b>、なんと「水だけ」が先にシャーッと流れ去り、重い汚物がパイプの中に置き去りになって詰まりました！（緩やかすぎるのも急すぎるのもNG！）';
+      }
+
+      showModal({
+        badge: '排水トラブル発生…🚨',
+        emoji: '😱🛑',
+        title: '配管が詰まって逆流！！',
+        subtitle: '順番と傾きに「プロの理由」があります！',
+        statsHtml: `<div class="text-rose-200 leading-relaxed">${failReason}</div>`,
+        trivia: 'ヒント：①手前に「🚽トイレ（最短で流す）」、②真ん中に「🍳キッチン」、③一番奥に「🛁お風呂（大量のお湯で油を洗い流す）」を置き、勾配を「適正(1/50)」にしてみよう！',
+        primaryText: '🔄 もう一度チャレンジ！',
+        primaryAction: () => { closeModal(); }
+      });
+    }
+    setTimeout(() => { waterBar.style.width = '0%'; }, 400);
+  }, 450);
+}
+
+/* ============================================================================
+   5. STAGE 2：100m給水サバイバル（口径×損失抵抗×45度曲げ×増圧ポンプ×コスト番付）
+   ============================================================================ */
+// パイプ口径マスターデータ（松下社長トーク準拠：16mm〜300mm鋳鉄管）
+const PIPE_SPECS = [
+  { id: '16',  name: 'φ16 (極細)',   heightPx: 12, lossPer10m: 0.048, costPer10m: 3,  burstPump: true  },
+  { id: '20',  name: 'φ20 (細管)',   heightPx: 16, lossPer10m: 0.025, costPer10m: 6,  burstPump: true  },
+  { id: '25',  name: 'φ25 (標準)',   heightPx: 21, lossPer10m: 0.013, costPer10m: 9,  burstPump: false },
+  { id: '40',  name: 'φ40 (中口径)', heightPx: 27, lossPer10m: 0.005, costPer10m: 14, burstPump: false },
+  { id: '75',  name: 'φ75 (大口径)', heightPx: 33, lossPer10m: 0.002, costPer10m: 24, burstPump: false },
+  { id: '100', name: 'φ100(鋳鉄管)', heightPx: 38, lossPer10m: 0.001, costPer10m: 38, burstPump: false }
+];
+
+// 3区間の選択インデックス [①上流40m, ②中流40m, ③宅内20m]
+let segIndices = [3, 2, 1]; // 初期値: φ40 -> φ25 -> φ20
+let bendIs45 = true;        // true: 45度曲げ(抵抗小・+15万), false: 90度エルボ(抵抗大・+5万)
+let depthIsDeep = true;     // true: 1.2m(許可OK・+25万), false: 0.5m(浅掘り違法・+8万)
+let pumpOn = false;         // true: 増圧ポンプON(+30万・水圧UP・細管破裂リスク)
+
+function cyclePipeSize(segNo) {
+  segIndices[segNo] = (segIndices[segNo] + 1) % PIPE_SPECS.length;
+  playSFX('clank');
+  const spec = PIPE_SPECS[segIndices[segNo]];
+  spawnFloatingText(`区間${segNo + 1}: ${spec.name}`, 'text-sky-300');
+  updateStage2HUD();
+}
+
+function toggleBendType() {
+  bendIs45 = !bendIs45;
+  playSFX('pop');
+  spawnFloatingText(bendIs45 ? '📐 45度ベンド（損失抵抗ダウン！）' : '直角 90度エルボ（安いが水圧激減！）', bendIs45 ? 'text-emerald-300' : 'text-amber-300');
+  updateStage2HUD();
+}
+
+function toggleDepthType() {
+  depthIsDeep = !depthIsDeep;
+  playSFX('pop');
+  spawnFloatingText(depthIsDeep ? '⛏️ 深さ1.2m（道路管理者OK！）' : '⚠️ 浅掘り0.5m（安いが道路許可NG！？）', depthIsDeep ? 'text-emerald-300' : 'text-rose-300');
+  updateStage2HUD();
+}
+
+function togglePump() {
+  pumpOn = !pumpOn;
+  playSFX('clank');
+  spawnFloatingText(pumpOn ? '⚡ 増圧ポンプ起動！（細管破裂に注意！）' : '増圧ポンプOFF', pumpOn ? 'text-rose-400' : 'text-slate-300');
+  updateStage2HUD();
+}
+
+function applyPreset(presetKey) {
+  playSFX('pop');
+  if (presetKey === 'burst') {
+    // 細管20mmばかり＋増圧ポンプON＝破裂コンボ
+    segIndices = [1, 0, 0]; // φ20, φ16, φ16
+    bendIs45 = false;
+    depthIsDeep = true;
+    pumpOn = true;
+    spawnFloatingText('💥 細管＋増圧ポンプの危険セット！', 'text-rose-400');
+  } else if (presetKey === 'stingy') {
+    // 全部細管でケチりすぎ＝摩擦損失で水が出ない
+    segIndices = [1, 1, 0];
+    bendIs45 = false;
+    depthIsDeep = true;
+    pumpOn = false;
+    spawnFloatingText('💧 材料費ケチりすぎセット！', 'text-amber-300');
+  } else if (presetKey === 'pro') {
+    // 松下社長の黄金設計（段階的に口径を落とす＋45度曲げ＋1.2m埋設）
+    segIndices = [3, 2, 1]; // φ40 -> φ25 -> φ20
+    bendIs45 = true;
+    depthIsDeep = true;
+    pumpOn = false;
+    spawnFloatingText('👑 段階的に口径を絞るプロ設計！', 'text-sky-300');
+  }
+  updateStage2HUD();
+}
+
+function calculateStage2Metrics() {
+  const s0 = PIPE_SPECS[segIndices[0]]; // 40m
+  const s1 = PIPE_SPECS[segIndices[1]]; // 40m
+  const s2 = PIPE_SPECS[segIndices[2]]; // 20m
+
+  // 各区間コスト（40m, 40m, 20m）
+  const c0 = s0.costPer10m * 4;
+  const c1 = s1.costPer10m * 4;
+  const c2 = s2.costPer10m * 2;
+  const bendCost = bendIs45 ? 15 : 5;
+  const depthCost = depthIsDeep ? 25 : 8;
+  const pumpCost = pumpOn ? 30 : 0;
+  const totalCost = c0 + c1 + c2 + bendCost + depthCost + pumpCost;
+
+  // 圧力計算（元圧 0.30 MPa）
+  let pressure = 0.30 + (pumpOn ? 0.22 : 0);
+  const loss0 = s0.lossPer10m * 4;
+  const loss1 = s1.lossPer10m * 4;
+  const loss2 = s2.lossPer10m * 2;
+  const bendLoss = bendIs45 ? 0.015 : 0.065; // 90度曲げ4箇所だと損失抵抗が跳ね上がる
+
+  // 逆テーパーペナルティ（細い管のあとに太い管を繋ぐと乱流・無意味なコスト）
+  const hasReverseTaper = (segIndices[0] < segIndices[1]) || (segIndices[1] < segIndices[2]);
+
+  const endPressure = Math.max(0, pressure - (loss0 + loss1 + loss2 + bendLoss));
+  // 末端水量 (L/min) 換算
+  const flowLiters = +(endPressure * 95).toFixed(1);
+
+  // 破裂判定：増圧ポンプON かつ φ16またはφ20が含まれる場合、または末端圧が高すぎる場合
+  const isBurst = pumpOn && (s0.burstPump || s1.burstPump || s2.burstPump);
+
+  return {
+    s0, s1, s2, c0, c1, c2,
+    totalCost, endPressure, flowLiters,
+    hasReverseTaper, isBurst
+  };
+}
+
+function updateStage2HUD() {
+  const m = calculateStage2Metrics();
+  const lengths = [4, 4, 2];
+
+  [m.s0, m.s1, m.s2].forEach((spec, idx) => {
+    const vis = document.getElementById(`pipeVis${idx}`);
+    const lbl = document.getElementById(`pipeLabel${idx}`);
+    const cst = document.getElementById(`pipeCost${idx}`);
+    const btnTxt = document.getElementById(`btnPipeText${idx}`);
+
+    vis.style.height = `${spec.heightPx}px`;
+    lbl.textContent = `φ${spec.id}`;
+    cst.textContent = `${spec.costPer10m * lengths[idx]}万円`;
+    btnTxt.textContent = `現在: ${spec.name}`;
+  });
+
+  // 曲げ表示更新
+  document.getElementById('bendIcon').textContent = bendIs45 ? '📐45°' : '直角90°';
+  document.getElementById('bendSub').textContent = bendIs45 ? '抵抗小' : '抵抗大!';
+  document.getElementById('bendSub').className = bendIs45 ? 'text-[8px] font-bold text-emerald-300' : 'text-[8px] font-bold text-rose-300';
+  document.getElementById('bendCost').textContent = bendIs45 ? '+15万' : '+5万';
+
+  document.getElementById('optBendTitle').textContent = bendIs45 ? '📐 45度曲げ' : '⚡ 90度エルボ';
+  document.getElementById('optBendDesc').textContent = bendIs45 ? '抵抗小 / +15万円' : '水圧激減 / +5万円';
+  document.getElementById('optBendBtn').className = bendIs45
+    ? 'juicy-btn bg-purple-950/80 border-2 border-purple-400 rounded-2xl p-2 flex flex-col items-center text-center'
+    : 'juicy-btn bg-amber-950/80 border-2 border-amber-500 rounded-2xl p-2 flex flex-col items-center text-center';
+
+  // 深さ表示更新
+  document.getElementById('optDepthTitle').textContent = depthIsDeep ? '⛏️ 深さ 1.2m' : '⚠️ 浅掘り 0.5m';
+  document.getElementById('optDepthDesc').textContent = depthIsDeep ? '道路許可OK / +25万' : '許可NG危険 / +8万';
+  document.getElementById('optDepthBtn').className = depthIsDeep
+    ? 'juicy-btn bg-emerald-950/80 border-2 border-emerald-400 rounded-2xl p-2 flex flex-col items-center text-center'
+    : 'juicy-btn bg-rose-950/80 border-2 border-rose-500 rounded-2xl p-2 flex flex-col items-center text-center';
+
+  // ポンプ表示更新
+  document.getElementById('optPumpTitle').textContent = pumpOn ? '⚡ ポンプ ON!' : '⚡ ポンプ OFF';
+  document.getElementById('optPumpDesc').textContent = pumpOn ? '水圧UP / +30万円' : '水圧2倍(破裂注意)';
+  document.getElementById('optPumpBtn').className = pumpOn
+    ? 'juicy-btn bg-rose-950 border-2 border-rose-400 rounded-2xl p-2 flex flex-col items-center text-center shadow-lg'
+    : 'juicy-btn bg-slate-800 border-2 border-slate-600 rounded-2xl p-2 flex flex-col items-center text-center';
+
+  // 上部メーター更新
+  document.getElementById('hudFlowText').innerHTML = `${m.flowLiters} <span class="text-xs">L/分</span>`;
+  document.getElementById('hudCostText').innerHTML = `${m.totalCost} <span class="text-xs">万円</span>`;
+
+  const safetyEl = document.getElementById('hudSafetyText');
+  if (m.isBurst) {
+    safetyEl.textContent = '💥破裂危険!';
+    safetyEl.className = 'text-sm sm:text-base font-black text-rose-400 mt-0.5';
+  } else if (!depthIsDeep) {
+    safetyEl.textContent = '🚨道路許可NG';
+    safetyEl.className = 'text-sm sm:text-base font-black text-rose-400 mt-0.5';
+  } else if (m.flowLiters < 12) {
+    safetyEl.textContent = '💧水圧不足';
+    safetyEl.className = 'text-sm sm:text-base font-black text-amber-400 mt-0.5';
+  } else if (m.flowLiters < 15.5) {
+    safetyEl.textContent = '⚠️ギリギリ';
+    safetyEl.className = 'text-sm sm:text-base font-black text-amber-300 mt-0.5';
+  } else {
+    safetyEl.textContent = '👑安全率◎';
+    safetyEl.className = 'text-sm sm:text-base font-black text-emerald-400 mt-0.5';
+  }
+}
+
+function runStage2Test() {
+  const m = calculateStage2Metrics();
+  playSFX('water');
+
+  // 水流バーアニメーション
+  const fills = document.querySelectorAll('.pipe-water-fill');
+  fills.forEach(el => { el.style.width = '100%'; });
+
+  setTimeout(() => {
+    // 1. 浅掘りによる道路管理者ストップ
+    if (!depthIsDeep) {
+      playSFX('boom');
+      triggerShake();
+      launchConfetti('fail');
+      showModal({
+        badge: '工事ストップ！🚨',
+        emoji: '🚧👮‍♂️',
+        title: '道路管理者から許可が下りません！',
+        subtitle: '埋設深さ0.5mは浅すぎ！大型車の重みで管が潰れます！',
+        statsHtml: `
+          <div class="text-rose-300 font-bold">❌ 掘削費をケチって浅掘り（0.5m）にしたため、道路使用許可が下りず一発ゲームオーバー！</div>
+          <div class="text-slate-300 mt-1">公道の下に水道管を入れる場合は、規定の深さ（1.0m〜1.2m以上）に埋設する必要があります。</div>
+        `,
+        trivia: '松下社長のリアル話：「浅く埋めれば施工費は安くなるけど、道路管理者に『この配管はダメです』と言われて許可が下りない」。法令と安全を守るのもプロの技術です！',
+        primaryText: '⛏️ 深さ1.2mに直して再挑戦！',
+        primaryAction: () => { depthIsDeep = true; updateStage2HUD(); closeModal(); }
+      });
+    }
+    // 2. 細管＋増圧ポンプによる大破裂
+    else if (m.isBurst) {
+      playSFX('boom');
+      triggerShake();
+      launchConfetti('fail');
+      document.getElementById('houseIcon').textContent = '💥';
+      document.getElementById('faucetStatus').textContent = '破裂!!';
+      showModal({
+        badge: '大惨事・ゲームオーバー💥',
+        emoji: '💥🌊',
+        title: 'ドカーン！水道管が大破裂！！',
+        subtitle: '細いパイプ（φ16/φ20）に増圧ポンプの圧力をかけすぎました！',
+        statsHtml: `
+          <div class="text-rose-300 font-bold">💥 流速・水圧オーバー！細い管が圧力に耐えきれず継手から吹き飛び、現場が水浸しで大損害発生！</div>
+          <div class="text-amber-300 mt-1">総施工コスト：${m.totalCost}万円 ＋ 賠償金…💸</div>
+        `,
+        trivia: '松下社長のリアル話：「水が出ないからって途中に増圧ポンプを入れて流速を上げすぎると、水道管が破裂して大損害になる」。ポンプに頼らず口径設計で解決するのが職人技！',
+        primaryText: '🔄 ポンプを切って設計し直す',
+        primaryAction: () => { pumpOn = false; updateStage2HUD(); closeModal(); }
+      });
+    }
+    // 3. 損失抵抗による水圧不足（チョロチョロ）
+    else if (m.flowLiters < 12.0) {
+      playSFX('boom');
+      triggerShake();
+      document.getElementById('houseIcon').textContent = '🏠';
+      document.getElementById('faucetStatus').textContent = '水が出ない';
+      showModal({
+        badge: '水圧不足でクレーム発生💧',
+        emoji: '🚰💦',
+        title: '蛇口から水がチョロチョロ…！',
+        subtitle: `末端水量：たったの ${m.flowLiters} L/分（必要量 12L/分以上）`,
+        statsHtml: `
+          <div class="text-amber-300 font-bold">💧 100mの長距離を細い管（または90度エルボ）で引っ張ったため、「損失抵抗（摩擦）」で水圧が消滅しました！</div>
+          <div class="text-slate-300 mt-1">・上流（①）をもっと太い管（φ40やφ75）にするか、用水路を「📐45度曲げ」にして損失抵抗を減らしましょう！</div>
+        `,
+        trivia: '松下社長のリアル話：「100m先に水を出すのに20mmの細い管で持っていったら、損失抵抗で水が出なくなる。最初は40mmで走って、段階的に25mm→20mmと絞るのが水頭計算の基本！」',
+        primaryText: '🔧 口径を太くして再挑戦！',
+        primaryAction: () => { closeModal(); }
+      });
+    }
+    // 4. 予算オーバー（太い鋳鉄管ばかり使った場合）
+    else if (m.totalCost > 180) {
+      playSFX('boom');
+      triggerShake();
+      showModal({
+        badge: '赤字・予算オーバー💸',
+        emoji: '💸😱',
+        title: '水は出たけど…大赤字です！！',
+        subtitle: `総施工コスト：${m.totalCost}万円（予算上限 180万円）`,
+        statsHtml: `
+          <div class="text-amber-300 font-bold">🌊 末端水量：${m.flowLiters} L/分（水圧はバッチリ！）</div>
+          <div class="text-rose-300 font-bold">💸 しかし φ75 や φ100（鋳鉄管）を使いすぎたため、材料費と水道加入金が跳ね上がって予算オーバー！</div>
+          <div class="text-slate-300">・下流（②中流・③宅内）に向かって段階的にパイプを細くしてコストを絞りましょう！</div>
+        `,
+        trivia: '松下社長のリアル話：「100mmや300mmの鋳鉄管で持っていけば水はいくらでも出るけど、お金が異常にかかりすぎる。必要な水量を出しつつ、いかに安く収めるかが腕の見せ所！」',
+        primaryText: '💰 口径を絞ってコスト削減！',
+        primaryAction: () => { closeModal(); }
+      });
+    }
+    // 5. ギリギリ攻めすぎ（12.0〜15.4 L/min：1級試験の罠＆隣に家が建つとアウト）
+    else if (m.flowLiters < 15.5) {
+      playSFX('fanfare');
+      launchConfetti('success');
+      showModal({
+        badge: 'クリア！（ただし要注意⚠️）',
+        emoji: '😅🏠',
+        title: '計算上はクリア！…でも隣に家が建ってピンチ！',
+        subtitle: `タイプ診断：【ギリギリ限界チャレンジャー型】（施工費 ${m.totalCost}万円 / 水量 ${m.flowLiters}L/分）`,
+        statsHtml: `
+          <div class="text-amber-300 font-bold">⚠️ 1軒だけならギリギリ水が出ましたが、半年後に「隣にもう1軒」家が建った途端、水圧が足りなくなって苦情が来ました！</div>
+          <div class="text-sky-300">💡 どこかの区間を「ワンサイズ太く」するか「45度曲げ」にして安全率（余裕）を持たせると、100点満点の『松下社長タイプ』になります！</div>
+        `,
+        rankingScore: m.totalCost,
+        rankingNote: '（安全率ギリギリ通過）',
+        trivia: '松下社長のリアル話：「俺はオーバークオリティが好きやからワンサイズ上げる。ギリギリにすると、お客さんが住んでから水が出ないって苦情になった時に一番目も当てられんからね！」',
+        primaryText: '👑 安全率を上げて神設計を狙う！',
+        primaryAction: () => { closeModal(); }
+      });
+    }
+    // 6. 大成功！安全率バッチリ＆予算内クリア（松下社長タイプ！）
+    else {
+      playSFX('fanfare');
+      launchConfetti('success');
+      document.getElementById('houseIcon').textContent = '🏠✨';
+      document.getElementById('faucetStatus').textContent = '快調!!';
+      showModal({
+        badge: 'Sランク神設計！！👑',
+        emoji: '👑🎉',
+        title: 'プロも唸る「黄金の段階口径設計」達成！',
+        subtitle: `タイプ診断：【松下社長タイプ（安全率バッチリの名職人）】`,
+        statsHtml: `
+          <div class="font-bold text-emerald-300">✅ 末端水量：${m.flowLiters} L/分（もう1軒増えても余裕の安全率！）</div>
+          <div class="font-bold text-amber-300">✅ 総施工コスト：${m.totalCost} 万円（予算180万円以内に見事収めた！）</div>
+          <div class="font-bold text-sky-300">✅ 構成：①φ${m.s0.id} ➔ ②φ${m.s1.id} ➔ ③φ${m.s2.id} （${bendIs45 ? '45度ベンドで抵抗軽減' : '90度エルボ'}）</div>
+        `,
+        rankingScore: m.totalCost,
+        rankingNote: '👑安全率OK',
+        trivia: '松下社長の太鼓判：「上流は太く、末端に向けて段階的に口径を落とし、安全率も見込んで予算内に収める…これが水頭計算の醍醐味！プロが見ても『そうそう、これくらい要るよな！』と納得の設計です！」',
+        primaryText: '🔄 さらに1万円でも安い構成を探す！',
+        primaryAction: () => { closeModal(); }
+      });
+    }
+
+    setTimeout(() => {
+      fills.forEach(el => { el.style.width = '0%'; });
+    }, 500);
+  }, 480);
+}
+
+/* ============================================================================
+   6. モーダル＆週間コストランキング表示
+   ============================================================================ */
+let modalPrimaryCallback = null;
+
+function showModal({ badge, emoji, title, subtitle, statsHtml, trivia, primaryText, primaryAction, rankingScore = null, rankingNote = '' }) {
+  document.getElementById('modalBadge').textContent = badge;
+  document.getElementById('modalEmoji').textContent = emoji;
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalSubtitle').textContent = subtitle;
+  document.getElementById('modalStatsBox').innerHTML = statsHtml;
+  document.getElementById('modalTrivia').textContent = trivia;
+  document.getElementById('modalPrimaryBtn').textContent = primaryText;
+  modalPrimaryCallback = primaryAction;
+
+  const rankBox = document.getElementById('modalRankingBox');
+  if (rankingScore !== null) {
+    rankBox.classList.remove('hidden');
+    const rivals = [
+      { name: '松下社長（お手本・安全率◎）', cost: 144 },
+      { name: '1級管工事ベテラン職人', cost: 136 },
+      { name: 'あなた（今回の記録 ' + rankingNote + '）', cost: rankingScore, isPlayer: true },
+      { name: '富山の新人見習いA', cost: 168 }
+    ].sort((a, b) => a.cost - b.cost);
+
+    document.getElementById('rankingList').innerHTML = rivals.map((r, i) => `
+      <div class="flex items-center justify-between px-2 py-1 rounded-lg ${r.isPlayer ? 'bg-amber-400/20 border border-amber-400 font-black text-amber-200' : 'bg-slate-900 text-slate-300'}">
+        <span>${i + 1}位：${r.name}</span>
+        <span class="font-black">${r.cost}万円</span>
+      </div>
+    `).join('');
+  } else {
+    rankBox.classList.add('hidden');
+  }
+
+  document.getElementById('resultModal').classList.remove('hidden');
+}
+
+function closeModal() {
+  playSFX('clank');
+  document.getElementById('resultModal').classList.add('hidden');
+}
+
+function goToNextAction() {
+  if (modalPrimaryCallback) modalPrimaryCallback();
+}
+
+// 初期描画
+renderDrainSlots();
+updateStage2HUD();
+</script>
+</body>
+</html>
